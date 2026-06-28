@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { Link } from "react-router";
 
 const navLinks = [
   { name: "Home", href: "#home" },
@@ -15,7 +14,7 @@ export default function Navbar() {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="w-full bg-background  px-6 md:px-12 lg:px-16 py-4 sticky top-0 z-50"
+      className="w-full bg-background px-4 md:px-12 lg:px-16 py-4 sticky top-0 z-50"
     >
       <div className="w-full max-w-7xl mx-auto flex items-center justify-between">
         {/* LOGO */}
@@ -63,9 +62,9 @@ export default function Navbar() {
 
             {/* Main Button */}
             <span className="relative z-10 flex items-center gap-2 rounded-full bg-brand-primary px-4 py-2 text-text-light">
-              <Link to="" className="text-base font-medium">
+              <span className="text-base font-medium">
                 Get Started
-              </Link>
+              </span>
 
               <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-secondary">
                 <ArrowUpRight

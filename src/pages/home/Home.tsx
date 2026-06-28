@@ -2,9 +2,9 @@ export default function Home() {
   return (
     <section
       id="home"
-      className="min-h-screen pt-24"
+      className="w-full min-h-screen px-4 md:px-12 lg:px-16 pt-24"
     >
-      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-7xl mx-auto">
         {/* Your content goes here */}
         Home
       </div>
