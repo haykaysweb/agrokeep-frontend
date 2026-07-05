@@ -1,45 +1,80 @@
-  @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
-  @import "tailwindcss";
-  @plugin "daisyui";
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+@import "tailwindcss";
+@plugin "daisyui";
 
+* {
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+  touch-action: manipulation;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-  * {
-    scroll-behavior: smooth;
-    box-sizing: border-box;
-    touch-action: manipulation;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+html,
+body {
+  font-family: var(--font-sans);
+}
+
+/*custom auth animation */
+@keyframes slideUp {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
   }
-
-  html,
-  body {
-    font-family: var(--font-sans);
+  100% {
+    transform: translateY(0);
+    opacity: 1;
   }
+}
 
-  @theme {
-    --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
-
-    /* --- Base & Surfaces (Backgrounds & Containers) --- */
-    --color-background: #fdfbf7; /* Main canvas/page background (from "Background" swatch) */
-    --color-surface-card: #ffffff; /* White containers, cards, or input fields */
-    --color-surface-alt: #9da49e; /* Subtle container tint (from the gray-green Auth Screen background) */
-
-    /* --- Primary & Accent Colors (Branding & Actions) --- */
-    --color-brand-primary: #0a4022; /* Main deep green for heavy CTAs, headers, buttons (Primary/P300) */
-    --color-brand-secondary: #e68e0e; /* Accent orange for secondary highlights/buttons (Secondary/P300) */
-
-    /* --- Text & Typography --- */
-    --color-text-main: #1a1a1a; /* Darkest text for high-contrast headings (Grey/G600 & G700) */
-    --color-text-subtle: #4a5555; /* Medium dark text for standard body paragraphs */
-    --color-text-muted: #7f8c8d; /* Faded gray for helper text, placeholders, or secondary labels (Grey/G300 & G450) */
-    --color-text-disabled: #bdc3c7; /* Extremely light gray for disabled states (Grey/G100 & G200) */
-    --color-text-light: #ffffff; /* White text (for over dark buttons/headers) */
-
-    /* --- Semantic / Status Indicators --- */
-    --color-semantic-error: #c0392b; /* Error/Alert destructive actions (Semantic/Error) */
-    --color-semantic-info: #2980b9; /* Informational highlights (Semantic/Info tone) */
-
-    /* --- Borders, Dividers, & Neutrals --- */
-    --color-border-light: #ecf0f1; /* Very light gray for soft borders/dividers (Grey/G20) */
-    --color-border-base: #bdc3c7; /* Standard border color for inputs and cards (Grey/G50) */
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
   }
+  20%,
+  60% {
+    transform: translateX(-6px);
+  }
+  40%,
+  80% {
+    transform: translateX(6px);
+  }
+}
+
+/* Create the Class Names (Use these exactly like Tailwind classes) */
+.animate-slideUp {
+  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-shake {
+  animation: shake 0.4s ease-in-out;
+}
+
+@theme {
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+
+  /* --- Base & Surfaces (Backgrounds & Containers) --- */
+  --color-background: #fdfbf7; /* Main canvas/page background (from "Background" swatch) */
+  --color-surface-card: #ffffff; /* White containers, cards, or input fields */
+  --color-surface-alt: #9da49e; /* Subtle container tint (from the gray-green Auth Screen background) */
+
+  /* --- Primary & Accent Colors (Branding & Actions) --- */
+  --color-brand-primary: #0a4022; /* Main deep green for heavy CTAs, headers, buttons (Primary/P300) */
+  --color-brand-secondary: #e68e0e; /* Accent orange for secondary highlights/buttons (Secondary/P300) */
+
+  /* --- Text & Typography --- */
+  --color-text-main: #1a1a1a; /* Darkest text for high-contrast headings (Grey/G600 & G700) */
+  --color-text-subtle: #4a5555; /* Medium dark text for standard body paragraphs */
+  --color-text-muted: #7f8c8d; /* Faded gray for helper text, placeholders, or secondary labels (Grey/G300 & G450) */
+  --color-text-disabled: #bdc3c7; /* Extremely light gray for disabled states (Grey/G100 & G200) */
+  --color-text-light: #ffffff; /* White text (for over dark buttons/headers) */
+
+  /* --- Semantic / Status Indicators --- */
+  --color-semantic-error: #c0392b; /* Error/Alert destructive actions (Semantic/Error) */
+  --color-semantic-info: #2980b9; /* Informational highlights (Semantic/Info tone) */
+
+  /* --- Borders, Dividers, & Neutrals --- */
+  --color-border-light: #ecf0f1; /* Very light gray for soft borders/dividers (Grey/G20) */
+  --color-border-base: #bdc3c7; /* Standard border color for inputs and cards (Grey/G50) */
+}
