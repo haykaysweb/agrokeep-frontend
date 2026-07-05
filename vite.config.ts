@@ -16,4 +16,16 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+   server: {
+    host: "0.0.0.0",
+    port: 4600,
+    open: true,
+    proxy: {
+      "/api/v1": {
+        target: "https://agrokeep-backend.onrender.com",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 });
