@@ -1,9 +1,10 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 import { Link } from "react-router";
-import UserAvatar from "./UserAvatar"; 
+import UserAvatar from "./UserAvatar";
 import { useAuth } from "@/hooks/useAuth";
+import Logo from "./Logo";
 
 const navLinks = [
   { name: "Home", href: "#home" },
@@ -13,45 +14,46 @@ const navLinks = [
 ];
 
 export default function Navbar() {
-  // 💡 Added isAuthenticating to prevent flash of "Sign In" buttons
   const { user, isAuthenticating } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 20);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <motion.nav
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className="sticky top-0 z-50 w-full bg-background"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className={`sticky top-0 z-50 w-full transition-colors duration-300 ${
+        isScrolled
+          ? "bg-background/80 backdrop-blur-md border-b border-border-light"
+          : "bg-background border-transparent"
+      }`}
     >
-<<<<<<< HEAD
-      <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 md:px-12">
-        {/* Logo */}
-        <div className="cursor-pointer">
-          <span className="text-2xl font-bold tracking-tight md:text-3xl">
-=======
-      <div className="w-full max-w-7xl mx-auto flex items-center justify-between">
-        
+      <div className="w-full max-w-7xl mx-auto px-4 md:px-12 h-20 flex items-center justify-between">
         {/* LOGO */}
-        <div className="flex items-center cursor-pointer">
-          <span className="text-2xl md:text-3xl font-bold tracking-tight">
->>>>>>> 668b0d55bcb51868df9e8cfc592941776e8437d6
-            <span className="text-brand-primary">Agro</span>
-            <span className="text-brand-secondary">Keep</span>
-          </span>
-        </div>
+        <Logo />
 
         {/* Desktop Nav */}
-        <ul className="hidden items-center gap-10 lg:flex">
+        <ul className="hidden lg:flex items-center gap-10">
           {navLinks.map((link) => (
             <li key={link.name}>
               <a
                 href={link.href}
-<<<<<<< HEAD
-                whileHover={{ y: -2 }}
-                className="font-medium text-text-subtle transition-colors hover:text-brand-primary"
-=======
-                className="relative inline-block text-text-subtle font-medium text-base py-2 hover:text-brand-primary transition-colors duration-200"
->>>>>>> 668b0d55bcb51868df9e8cfc592941776e8437d6
+                className="text-text-subtle font-medium text-base hover:text-brand-primary transition-colors"
               >
                 {link.name}
               </a>
@@ -59,78 +61,100 @@ export default function Navbar() {
           ))}
         </ul>
 
-<<<<<<< HEAD
-        {/* Right Side */}
-        <div className="flex items-center gap-4 md:gap-6">
-          <motion.a
-            href="#sign-in"
-            whileHover={{ y: -2 }}
-            className="hidden font-medium text-text-main transition-colors hover:text-brand-primary sm:block"
+        {/* Desktop Right Side */}
+        <div className="hidden lg:flex items-center gap-6 min-h-[40px]">
+          {isAuthenticating ? (
+            <div className="w-24 h-8 animate-pulse bg-border-light rounded-full" />
+          ) : user ? (
+            <UserAvatar name={user.fullName || "User"} />
+          ) : (
+            <>
+              <Link
+                to="/auth/login"
+                className="text-text-main font-medium hover:text-brand-primary transition-colors"
+              >
+                Sign in
+              </Link>
+
+              <motion.button
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+                className="relative inline-block"
+              >
+                {/* Orange Offset */}
+                <span className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-full bg-brand-secondary"></span>
+
+                {/* Button */}
+                <span className="relative z-10 flex h-10 items-center gap-3 rounded-full bg-brand-primary px-4 py-3 text-text-light">
+                  <Link
+                    to="/auth/register"
+                    className="text-sm font-medium md:text-base"
+                  >
+                    Get Started
+                  </Link>
+
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-secondary">
+                    <ArrowUpRight
+                      className="h-3 w-3 text-text-light"
+                      strokeWidth={2.5}
+                    />
+                  </span>
+                </span>
+              </motion.button>
+            </>
+          )}
+        </div>
+
+        {/* Mobile Toggle */}
+        <button
+          className="lg:hidden p-2 text-text-main"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {isOpen ? <X /> : <Menu />}
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="lg:hidden absolute top-20 left-0 w-full bg-background/95 backdrop-blur-sm border-b border-border-light overflow-hidden"
           >
-            Sign in
-          </motion.a>
-
-          <motion.a
-            href="#get-started"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            className="relative inline-block"
-          >
-            {/* Orange Offset */}
-            <span className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-full bg-brand-secondary"></span>
-
-            {/* Button */}
-            <span className="relative z-10 flex items-center gap-2 rounded-full bg-brand-primary px-4 py-2 text-text-light">
-              <span className="text-sm font-medium md:text-base">
-                Get Started
-              </span>
-
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-secondary">
-                <ArrowUpRight
-                  className="h-3.5 w-3.5 text-text-light"
-                  strokeWidth={2.5}
-                />
-              </span>
-            </span>
-          </motion.a>
-=======
-        {/* RIGHT SIDE CTAs */}
-        <div className="flex items-center gap-6">
-          {/* 💡 Wait for authentication check before showing buttons */}
-          {!isAuthenticating && (
-            user ? (
-              <UserAvatar name={user.fullName || "User"} />
-            ) : (
-              <>
+            <ul className="flex flex-col p-6 gap-6 max-w-7xl mx-auto px-4 md:px-12">
+              {navLinks.map((link) => (
+                <li key={link.name}>
+                  <a
+                    href={link.href}
+                    className="text-text-subtle text-lg font-medium"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {link.name}
+                  </a>
+                </li>
+              ))}
+              <div className="mt-4 pt-4 border-t border-border-light flex flex-col gap-4">
                 <Link
                   to="/auth/login"
-                  className="text-text-main font-medium text-base inline-block hover:text-brand-primary transition-colors duration-200"
+                  className="text-text-main font-medium text-lg"
+                  onClick={() => setIsOpen(false)}
                 >
                   Sign in
                 </Link>
-
-                <motion.div
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="relative inline-block"
+                <Link
+                  to="/auth/register"
+                  className="bg-brand-primary text-text-light py-3 px-6 rounded-full text-center"
+                  onClick={() => setIsOpen(false)}
                 >
-                  <span className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-full bg-brand-secondary"></span>
-                  <Link
-                    to="/auth/register"
-                    className="relative z-10 flex items-center gap-2 rounded-full bg-brand-primary px-4 py-2 text-text-light"
-                  >
-                    <span className="text-base font-medium">Get Started</span>
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-secondary">
-                      <ArrowUpRight className="h-3.5 w-3.5 text-text-light" strokeWidth={2.5} />
-                    </span>
-                  </Link>
-                </motion.div>
-              </>
-            )
-          )}
->>>>>>> 668b0d55bcb51868df9e8cfc592941776e8437d6
-        </div>
-      </div>
+                  Get Started
+                </Link>
+              </div>
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.nav>
   );
 }

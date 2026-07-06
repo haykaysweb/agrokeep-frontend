@@ -2,11 +2,11 @@ import type { loginSchemaType, signUpSchemaType } from "@/lib/SchemaTypes";
 import apiClient from "./apiClient";
 
 export const registerUserApi = async (formData: signUpSchemaType) => {
-  return await apiClient.post("/api/v1/user/register", formData);
+  return await apiClient.post("user/register", formData);
 };
 
 export const loginUserApi = async (formData: loginSchemaType) => {
-  return await apiClient.post("/api/v1/user/login", formData);
+  return await apiClient.post("/user/login", formData);
 };
 
 export interface VerifyOtpPayload {
@@ -16,20 +16,17 @@ export interface VerifyOtpPayload {
 
 export const verifyOtpApi = async (formData: VerifyOtpPayload) => {
   return await apiClient.post(
-    `/api/v1/user/verify-account?email=${encodeURIComponent(formData.email)}`,
+    `/user/verify-account?email=${encodeURIComponent(formData.email)}`,
     { otp: formData.otp },
   );
 };
 
 export const resendVerifyOtpApi = async (formData: { email: string }) => {
-  return await apiClient.post(
-    "/api/v1/user/resend-verifyaccount-otp",
-    formData,
-  );
+  return await apiClient.post("/user/resend-verifyaccount-otp", formData);
 };
 
 export const forgotPasswordApi = async (email: string) => {
-  return await apiClient.post("/api/v1/user/forgot-password", { email });
+  return await apiClient.post("/user/forgot-password", { email });
 };
 
 interface VerifyOtpParams {
@@ -39,7 +36,7 @@ interface VerifyOtpParams {
 
 export const verifyForgotOtpApi = async (formData: VerifyOtpParams) => {
   return await apiClient.post(
-    `/api/v1/user/verify-forgotpassword-otp?email=${encodeURIComponent(formData.email)}`,
+    `/user/verify-forgotpassword-otp?email=${encodeURIComponent(formData.email)}`,
     {
       otp: formData.otp,
     },
@@ -47,7 +44,7 @@ export const verifyForgotOtpApi = async (formData: VerifyOtpParams) => {
 };
 
 export const resendForgotOtpApi = async (email: string) => {
-  return await apiClient.post("/api/v1/user/resend-otp", { email });
+  return await apiClient.post("/user/resend-otp", { email });
 };
 
 interface ResetPasswordParams {
@@ -62,12 +59,15 @@ export const resetPasswordApi = async ({
   confirmPassword,
 }: ResetPasswordParams) => {
   return await apiClient.post(
-    `/api/v1/user/reset-password?email=${encodeURIComponent(email)}`,
+    `/user/reset-password?email=${encodeURIComponent(email)}`,
     { newPassword, confirmPassword },
   );
 };
 
 export const getMeApi = async () => {
-  const response = await apiClient.get("/api/v1/user/me");
-  return response.data;
+  return await apiClient.get("/api/v1/user/me");
+};
+
+export const logoutUserApi = async () => {
+  return await apiClient.post("/user/logout");
 };

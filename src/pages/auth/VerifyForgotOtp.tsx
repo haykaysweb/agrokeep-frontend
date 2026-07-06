@@ -1,24 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router';
-import { useMutation } from '@tanstack/react-query';
-import { verifyForgotOtpApi, resendForgotOtpApi } from '@/api/auth'; 
-import axios from 'axios';
-import { showToast } from '@/utils/CustomToast';
-import { validateVerifyOtpSchema } from '@/lib/SchemaTypes'; 
+import React, { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router";
+import { useMutation } from "@tanstack/react-query";
+import { verifyForgotOtpApi, resendForgotOtpApi } from "@/api/auth";
+import axios from "axios";
+import { showToast } from "@/utils/CustomToast";
+import { validateVerifyOtpSchema } from "@/lib/SchemaTypes";
 
 export default function VerifyForgotOtp() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [otp, setOtp] = useState('');
+  const [otp, setOtp] = useState("");
   const [shouldShake, setShouldShake] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null); // 💡 New state for inline error
-  
-  const email = searchParams.get('email') || '';
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const email = searchParams.get("email") || "";
 
   useEffect(() => {
     if (!email) {
       showToast.error("Invalid session. Please request a new code.");
-      navigate('/auth/forgot-password');
+      navigate("/auth/forgot-password");
     }
   }, [email, navigate]);
 
@@ -34,22 +33,24 @@ export default function VerifyForgotOtp() {
       navigate(`/auth/reset-password?email=${encodeURIComponent(email)}`);
     },
     onError: (error) => {
-      triggerShake(); 
-      
+      triggerShake();
+
       if (axios.isAxiosError(error)) {
         console.log("SERVER VALIDATION ERROR DATA:", error.response?.data);
-        
+
         const backendError = error.response?.data;
-        const serverMessage = Array.isArray(backendError?.message) 
-          ? backendError.message.join(', ') 
-          : backendError?.message || backendError?.error || "Validation failed.";
-        
-        setErrorMessage(serverMessage); // 💡 Set inline error
+        const serverMessage = Array.isArray(backendError?.message)
+          ? backendError.message.join(", ")
+          : backendError?.message ||
+            backendError?.error ||
+            "Validation failed.";
+
+        setErrorMessage(serverMessage);
       } else {
         if (import.meta.env.DEV) {
           console.error(error);
         }
-        setErrorMessage("An unexpected error occurred."); // 💡 Set inline error
+        setErrorMessage("An unexpected error occurred.");
       }
     },
   });
@@ -64,32 +65,37 @@ export default function VerifyForgotOtp() {
         console.error(error);
       }
       if (axios.isAxiosError(error)) {
-        setErrorMessage(error?.response?.data?.message || "Failed to resend OTP code."); // 💡 Set inline error
+        setErrorMessage(
+          error?.response?.data?.message || "Failed to resend OTP code.",
+        );
+        error;
       } else {
-        setErrorMessage("An error occurred. Please try again."); // 💡 Set inline error
+        setErrorMessage("An error occurred. Please try again.");
       }
     },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMessage(null); // 💡 Clear previous error on submit
-    
+    setErrorMessage(null); //  Clear previous error on submit
+
     // Manual extra guard
     if (!otp.trim() || otp.length < 6) {
       triggerShake();
       setErrorMessage("Please enter the full 6-digit code.");
       return;
     }
-    
+
     const validationResult = validateVerifyOtpSchema.safeParse({ email, otp });
 
     if (!validationResult.success) {
       triggerShake();
-      setErrorMessage(validationResult.error.issues[0]?.message || "Invalid input details.");
+      setErrorMessage(
+        validationResult.error.issues[0]?.message || "Invalid input details.",
+      );
       return;
     }
-    
+
     verifyMutation.mutate(validationResult.data);
   };
 
@@ -100,7 +106,6 @@ export default function VerifyForgotOtp() {
 
   return (
     <div className="w-full max-w-md mb-40 mx-auto space-y-6 animate-fadeIn">
-      
       <style>{`
         @keyframes customShake {
           0%, 100% { transform: translateX(0); }
@@ -111,15 +116,25 @@ export default function VerifyForgotOtp() {
           animation: customShake 0.4s ease-in-out;
         }
       `}</style>
-      
+
       <div>
         <button
           type="button"
-          onClick={() => navigate('/auth/forgot-password')} 
+          onClick={() => navigate("/auth/forgot-password")}
           className="flex items-center gap-2 text-stone-800 hover:text-stone-600 font-medium text-base transition-colors group"
         >
-          <svg className="h-5 w-5 transform transition-transform group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          <svg
+            className="h-5 w-5 transform transition-transform group-hover:-translate-x-1"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M10 19l-7-7m0 0l7-7m-7 7h18"
+            />
           </svg>
           Back
         </button>
@@ -130,12 +145,14 @@ export default function VerifyForgotOtp() {
           Verify OTP
         </h2>
         <p className="text-stone-600 text-lg leading-relaxed">
-          Enter the verification code sent to <span className="font-semibold text-stone-900 break-all">{email}</span>
+          Enter the verification code sent to{" "}
+          <span className="font-semibold text-stone-900 break-all">
+            {email}
+          </span>
         </p>
       </div>
 
       <form className="space-y-6" onSubmit={handleSubmit} noValidate>
-        
         <div>
           <label className="block text-sm font-medium text-stone-800 mb-2">
             Secure OTP Code<span className="text-red-500 ml-0.5">*</span>
@@ -145,24 +162,26 @@ export default function VerifyForgotOtp() {
             maxLength={6}
             value={otp}
             onChange={(e) => {
-              setOtp(e.target.value.replace(/\D/g, ''));
-              setErrorMessage(null); // 💡 Clear error when user types
-            }} 
+              setOtp(e.target.value.replace(/\D/g, ""));
+              setErrorMessage(null); //Clear error when user types
+            }}
             placeholder="Enter 6-digit code"
             className={`w-full bg-white border px-6 py-4 rounded-3xl text-stone-800 tracking-[0.2em] font-mono text-center placeholder-stone-400 placeholder:tracking-normal placeholder:font-sans focus:outline-none focus:ring-2 focus:ring-emerald-800 transition-all text-xl font-bold ${
-              shouldShake 
-                ? 'animate-shake !border-red-500 ring-2 ring-red-500/20' 
-                : 'border-stone-200'
+              shouldShake
+                ? "animate-shake !border-red-500 ring-2 ring-red-500/20"
+                : "border-stone-200"
             }`}
             disabled={verifyMutation.isPending}
           />
-          {/* 💡 Inline Error Message Display */}
-          {errorMessage && <p className="text-red-500 text-sm mt-2 ml-1">{errorMessage}</p>}
+          {/* Inline Error Message Display */}
+          {errorMessage && (
+            <p className="text-red-500 text-sm mt-2 ml-1">{errorMessage}</p>
+          )}
         </div>
 
         <div className="flex justify-center text-sm">
           <p className="text-stone-500">
-            Didn't get the secure code?{' '}
+            Didn't get the secure code?{" "}
             <button
               type="button"
               onClick={handleResendClick}
@@ -183,9 +202,7 @@ export default function VerifyForgotOtp() {
             {verifyMutation.isPending ? "Verifying Code..." : "Verify Code"}
           </button>
         </div>
-
       </form>
-
     </div>
   );
 }

@@ -1,41 +1,36 @@
 import { useContext, createContext } from "react";
 
-interface User {
+export interface User {
   _id: string;
-  fullName: string; 
+  fullName: string;
   email: string;
   phone: string;
   emailVerified: boolean;
   role: string;
- 
 }
 
-interface AuthContextType {
+export interface AuthContextType {
   user: User | null;
   setUser: (user: User | null) => void;
   isAuthenticating: boolean;
   setIsAuthenticating: (value: boolean) => void;
-//   handleLogout: () => Promise<void>;
-  refetchUser: () => Promise<void>; 
+  refetchUser: () => Promise<void>;
 }
 
-const initialState: AuthContextType = {
+// Initial state matching the AuthContextType
+export const AuthProviderContext = createContext<AuthContextType>({
   user: null,
-  setUser: () => null,
+  setUser: () => {},
   isAuthenticating: false,
-  setIsAuthenticating: () => null,
-//   handleLogout: async () => {}, 
-  refetchUser: async () => {}, 
-};
+  setIsAuthenticating: () => {},
+  refetchUser: async () => {},
+});
 
-// create the store
-export const AuthProviderContext = createContext<AuthContextType>(initialState);
-
-// hook to consume the values provided by the auth provider context
+// The hook to use in your components
 export const useAuth = () => {
   const context = useContext(AuthProviderContext);
   if (context === undefined) {
-    throw new Error("UseAuth must be used within an AuthProvider");
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

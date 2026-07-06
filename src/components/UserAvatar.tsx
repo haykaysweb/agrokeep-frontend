@@ -1,21 +1,28 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, LogOut, ChevronDown } from "lucide-react"; // 💡 Added ChevronDown
-import { Link } from "react-router";
+import { User, LogOut, ChevronDown } from "lucide-react";
+import { Link, useNavigate } from "react-router";
 import { useAuth } from "@/hooks/useAuth";
+import { logoutUserApi } from "@/api/auth";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface UserAvatarProps {
-  name: string; // 💡 Pass the name as a prop
+  name: string;
 }
 
 export default function UserAvatar({ name }: UserAvatarProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const {user} = useAuth()
+  const { user, setUser } = useAuth();
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
@@ -23,23 +30,40 @@ export default function UserAvatar({ name }: UserAvatarProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const handleLogout = async () => {
+    setIsOpen(false);
+    try {
+      //Call backend to destroy session cookie
+      await logoutUserApi();
+    } catch (error) {
+      console.error("Logout API call failed:", error);
+    } finally {
+      // Clear local context state
+      setUser(null);
+
+      // Clear Query Cache to prevent immediate re-fetch
+      // Using setQueryData(null) is the most reliable way to reset auth state
+      queryClient.setQueryData(["currentUser"], null);
+      //Redirect to login
+      navigate("/login");
+    }
+  };
+
   return (
     <div className="relative" ref={dropdownRef}>
-      {/* Avatar Trigger (Styled as a Pill) */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full bg-white border border-stone-200 hover:bg-stone-50 transition-colors shadow-sm"
       >
         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-primary text-white text-sm font-semibold">
-         {user?.fullName.charAt(0).toUpperCase() || "user"}
+          {user?.fullName.charAt(0).toUpperCase() || "U"}
         </div>
         <span className="text-sm font-medium text-stone-700">{name}</span>
-        <ChevronDown 
-          className={`h-4 w-4 text-stone-500 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} 
+        <ChevronDown
+          className={`h-4 w-4 text-stone-500 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
         />
       </button>
 
-      {/* Dropdown Menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -53,17 +77,16 @@ export default function UserAvatar({ name }: UserAvatarProps) {
               onClick={() => setIsOpen(false)}
               className="flex items-center gap-3 px-4 py-3 text-text-main hover:bg-stone-50 transition-colors"
             >
-              <User className="h-4 w-4" /> Profile
+              <User className="h-4 w-4" />
+              Profile
             </Link>
             <hr className="border-stone-100" />
             <button
-              onClick={() => {
-                setIsOpen(false);
-                console.log("Logging out...");
-              }}
+              onClick={handleLogout}
               className="flex w-full items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 transition-colors"
             >
-              <LogOut className="h-4 w-4" /> Logout
+              <LogOut className="h-4 w-4" />
+              Logout
             </button>
           </motion.div>
         )}

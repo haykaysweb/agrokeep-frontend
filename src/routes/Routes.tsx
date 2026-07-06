@@ -11,12 +11,14 @@ import ForgotPassword from "@/pages/auth/ForgotPassword";
 import ResetPassword from "@/pages/auth/ResetPassword";
 import VerifyAccount from "@/pages/auth/VerifyAccount";
 import VerifyForgotOtp from "@/pages/auth/VerifyForgotOtp";
+import SuspenseUi from "@/components/ui/SuspenseUi";
 
 const Routes = () => {
   const routes = [
     {
       path: "/",
       Component: RootLayout,
+      hydrateFallbackElement: <SuspenseUi />,
       children: [
         {
           index: true,
@@ -27,34 +29,24 @@ const Routes = () => {
         },
       ],
     },
-     {
+    {
       path: "auth",
       Component: AuthLayout,
-   
-    
       children: [
         {
           path: "login",
-          element: (
-           
-              <Login />
-           
-          ),
+          element: <Login />,
         },
         {
           path: "register",
-          element: (
-           
-              <SignUp />
-          
-          ),
+          element: <SignUp />,
         },
         {
           path: "forgot-password",
           Component: ForgotPassword,
         },
         {
-        path: "verify-forgotpassword-otp",
+          path: "verify-forgotpassword-otp",
           Component: VerifyForgotOtp,
         },
         {

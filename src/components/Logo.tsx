@@ -1,10 +1,15 @@
-import { Link } from "react-router";
-
+import { useNavigate } from "react-router";
 
 export default function Logo() {
+  const navigate = useNavigate();
   return (
-    <Link to="/" className="" >
-       <img src="/Brand logo.svg" alt="logo" className=""  />
-    </Link>
-  )
+    <div className="cursor-pointer">
+      <img
+        src="/Brand logo.svg"
+        alt="logo"
+        className="w-auto"
+        onClick={() => navigate("/")}
+      />
+    </div>
+  );
 }

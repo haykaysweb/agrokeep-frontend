@@ -16,9 +16,21 @@ export const validateSignupSchema = z
 
     phone: z
       .string()
+      .trim()
       .refine(
-        (num) => num === "" || /^\+\d{10,15}$/.test(num),
-        "Invalid phone number",
+        (val) => {
+          // Allow empty if field is optional, or validate formatted string
+          if (val === "") return true;
+
+          // Strip out formatting characters (spaces, dashes, parentheses)
+          const cleanNumber = val.replace(/[\s\-\(\)]/g, "");
+
+          // Validate against international E.164 standard (optional + and 7-15 digits)
+          return /^\+?[1-9]\d{7,14}$/.test(cleanNumber);
+        },
+        {
+          message: "Invalid phone number format",
+        },
       ),
 
     password: z
@@ -56,7 +68,7 @@ export const validateSignupSchema = z
     path: ["confirmPassword"],
   });
 
-  export type signUpSchemaType = z.infer<typeof validateSignupSchema>;
+export type signUpSchemaType = z.infer<typeof validateSignupSchema>;
 
 export const ValidateLoginSchema = z.object({
   email: z
@@ -93,16 +105,20 @@ export type forgotPasswordSchemaType = z.infer<
   typeof validateForgotPasswordSchema
 >;
 
-
-
 export const resetPasswordSchema = z
   .object({
     password: z
       .string()
       .min(8, { message: "Password must be at least 8 characters long" })
-      .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
-      .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter" })
-      .regex(/[!@#$%^&*(),.?":{}|<>]/, { message: "Password must contain at least one special character" }),
+      .regex(/[A-Z]/, {
+        message: "Password must contain at least one uppercase letter",
+      })
+      .regex(/[a-z]/, {
+        message: "Password must contain at least one lowercase letter",
+      })
+      .regex(/[!@#$%^&*(),.?":{}|<>]/, {
+        message: "Password must contain at least one special character",
+      }),
     confirmPassword: z
       .string()
       .min(8, { message: "Password must be at least 8 characters long" }),
