@@ -50,6 +50,7 @@ body {
   /* --- Borders, Dividers, & Neutrals --- */
   --color-border-light: #ecf0f1; /* Very light gray for soft borders/dividers (Grey/G20) */
   --color-border-base: #bdc3c7; /* Standard border color for inputs and cards (Grey/G50) */
+  --color-border-input: #d7d7d7; /* Standard border color for inputs and cards (Grey/G200) */
 
   /* --- Overlays --- */
   --color-overlay-dark: #222222; /* Dark overlay for text readability */
