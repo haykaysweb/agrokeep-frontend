@@ -9,6 +9,7 @@ import Logo from "./Logo";
 import { logoutUserApi } from "@/api/auth";
 import { navigateWithDelay } from "@/utils/navigation";
 import { showToast } from "@/utils/CustomToast";
+import LogoutModal from "./LogoutModal";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -21,15 +22,22 @@ export default function Navbar() {
   const { user, isAuthenticating, setUser } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const handleLogout = async () => {
+  const initiateLogout = () => {
     setIsOpen(false);
+    setIsLogoutModalOpen(true);
+  };
+
+  const handleLogout = async () => {
+    setIsLogoutModalOpen(false);
     try {
       await logoutUserApi();
       showToast.success("Logged out successfully");
-      navigateWithDelay(navigate, "/login");
+      navigateWithDelay(navigate, "/auth/login");
     } catch (error) {
       showToast.error("Failed to log out.");
     } finally {
@@ -81,7 +89,6 @@ export default function Navbar() {
 
         <div className="hidden lg:flex items-center gap-6 min-h-[40px]">
           {isAuthenticating ? (
-            // Skeleton loader to prevent layout shift while checking auth status
             <div className="flex items-center gap-6">
               <div className="h-6 w-16 animate-pulse rounded bg-border-light/50" />
               <div className="h-10 w-32 animate-pulse rounded-full bg-border-light/50" />
@@ -101,10 +108,7 @@ export default function Navbar() {
                 whileTap={{ scale: 0.96 }}
                 className="relative inline-block"
               >
-                {/* Orange Offset */}
                 <span className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-full bg-brand-secondary"></span>
-
-                {/* Button */}
                 <span className="relative z-10 flex h-10 items-center gap-3 rounded-full bg-brand-primary px-4 py-3 text-text-light">
                   <Link
                     to="/auth/register"
@@ -172,7 +176,7 @@ export default function Navbar() {
               <div className="mt-4 pt-4 border-t border-border-light flex flex-col gap-4">
                 {user ? (
                   <button
-                    onClick={handleLogout}
+                    onClick={initiateLogout}
                     className="text-red-600 font-medium text-lg text-left"
                   >
                     Logout
@@ -200,6 +204,12 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <LogoutModal
+        isOpen={isLogoutModalOpen}
+        onClose={() => setIsLogoutModalOpen(false)}
+        onConfirm={handleLogout}
+      />
     </motion.nav>
   );
 }

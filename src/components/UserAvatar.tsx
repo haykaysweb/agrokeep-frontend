@@ -7,6 +7,7 @@ import { logoutUserApi } from "@/api/auth";
 import { useQueryClient } from "@tanstack/react-query";
 import { showToast } from "@/utils/CustomToast";
 import { navigateWithDelay } from "@/utils/navigation";
+import LogoutModal from "./LogoutModal";
 
 interface UserAvatarProps {
   name: string;
@@ -14,6 +15,7 @@ interface UserAvatarProps {
 
 export default function UserAvatar({ name }: UserAvatarProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const { user, setUser } = useAuth();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -32,27 +34,28 @@ export default function UserAvatar({ name }: UserAvatarProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleLogout = async () => {
+  // Just opens the modal
+  const initiateLogout = () => {
     setIsOpen(false);
+    setIsLogoutModalOpen(true);
+  };
+
+  // The actual logout logic
+  const handleLogout = async () => {
+    setIsLogoutModalOpen(false);
     try {
-      // Call backend to destroy session cookie
       await logoutUserApi();
-
-      // Success feedback
       showToast.success("Logged out successfully");
-      navigateWithDelay(navigate, "/auth/login")
-    } catch (error) {
-      console.error("Logout API call failed:", error);  
-      //  Error feedback
-      showToast.error("Failed to log out. Please try again.");
-    } finally {
-      // Clear local context state
-      setUser(null);
 
-      // Clear Query Cache to prevent immediate re-fetch
+      // Cleanup state before redirecting
+      setUser(null);
       queryClient.setQueryData(["currentUser"], null);
 
-      navigate("/auth/login");
+      // Perform the delayed navigation
+      navigateWithDelay(navigate, "/auth/login");
+    } catch (error) {
+      console.error("Logout API call failed:", error);
+      showToast.error("Failed to log out. Please try again.");
     }
   };
 
@@ -89,7 +92,7 @@ export default function UserAvatar({ name }: UserAvatarProps) {
             </Link>
             <hr className="border-stone-100" />
             <button
-              onClick={handleLogout}
+              onClick={initiateLogout} // Now calls the modal trigger
               className="flex w-full items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 transition-colors"
             >
               <LogOut className="h-4 w-4" />
@@ -98,6 +101,12 @@ export default function UserAvatar({ name }: UserAvatarProps) {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <LogoutModal
+        isOpen={isLogoutModalOpen}
+        onClose={() => setIsLogoutModalOpen(false)}
+        onConfirm={handleLogout}
+      />
     </div>
   );
 }
