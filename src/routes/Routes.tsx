@@ -27,6 +27,30 @@ const Routes = () => {
             return { Component };
           },
         },
+        {
+          path: "storage",
+          lazy: async () => {
+            const { default: Component } =
+              await import("../pages/findstorage/Storage.tsx");
+            return { Component };
+          },
+        },
+        {
+          path: "about",
+          lazy: async () => {
+            const { default: Component } =
+              await import("../pages/about/About.tsx");
+            return { Component };
+          },
+        },
+        {
+          path: "contact",
+          lazy: async () => {
+            const { default: Component } =
+              await import("../pages/contact/Contact.tsx");
+            return { Component };
+          },
+        },
       ],
     },
     {

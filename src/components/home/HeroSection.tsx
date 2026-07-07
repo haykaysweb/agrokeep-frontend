@@ -23,7 +23,7 @@ export default function HeroSection() {
   return (
     <section
       id="home"
-      className="relative w-full h-screen md:min-h-[100vh] overflow-visible "
+      className="relative w-full h-[90vh] md:min-h-screen overflow-visible "
     >
       {/* Animated Background Slider */}
       <AnimatePresence mode="wait">
@@ -47,7 +47,7 @@ export default function HeroSection() {
       <div className="absolute inset-0 bg-black/45" />
 
       {/* Hero Content */}
-      <div className="relative z-10 mx-auto flex h-screen md:min-h-[100vh] w-full max-w-7xl flex-col justify-between px-4 md:px-12">
+      <div className="relative z-10 mx-auto flex h-[85vh] md:min-h-screen w-full max-w-7xl flex-col justify-between px-4 md:px-12">
         <div className="flex flex-1 items-center">
           <motion.div
             initial={{ opacity: 0, y: 35 }}

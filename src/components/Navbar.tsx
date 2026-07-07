@@ -1,22 +1,42 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, Menu, X } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useQueryClient } from "@tanstack/react-query";
 import UserAvatar from "./UserAvatar";
 import { useAuth } from "@/hooks/useAuth";
 import Logo from "./Logo";
+import { logoutUserApi } from "@/api/auth";
+import { navigateWithDelay } from "@/utils/navigation";
+import { showToast } from "@/utils/CustomToast";
 
 const navLinks = [
-  { name: "Home", href: "#home" },
-  { name: "Find storage", href: "#find-storage" },
-  { name: "About us", href: "#about" },
-  { name: "Contact us", href: "#contact" },
+  { name: "Home", href: "/" },
+  { name: "Find storage", href: "/storage" },
+  { name: "About us", href: "/about" },
+  { name: "Contact us", href: "/contact" },
 ];
 
 export default function Navbar() {
-  const { user, isAuthenticating } = useAuth();
+  const { user, isAuthenticating, setUser } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const handleLogout = async () => {
+    setIsOpen(false);
+    try {
+      await logoutUserApi();
+      showToast.success("Logged out successfully");
+      navigateWithDelay(navigate, "/login");
+    } catch (error) {
+      showToast.error("Failed to log out.");
+    } finally {
+      setUser(null);
+      queryClient.setQueryData(["currentUser"], null);
+    }
+  };
 
   useEffect(() => {
     let ticking = false;
@@ -44,27 +64,28 @@ export default function Navbar() {
       }`}
     >
       <div className="w-full max-w-7xl mx-auto px-4 md:px-12 h-20 flex items-center justify-between">
-        {/* LOGO */}
         <Logo />
 
-        {/* Desktop Nav */}
         <ul className="hidden lg:flex items-center gap-10">
           {navLinks.map((link) => (
             <li key={link.name}>
-              <a
-                href={link.href}
+              <Link
+                to={link.href}
                 className="text-text-subtle font-medium text-base hover:text-brand-primary transition-colors"
               >
                 {link.name}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
 
-        {/* Desktop Right Side */}
         <div className="hidden lg:flex items-center gap-6 min-h-[40px]">
           {isAuthenticating ? (
-            <div className="w-24 h-8 animate-pulse bg-border-light rounded-full" />
+            // Skeleton loader to prevent layout shift while checking auth status
+            <div className="flex items-center gap-6">
+              <div className="h-6 w-16 animate-pulse rounded bg-border-light/50" />
+              <div className="h-10 w-32 animate-pulse rounded-full bg-border-light/50" />
+            </div>
           ) : user ? (
             <UserAvatar name={user.fullName || "User"} />
           ) : (
@@ -75,7 +96,6 @@ export default function Navbar() {
               >
                 Sign in
               </Link>
-
               <motion.button
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
@@ -92,7 +112,6 @@ export default function Navbar() {
                   >
                     Get Started
                   </Link>
-
                   <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-secondary">
                     <ArrowUpRight
                       className="h-3 w-3 text-text-light"
@@ -105,7 +124,6 @@ export default function Navbar() {
           )}
         </div>
 
-        {/* Mobile Toggle */}
         <button
           className="lg:hidden p-2 text-text-main"
           onClick={() => setIsOpen(!isOpen)}
@@ -114,42 +132,69 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="lg:hidden absolute top-20 left-0 w-full bg-background/95 backdrop-blur-sm border-b border-border-light overflow-hidden"
+            className="lg:hidden absolute top-20 left-0 w-full bg-background backdrop-blur-sm border-b border-border-light overflow-hidden"
           >
+            {user && (
+              <div className="max-w-7xl mx-auto px-4 md:px-12 pt-6 pb-2">
+                <div className="flex items-center gap-3 py-4 rounded-xl">
+                  <div className="h-10 w-10 flex items-center justify-center rounded-full bg-brand-primary text-white font-semibold">
+                    {user.fullName.charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <p className="text-lg font-semibold text-text-main">
+                      {user.fullName}
+                    </p>
+                    <p className="text-xs text-stone-500">{user.email}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <ul className="flex flex-col p-6 gap-6 max-w-7xl mx-auto px-4 md:px-12">
               {navLinks.map((link) => (
                 <li key={link.name}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
                     className="text-text-subtle text-lg font-medium"
                     onClick={() => setIsOpen(false)}
                   >
                     {link.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
+
               <div className="mt-4 pt-4 border-t border-border-light flex flex-col gap-4">
-                <Link
-                  to="/auth/login"
-                  className="text-text-main font-medium text-lg"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Sign in
-                </Link>
-                <Link
-                  to="/auth/register"
-                  className="bg-brand-primary text-text-light py-3 px-6 rounded-full text-center"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Get Started
-                </Link>
+                {user ? (
+                  <button
+                    onClick={handleLogout}
+                    className="text-red-600 font-medium text-lg text-left"
+                  >
+                    Logout
+                  </button>
+                ) : (
+                  <>
+                    <Link
+                      to="/auth/login"
+                      className="text-text-main font-medium text-lg"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Sign in
+                    </Link>
+                    <Link
+                      to="/auth/register"
+                      className="bg-brand-primary text-text-light py-3 px-6 rounded-full text-center"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Get Started
+                    </Link>
+                  </>
+                )}
               </div>
             </ul>
           </motion.div>

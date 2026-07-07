@@ -9,6 +9,7 @@ import axios from "axios";
 import LoadingButton from "@/components/AuthButtons";
 import { showToast } from "@/utils/CustomToast";
 import { useAuth } from "@/hooks/useAuth";
+import { navigateWithDelay } from "@/utils/navigation";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -30,24 +31,22 @@ export default function Login() {
       showToast.success(res.data.message || "Login Successful");
       const user = res.data.data;
 
-      if (setUser) {
-        setUser(user);
-      }
+      // Set the user state immediately for UI updates
+      if (setUser) setUser(user);
 
-      await queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+      //Trigger the cache update in the background (DO NOT 'await' this)
+      queryClient.invalidateQueries({ queryKey: ["currentUser"] });
 
-      if (!user.emailVerified) {
-        navigate(
-          `/auth/verify-Account?email=${encodeURIComponent(user.email)}`,
-        );
-      } else {
-        navigate("/");
-      }
+      navigateWithDelay(
+        navigate,
+        !user.emailVerified
+          ? `/auth/verify-Account?email=${encodeURIComponent(user.email)}`
+          : "/",
+        300,
+      );
     },
     onError: (error) => {
-      if (import.meta.env.DEV) {
-        console.error(error);
-      }
+      if (import.meta.env.DEV) console.error(error);
 
       if (axios.isAxiosError(error)) {
         showToast.error(error?.response?.data?.message || "Login failed");

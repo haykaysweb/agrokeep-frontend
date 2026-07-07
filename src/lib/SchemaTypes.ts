@@ -1,15 +1,28 @@
 import { z } from "zod";
 
+// Reusable password validation to avoid repetition
+const passwordSchema = z
+  .string()
+  .min(8, { message: "Password must be at least 8 characters long" })
+  .regex(/[A-Z]/, { message: "Must contain at least one uppercase letter" })
+  .regex(/[a-z]/, { message: "Must contain at least one lowercase letter" })
+  .regex(/[0-9]/, { message: "Must contain at least one number" })
+  .regex(/[!@#$%^&*(),.?":{}|<>]/, {
+    message: "Must contain at least one special character",
+  });
+
 export const validateSignupSchema = z
   .object({
     fullName: z
-      .string({ error: "Full name is required" })
+      .string()
+      .min(1, { message: "Full name is required" })
       .trim()
       .min(5, { message: "Full name must be at least 5 characters long" })
       .max(50, { message: "Full name must be at most 50 characters long" }),
 
     email: z
-      .string({ error: "Email is required" })
+      .string()
+      .min(1, { message: "Email is required" })
       .email({ message: "Invalid email address" })
       .toLowerCase()
       .trim(),
@@ -19,49 +32,17 @@ export const validateSignupSchema = z
       .trim()
       .refine(
         (val) => {
-          // Allow empty if field is optional, or validate formatted string
           if (val === "") return true;
-
-          // Strip out formatting characters (spaces, dashes, parentheses)
           const cleanNumber = val.replace(/[\s\-\(\)]/g, "");
-
-          // Validate against international E.164 standard (optional + and 7-15 digits)
           return /^\+?[1-9]\d{7,14}$/.test(cleanNumber);
         },
-        {
-          message: "Invalid phone number format",
-        },
+        { message: "Invalid phone number format" },
       ),
 
-    password: z
-      .string()
-      .min(8, {
-        message: "Password must be at least 8 characters long",
-      })
-      .regex(/[A-Z]/, {
-        message: "Password must contain at least one upper case letter",
-      })
-      .regex(/[a-z]/, {
-        message: "Password must contain at least one lower case letter",
-      })
-      .regex(/[!@#$%^&*(),.?":{}|<>]/, {
-        message: "Password must contain at least one special character",
-      }),
-
+    password: passwordSchema,
     confirmPassword: z
       .string()
-      .min(8, {
-        message: "Password must be at least 8 characters long",
-      })
-      .regex(/[A-Z]/, {
-        message: "Password must contain at least one uppercase letter",
-      })
-      .regex(/[a-z]/, {
-        message: "Password must contain at least one lowercase letter",
-      })
-      .regex(/[!@#$%^&*(),.?":{}|<>]/, {
-        message: "Password must contain at least one special character",
-      }),
+      .min(1, { message: "Please confirm your password" }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
@@ -72,33 +53,24 @@ export type signUpSchemaType = z.infer<typeof validateSignupSchema>;
 
 export const ValidateLoginSchema = z.object({
   email: z
-    .string({ error: "Email is required" })
+    .string()
+    .min(1, { message: "Email is required" })
     .email({ message: "Invalid email address" })
     .toLowerCase()
     .trim(),
 
-  password: z
-    .string()
-    .min(8, {
-      message: "Password must be at least 8 characters long",
-    })
-    .regex(/[A-Z]/, {
-      message: "Password must contain at least one upper case letter",
-    })
-    .regex(/[a-z]/, {
-      message: "Password must contain at least one lower case letter",
-    })
-    .regex(/[!@#$%^&*(),.?":{}|<>]/, {
-      message: "Password must contain at least one special character",
-    }),
+  password: z.string().min(1, { message: "Password is required" }),
 });
 
 export type loginSchemaType = z.infer<typeof ValidateLoginSchema>;
 
 export const validateForgotPasswordSchema = z.object({
-  email: z.string().trim().toLowerCase().email({
-    message: "Valid Email is required",
-  }),
+  email: z
+    .string()
+    .min(1, { message: "Email is required" })
+    .email({ message: "Invalid email address" })
+    .toLowerCase()
+    .trim(),
 });
 
 export type forgotPasswordSchemaType = z.infer<
@@ -107,21 +79,10 @@ export type forgotPasswordSchemaType = z.infer<
 
 export const resetPasswordSchema = z
   .object({
-    password: z
-      .string()
-      .min(8, { message: "Password must be at least 8 characters long" })
-      .regex(/[A-Z]/, {
-        message: "Password must contain at least one uppercase letter",
-      })
-      .regex(/[a-z]/, {
-        message: "Password must contain at least one lowercase letter",
-      })
-      .regex(/[!@#$%^&*(),.?":{}|<>]/, {
-        message: "Password must contain at least one special character",
-      }),
+    password: passwordSchema,
     confirmPassword: z
       .string()
-      .min(8, { message: "Password must be at least 8 characters long" }),
+      .min(1, { message: "Please confirm your password" }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
@@ -131,18 +92,17 @@ export const resetPasswordSchema = z
 export type resetPasswordSchemaType = z.infer<typeof resetPasswordSchema>;
 
 export const validateVerifyOtpSchema = z.object({
-  email: z.string().trim().toLowerCase().email({
-    message: "Valid email is required",
-  }),
+  email: z
+    .string()
+    .min(1, { message: "Email is required" })
+    .email({ message: "Invalid email address" })
+    .toLowerCase()
+    .trim(),
   otp: z
     .string()
     .trim()
-    .length(6, {
-      message: "OTP must be exactly 6 digits",
-    })
-    .regex(/^\d{6}$/, {
-      message: "OTP must contain only 6 digits",
-    }),
+    .length(6, { message: "OTP must be exactly 6 digits" })
+    .regex(/^\d{6}$/, { message: "OTP must contain only digits" }),
 });
 
 export type verifyOtpSchemaType = z.infer<typeof validateVerifyOtpSchema>;

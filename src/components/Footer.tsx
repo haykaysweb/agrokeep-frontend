@@ -31,8 +31,8 @@ export default function Footer() {
               agribusinesses.
             </p>
             <div className="flex gap-4">
-              {/* Replace these with your Figma-exported image icons */}
-              {["facebook", "whatsapp", "instagram", "twitter"].map(
+              {/* icons */}
+              {["facebook", "linkedin", "instagram", "twitter"].map(
                 (social) => (
                   <motion.a
                     key={social}

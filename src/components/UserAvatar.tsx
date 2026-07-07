@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router";
 import { useAuth } from "@/hooks/useAuth";
 import { logoutUserApi } from "@/api/auth";
 import { useQueryClient } from "@tanstack/react-query";
+import { showToast } from "@/utils/CustomToast";
+import { navigateWithDelay } from "@/utils/navigation";
 
 interface UserAvatarProps {
   name: string;
@@ -33,19 +35,24 @@ export default function UserAvatar({ name }: UserAvatarProps) {
   const handleLogout = async () => {
     setIsOpen(false);
     try {
-      //Call backend to destroy session cookie
+      // Call backend to destroy session cookie
       await logoutUserApi();
+
+      // Success feedback
+      showToast.success("Logged out successfully");
+      navigateWithDelay(navigate, "/auth/login")
     } catch (error) {
-      console.error("Logout API call failed:", error);
+      console.error("Logout API call failed:", error);  
+      //  Error feedback
+      showToast.error("Failed to log out. Please try again.");
     } finally {
       // Clear local context state
       setUser(null);
 
       // Clear Query Cache to prevent immediate re-fetch
-      // Using setQueryData(null) is the most reliable way to reset auth state
       queryClient.setQueryData(["currentUser"], null);
-      //Redirect to login
-      navigate("/login");
+
+      navigate("/auth/login");
     }
   };
 
