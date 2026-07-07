@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
 @import "tailwindcss";
 @plugin "daisyui";
 
@@ -25,7 +25,7 @@ body {
 }
 
 @theme {
-  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+--font-sans: "Lexend", ui-sans-serif, system-ui, sans-serif;
 
   /* --- Base & Surfaces (Backgrounds & Containers) --- */
   --color-background: #fdfbf7; /* Main canvas/page background (from "Background" swatch) */
