@@ -65,7 +65,7 @@ export const resetPasswordApi = async ({
 };
 
 export const getMeApi = async () => {
-  return await apiClient.get("/api/v1/user/me");
+  return await apiClient.get("/user/me");
 };
 
 export const logoutUserApi = async () => {
