@@ -106,3 +106,42 @@ export const validateVerifyOtpSchema = z.object({
 });
 
 export type verifyOtpSchemaType = z.infer<typeof validateVerifyOtpSchema>;
+
+
+
+export const validateContactFormSchema = z.object({
+  // Only allows alphabets and spaces, 2-50 chars, no leading/trailing whitespace
+  fullName: z
+    .string()
+    .trim()
+    .regex(/^[a-zA-Z\s]{5,50}$/, {
+      message: "Full name must be 5-50 characters and contain only letters and spaces",
+    }),
+
+  // RFC 5322 standard-ish regex for email
+  email: z
+    .string()
+    .trim()
+    .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, {
+      message: "Please enter a valid email address (e.g., name@domain.com)",
+    }),
+
+  // Strictly enforces E.164 international format (e.g., +2348012345678) 
+  // or local format (08012345678)
+  phone: z
+    .string()
+    .trim()
+    .regex(/^(\+?\d{1,4}?[-.\s]?)?(\(?\d{3}\)?[-.\s]?)?\d{3}[-.\s]?\d{4,6}$/, {
+      message: "Please enter a valid phone number (10-15 digits)",
+    }),
+
+  // Allows alphanumeric + common punctuation, strict length
+  message: z
+    .string()
+    .trim()
+    .regex(/^[a-zA-Z0-9\s.,!?'"()-]{10,1000}$/, {
+      message: "Message must be 10-1000 characters (alphanumeric and standard punctuation only)",
+    }),
+});
+
+export type contactFormSchemaType = z.infer<typeof validateContactFormSchema>;

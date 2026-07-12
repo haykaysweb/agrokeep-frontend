@@ -1,7 +1,73 @@
 import { ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { Link } from "react-router";
+import { useForm } from "react-hook-form";
+import {
+  validateContactFormSchema,
+  type contactFormSchemaType,
+} from "@/lib/SchemaTypes";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { contactUsApi } from "@/api/contactUs";
+import { showToast } from "@/utils/CustomToast";
+import axios from "axios";
+
+const locations = [
+  { state: "Oyo State", address: "1, Oyo road, Oyo Town" },
+  { state: "Oyo State", address: "1, Saki road, Saki" },
+  { state: "Osun State", address: "1, Osun road, Osogbo" },
+  { state: "Osun State", address: "1, Ikirun road, Ikirun" },
+  { state: "Ekiti State", address: "1, Ekiti road, Ekiti Town" },
+  { state: "Ekiti State", address: "1, Ekiti road, Ekiti Town" },
+  { state: "Ondo State", address: "1, Ondo road, Ondo Town" },
+  { state: "Ogun State", address: "1, Isagamu road, Isagamu" },
+  { state: "Ogun State", address: "1, Ogun road, Ogun" },
+];
 
 export default function ContactUs() {
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm<contactFormSchemaType>({
+    resolver: zodResolver(validateContactFormSchema),
+    mode: "onTouched", // Best for UX: errors show when user leaves the field
+    reValidateMode: "onChange", // Instant feedback after the first error
+    defaultValues: {
+      fullName: "",
+      email: "",
+      phone: "",
+      message: "",
+    },
+  });
+
+  const mutation = useMutation({
+    mutationFn: contactUsApi,
+    onSuccess: (res) => {
+      showToast.success(
+        res.data.message ||
+          "Message sent successfully! We will get back to you soon.",
+      );
+      reset(); // Clear all form fields
+    },
+    onError: (error) => {
+      if (import.meta.env.DEV) console.error("Contact Form Error:", error);
+      if (axios.isAxiosError(error)) {
+        showToast.error(
+          error.response?.data?.message ||
+            "Failed to send message. Please try again.",
+        );
+      } else {
+        showToast.error("An unexpected error occurred.");
+      }
+    },
+  });
+
+  const onSubmitForm = async (data: contactFormSchemaType) => {
+    mutation.mutate(data);
+  };
+
   return (
     <>
       <section
@@ -57,45 +123,86 @@ export default function ContactUs() {
           </div>
 
           {/* Right Column*/}
-          <form className="space-y-4">
-            <input
-              type="text"
-              placeholder="Full name"
-              className="w-full p-4 rounded-xl bg-surface-card border border-border-input focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all placeholder:text-text-muted"
-            />
-
-            <div className="grid grid-cols-2 gap-4">
+          <form onSubmit={handleSubmit(onSubmitForm)} className="space-y-4">
+            {/* Full Name Field */}
+            <div className="w-full">
               <input
-                type="email"
-                placeholder="Email address"
-                className="p-4 rounded-xl bg-surface-card border border-border-input focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all placeholder:text-text-muted"
+                type="text"
+                placeholder="Full name"
+                className="w-full p-4 rounded-xl bg-surface-card border border-border-input focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all placeholder:text-text-muted"
+                {...register("fullName")}
               />
-              <input
-                type="tel"
-                placeholder="Phone number"
-                className="p-4 rounded-xl bg-surface-card border border-border-input focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all placeholder:text-text-muted"
-              />
+              {errors.fullName && (
+                <p className="text-semantic-error text-xs mt-2">
+                  {errors.fullName.message}
+                </p>
+              )}
             </div>
 
-            <textarea
-              placeholder="Message (Tell us how we can help you)"
-              rows={6}
-              className="w-full p-4 rounded-xl bg-surface-card border border-border-input focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all placeholder:text-text-muted resize-none"
-            />
+            {/* Email and Phone Grid Container */}
+            <div className="grid grid-cols-2 gap-4">
+              {/* Email Field Wrapper */}
+              <div className="flex flex-col">
+                <input
+                  type="email"
+                  placeholder="Email address"
+                  className="p-4 rounded-xl bg-surface-card border border-border-input focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all placeholder:text-text-muted"
+                  {...register("email")}
+                />
+                {errors.email && (
+                  <p className="text-semantic-error text-xs mt-2">
+                    {errors.email.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Phone Field Wrapper */}
+              <div className="flex flex-col">
+                <input
+                  type="tel"
+                  placeholder="Phone number"
+                  className="p-4 rounded-xl bg-surface-card border border-border-input focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all placeholder:text-text-muted"
+                  {...register("phone")}
+                />
+                {errors.phone && (
+                  <p className="text-semantic-error text-xs mt-2">
+                    {errors.phone.message}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Message Field */}
+            <div className="w-full">
+              <textarea
+                placeholder="Message (Tell us how we can help you)"
+                rows={6}
+                className="w-full p-4 rounded-xl bg-surface-card border border-border-input focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all placeholder:text-text-muted resize-none"
+                {...register("message")}
+              />
+              {errors.message && (
+                <p className="text-semantic-error text-xs mt-2">
+                  {errors.message.message}
+                </p>
+              )}
+            </div>
+
+            {/* Submit Button */}
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.96 }}
               className="relative inline-block w-full cursor-pointer"
+              disabled={mutation.isPending}
             >
-              {/* Orange Offset */}
               <span className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-full bg-brand-secondary "></span>
-
-              {/* Button */}
               <span className="relative z-10 flex h-10 items-center justify-center gap-3 rounded-full bg-brand-primary px-8 py-3 text-text-light">
-                <span className="text-sm font-medium md:text-base">
-                  Explore Hubs
-                </span>
-
+                {mutation.isPending ? (
+                  "Sending Message..."
+                ) : (
+                  <span className="text-sm font-medium md:text-base">
+                    Send Message
+                  </span>
+                )}
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-secondary">
                   <ArrowUpRight
                     className="h-4 w-4 text-text-light"
@@ -111,6 +218,62 @@ export default function ContactUs() {
           </form>
         </div>
       </main>
+
+      {/* our storage location */}
+      <section className="w-full max-w-7xl mx-auto px-4 md:px-12 py-16">
+        <h2 className="text-3xl md:text-4xl font-bold text-text-main text-center mb-12">
+          Our Storage Locations
+        </h2>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {locations.map((loc, index) => (
+            <div
+              key={index}
+              className="bg-surface-card p-6 rounded-2xl border border-border-light shadow-sm"
+            >
+              <h3 className="text-xl font-bold text-text-main mb-1">
+                {loc.state}
+              </h3>
+              <p className="text-text-subtle mb-4">{loc.address}</p>
+              <hr className="border-border-light mb-4" />
+              <div className="flex items-center gap-2 text-brand-primary font-medium">
+                <img src="phoneCon.svg" alt="" />
+                <span>+234 900 0000 0000</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+      {/* faqBanner  */}
+      <section className="w-full max-w-7xl mx-auto px-4 md:px-12 py-12">
+        <div className="bg-brand-primary rounded-3xl p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
+          {/* Left Content */}
+          <div className="flex items-center gap-4 text-text-light">
+            <div className="">
+              <img src="/Question Circle.svg" alt="" />
+            </div>
+            <div>
+              <h3 className="text-2xl md:text-3xl font-bold mb-1">
+                Have Questions?
+              </h3>
+              <p className="text-text-light/80">
+                Check our FAQs — most answers are just a click away.
+              </p>
+            </div>
+          </div>
+
+          {/* Action Button */}
+          <Link to="/faqs" className="relative inline-block">
+            {/* Orange Offset */}
+            <span className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-full bg-brand-secondary"></span>
+
+            {/* Button */}
+            <span className="relative z-10 flex h-10 items-center rounded-full bg-white px-8 py-3 text-brand-primary font-medium text-sm md:text-base">
+              View FAQs
+            </span>
+          </Link>
+        </div>
+      </section>
     </>
   );
 }
