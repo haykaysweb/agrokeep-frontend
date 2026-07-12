@@ -33,9 +33,9 @@ export default function ForFarmers() {
           <p className="flex items-center gap-2 text-brand-primary font-medium mb-4">
             <img src="/flowerIcon3.svg" alt="" className="w-5 h-5" /> For Farmers
           </p>
-          <h2 className="text-5xl font-bold text-text-main mb-12">
-            Helping Farmers <span className="text-brand-primary">Harvest</span>
-            <br />
+          <h2 className="text-4xl lg:text-5xl font-bold text-text-main mb-12">
+            Helping Farmers <span className="text-brand-primary">Harvest </span>
+            <br className="hidden md:block"/>
             More Than Crops
           </h2>
 

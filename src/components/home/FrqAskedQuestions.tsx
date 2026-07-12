@@ -32,7 +32,7 @@ export default function FrqAskedQuestions() {
     <section id="contact" className="w-full ">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-16 py-20 px-4 md:px-12">
         {/* Left Side: Content */}
-        <div className="w-full md:w-2/5 flex flex-col space-y-6">
+        <div className="w-full lg:w-2/5 flex flex-col space-y-6">
           <span className="flex items-center gap-2 text-brand-primary font-bold text-sm tracking-wider">
             <img src="/flowerIcon2.svg" alt="" className="w-4 h-4" />
             Frequently Asked Questions
@@ -66,7 +66,7 @@ export default function FrqAskedQuestions() {
         </div>
 
         {/* Right Side - Accordion */}
-        <div className="w-full md:w-3/5 flex flex-col gap-2">
+        <div className="w-full lg:w-3/5 flex flex-col gap-2">
           {faqs.map((faq, index) => (
             <motion.div
               key={index}

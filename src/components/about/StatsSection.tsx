@@ -36,7 +36,7 @@ function Counter({ value, label }: { value: number; label: string }) {
 
 export default function StatsSection() {
   return (
-    <section className="bg-[#FAF7F0] py-20 px-6">
+    <section className=" py-20 px-6">
       <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-12">
         <Counter value={500} label="Registered Farmers" />
         <Counter value={30} label="Hub Partners" />

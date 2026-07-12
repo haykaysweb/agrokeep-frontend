@@ -45,9 +45,9 @@ export default function ForFarmers() {
         className="max-w-7xl mx-auto px-4 md:px-12 py-16"
       >
         {/* Main Content Area */}
-        <div className="flex flex-col md:flex-row items-center gap-12 mb-16">
+        <div className="flex flex-col lg:flex-row items-center gap-12 mb-16">
           {/* Left Side */}
-          <motion.div variants={itemVariants} className="w-full md:w-1/2">
+          <motion.div variants={itemVariants} className="w-full lg:w-1/2">
             <img
               src="https://res.cloudinary.com/dw5bai7mk/image/upload/v1782934443/Frame_73_o9lzlu.svg"
               alt="Fresh farm produce"
@@ -56,7 +56,7 @@ export default function ForFarmers() {
           </motion.div>
 
           {/* Right Side content */}
-          <div className="w-full md:w-1/2 flex flex-col space-y-8">
+          <div className="w-full lg:w-1/2 flex flex-col space-y-8">
             <motion.div
               variants={itemVariants}
               className="flex flex-col space-y-4"

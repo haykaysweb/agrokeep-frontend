@@ -55,7 +55,7 @@ export default function WhyAgroKeepSection() {
           </motion.p>
           <motion.h2
             variants={itemVariants}
-            className="text-5xl font-bold text-text-main mb-12"
+            className="text-4xl lg:text-5xl font-bold text-text-main mb-12"
           >
             Why Thousands Will <span className="text-brand-primary">Trust</span>{" "}
             AgroKeep

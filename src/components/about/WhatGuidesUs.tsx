@@ -11,7 +11,7 @@ export default function WhatGuidesUs() {
             <img src="/flowerIcon3.svg" alt="" className="w-5 h-5" /> What
             Guides Us
           </p>
-          <h2 className="text-5xl font-bold text-text-main">
+          <h2 className="text-4xl lg:text-5xl font-bold text-text-main">
             <span className="text-brand-primary">Purpose</span> Over Paperwork
           </h2>
         </div>

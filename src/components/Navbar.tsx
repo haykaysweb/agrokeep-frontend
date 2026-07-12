@@ -173,11 +173,11 @@ export default function Navbar() {
                 </li>
               ))}
 
-              <div className="mt-4 pt-4 border-t border-border-light flex flex-col gap-4">
+              <div className="mt-4 border-t border-border-light flex flex-col gap-4">
                 {user ? (
                   <button
                     onClick={initiateLogout}
-                    className="text-red-600 font-medium text-lg text-left"
+                    className="text-red-600 font-medium text-lg text-left py-4"
                   >
                     Logout
                   </button>
@@ -185,7 +185,7 @@ export default function Navbar() {
                   <>
                     <Link
                       to="/auth/login"
-                      className="text-text-main font-medium text-lg"
+                      className="bg-brand-primary text-text-light py-3 px-6 rounded-full text-center font-medium"
                       onClick={() => setIsOpen(false)}
                     >
                       Sign in

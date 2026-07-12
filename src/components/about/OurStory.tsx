@@ -44,7 +44,7 @@ export default function OurStory() {
             <img src="/flowerIcon3.svg" alt="" className="w-5 h-5" /> Our Story
           </div>
 
-          <h2 className="text-4xl font-bold text-text-main leading-tight">
+          <h2 className="text-4xl lg:text-5xl font-bold text-text-main leading-tight">
             Created <span className="text-brand-primary">for Farmers</span>.
             Built to
             <span className="text-brand-primary">Protect Every Harvest</span>.

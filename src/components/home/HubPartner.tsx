@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 export default function HubPartner() {
   return (
-    <section className="w-full py-12 bg-background">
+    <section className="w-full py-18 px-4 sm:px-12 lg:px-22">
       <motion.div
         initial={{ opacity: 0, scale: 0.98 }}
         whileInView={{ opacity: 1, scale: 1 }}

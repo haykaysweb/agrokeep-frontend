@@ -33,14 +33,14 @@ export default function AboutUs() {
             before post-harvest losses occur.
           </p>
 
-          <div className="flex gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center w-full px-4">
             {/* "Find Storage" Button */}
             <motion.div
               whileHover={{ y: -4 }}
-              className="relative inline-block"
+              className="relative inline-block w-full sm:w-auto"
             >
               <div className="absolute top-1 left-1 w-full h-full bg-brand-secondary rounded-full" />
-              <button className="relative flex items-center gap-2 bg-brand-primary text-text-light px-8 py-3 rounded-full font-medium hover:bg-opacity-90 transition-colors">
+              <button className="relative flex items-center justify-center gap-2 bg-brand-primary text-text-light px-6 sm:px-8 py-3 rounded-full font-medium hover:bg-opacity-90 transition-colors w-full sm:w-auto">
                 Find Storage
                 <span className="bg-brand-secondary rounded-full p-1">
                   <ArrowUpRight className="h-4 w-4 text-text-light" />
@@ -51,10 +51,10 @@ export default function AboutUs() {
             {/* "Become a Hub Partner" Button */}
             <motion.div
               whileHover={{ y: -4 }}
-              className="relative inline-block"
+              className="relative inline-block w-full sm:w-auto"
             >
               <div className="absolute top-1 left-1 w-full h-full bg-brand-secondary rounded-full" />
-              <button className="relative bg-surface-card text-brand-primary px-8 py-3 rounded-full font-medium hover:bg-stone-50 transition-colors">
+              <button className="relative bg-surface-card text-brand-primary px-6 sm:px-8 py-3 rounded-full font-medium hover:bg-stone-50 transition-colors w-full sm:w-auto">
                 Become a Hub Partner
               </button>
             </motion.div>
