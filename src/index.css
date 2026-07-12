@@ -29,6 +29,7 @@ body {
 
   /* --- Base & Surfaces (Backgrounds & Containers) --- */
   --color-background: #fdfbf7; /* Main canvas/page background (from "Background" swatch) */
+   --color-backgroundTwo: #f9f6f0; /* Background color for the Contact Us and About Us */
   --color-surface-card: #ffffff; /* White containers, cards, or input fields */
   --color-surface-alt: #9da49e; /* Subtle container tint (from the gray-green Auth Screen background) */
 

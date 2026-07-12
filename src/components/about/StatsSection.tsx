@@ -1,14 +1,14 @@
-import { motion, useSpring, useInView } from "framer-motion";
+import { useSpring, useInView } from "framer-motion";
 import { useEffect, useRef } from "react";
 
 function Counter({ value, label }: { value: number; label: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  
-  // 💡 Hook to check if element is in view
+
+  // Hook to check if element is in view
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
 
-  const springValue = useSpring(0, { duration: 3000, bounce: 0 }); // 💡 Increased duration to 3s
+  const springValue = useSpring(0, { duration: 3000, bounce: 0 }); // Increased duration to 3s
 
   useEffect(() => {
     if (isInView) {

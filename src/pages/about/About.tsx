@@ -8,13 +8,15 @@ import WhyAgroKeep from "@/components/about/WhyAgroKeep";
 export default function About() {
   return (
     <>
-      <AboutUs />
-      <OurStory/>
-      <WhatGuidesUs/>
-      <WhyAgroKeep/>
-      <ForFarmers/>
-      <StatsSection/>
-      <CTASection/>
+      <section className="bg-backgroundTwo">
+        <AboutUs />
+        <OurStory />
+        <WhatGuidesUs />
+        <WhyAgroKeep />
+        <ForFarmers />
+        <StatsSection />
+        <CTASection />
+      </section>
     </>
   );
 }
