@@ -78,7 +78,7 @@ export default function HeroSection() {
                 <span className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-full bg-brand-secondary"></span>
 
                 {/* Button */}
-                <span className="relative z-10 flex h-10 items-center gap-3 rounded-full bg-brand-primary px-8 py-3 text-text-light">
+                <span className="relative z-10 flex h-10 items-center gap-3 rounded-full bg-brand-primary px-5 md:px-8 py-3 text-text-light">
                   <span className="text-sm font-medium md:text-base">
                     Explore Hubs
                   </span>
@@ -101,7 +101,7 @@ export default function HeroSection() {
                 <span className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-full bg-brand-secondary"></span>
 
                 {/* Button */}
-                <span className="relative z-10 flex h-10 items-center rounded-full bg-white px-8 py-3 text-brand-primary font-medium text-sm md:text-base">
+                <span className="relative z-10 flex h-10 items-center rounded-full bg-white px-5 md:px-8 py-3 text-brand-primary font-medium text-sm md:text-base">
                   Learn more
                 </span>
               </motion.button>
@@ -124,53 +124,59 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Overlapping Search Hub Section with Framer Motion entry animation */}
+      {/* Overlapping Search Hub Section with Horizontal Scroll on Mobile */}
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8, duration: 0.8 }}
-        className="hidden md:block absolute -bottom-17 left-0 right-0 z-20 mx-auto w-full max-w-7xl px-4 md:px-12"
+        className="absolute bottom-[-80px] md:bottom-[-68px] left-0 right-0 z-20 mx-auto w-full max-w-7xl px-4 md:px-12"
       >
-        <div className="rounded-[32px] bg-brand-primary p-4 shadow-2xl md:p-6">
+        <div className="rounded-[24px] sm:rounded-[32px] bg-brand-primary p-4 shadow-2xl md:p-6">
           {/* Top Instruction Row */}
           <div className="mb-4 flex items-center gap-3 text-white">
             <Search className="h-5 w-5 shrink-0 text-white/70" />
-            <p className="text-sm font-normal md:text-base">
+            <p className="text-sm font-normal md:text-base md:whitespace-normal">
               Search, book, and secure verified storage hubs for your
               agricultural produce — before harvest.
             </p>
           </div>
 
-          {/* Inputs & Button Row */}
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          {/* Inputs & Button Container - Horizontal scroll enabled on mobile, normal grid on desktop */}
+          <div className="no-scrollbar flex w-full gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-2 md:overflow-visible md:pb-0 md:flex-row md:items-end md:justify-between">
             {/* Location Input Group */}
-            <div className="flex flex-1 flex-col gap-1.5 md:max-w-xs">
+            <div className="flex w-[260px] shrink-0 snap-start flex-col gap-1.5 md:w-auto md:flex-1 md:max-w-xs md:shrink">
               <label className="flex items-center gap-2 text-xs font-light text-white/70">
-                <img src="/mapIcon.png" alt="" />
+                <img src="/mapIcon.png" alt="" className="h-4 w-4 shrink-0" />
                 Location
               </label>
               <input
                 type="text"
                 placeholder="Oyo, Osun"
-                className="h-9 w-full rounded-full border border-white/20 bg-surface-card px-4 text-sm text-surface-alt outline-none focus:border-white"
+                className="h-10 w-full rounded-full border border-white/20 bg-surface-card px-4 text-sm text-surface-alt outline-none focus:border-white transition-colors"
               />
             </div>
 
             {/* Crop Type Input Group */}
-            <div className="flex flex-1 flex-col gap-1.5 md:max-w-sm">
+            <div className="flex w-[260px] shrink-0 snap-start flex-col gap-1.5 md:w-auto md:flex-1 md:max-w-sm md:shrink">
               <label className="flex items-center gap-2 text-xs font-light text-white/70">
-                <img src="/flowerIcon.png" alt="" />
+                <img
+                  src="/flowerIcon.png"
+                  alt=""
+                  className="h-4 w-4 shrink-0"
+                />
                 Crop type
               </label>
               <input
                 type="text"
                 placeholder="Yam, Cassava, Tomato"
-                className="h-9 w-full rounded-full border border-white/20 bg-surface-card px-4 text-sm text-surface-alt outline-none focus:border-white"
+                className="h-10 w-full rounded-full border border-white/20 bg-surface-card px-4 text-sm text-surface-alt outline-none focus:border-white transition-colors"
               />
             </div>
 
             {/* Find a Hub Button */}
-            <PrimaryButton text="Find a Hub" type="submit" />
+            <div className="flex shrink-0 snap-start items-end md:shrink">
+              <PrimaryButton text="Find a Hub" type="submit" />
+            </div>
           </div>
         </div>
       </motion.div>

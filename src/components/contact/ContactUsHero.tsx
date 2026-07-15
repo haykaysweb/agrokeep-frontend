@@ -2,7 +2,7 @@ export default function ContactUsHero() {
   return (
     <>
       <section
-        className="relative w-full h-[400px] flex items-center justify-center"
+        className="relative w-full h-[600px] md:h-[400px]  flex items-center justify-center"
         style={{
           backgroundImage: `url('https://res.cloudinary.com/dw5bai7mk/image/upload/v1783422830/markus-winkler-HeqXGxnsnX4-unsplash_whdicv.jpg')`,
           backgroundPosition: "center",

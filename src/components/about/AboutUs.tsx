@@ -6,7 +6,7 @@ export default function AboutUs() {
     <>
       {/* hero section for the contact us */}
       <section
-        className="relative w-full h-[400px] flex items-center justify-center"
+        className="relative w-full h-[600px] md:h-[400px] flex items-center justify-center"
         style={{
           backgroundImage: `url('https://res.cloudinary.com/dw5bai7mk/image/upload/v1783426371/photo-1625246333195-78d9c38ad449_arunqi.avif')`,
           backgroundPosition: "center",

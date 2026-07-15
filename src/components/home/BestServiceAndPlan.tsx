@@ -76,7 +76,7 @@ export default function BestServiceAndPlan() {
 
   return (
     <>
-      <section className="w-full max-w-7xl flex flex-col justify-between px-4 md:px-12 py-6 mx-auto ">
+      <section className="w-full max-w-7xl flex flex-col justify-between px-4 md:px-12 py-6 mx-auto mt-20 md:mt-auto">
         <div className="flex items-center justify-center md:mb-5 md:mt-25">
           <h2 className="text-center text-3xl font-bold tracking-tight text-text-main sm:text-4xl">
             Giving <span className="text-brand-primary">Best Services</span> &{" "}
