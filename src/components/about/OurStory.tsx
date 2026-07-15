@@ -3,22 +3,22 @@ import { motion } from "framer-motion";
 export default function OurStory() {
   return (
     <section className="py-18">
-      <div className="w-full relative max-w-7xl mx-auto px-4 md:px-12 flex flex-col lg:flex-row items-center gap-16">
-        {/* LEFT - Image & Stats Card */}
+      <div className="w-full relative max-w-7xl mx-auto px-4 md:px-12 flex flex-col lg:flex-row lg:items-stretch items-center gap-16">
+        {/* LEFT - Image & Stats Card  */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           viewport={{ once: true }}
-          className="relative w-full lg:w-1/2"
+          className="relative w-full lg:w-1/2 flex flex-col"
         >
           <img
             src="https://res.cloudinary.com/dxgzbqdpb/image/upload/v1783698018/image_4_lataa0.svg"
             alt="Farmer in the field"
-            className="rounded-3xl shadow-2xl w-full h-[500px] object-cover"
+            className="rounded-3xl shadow-2xl w-full h-[500px] lg:h-full flex-1 object-cover"
           />
 
-          {/* Stats Overlay - Adjusted for responsive flow */}
+          {/* Stats Overlay */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -32,13 +32,13 @@ export default function OurStory() {
           </motion.div>
         </motion.div>
 
-        {/* RIGHT - Content */}
+        {/* RIGHT - Content  */}
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           viewport={{ once: true }}
-          className="w-full lg:w-1/2 space-y-4"
+          className="w-full lg:w-1/2 flex flex-col justify-center space-y-4"
         >
           <div className="flex items-center gap-2 text-brand-primary font-medium">
             <img src="/flowerIcon3.svg" alt="" className="w-5 h-5" /> Our Story
@@ -46,7 +46,7 @@ export default function OurStory() {
 
           <h2 className="text-4xl lg:text-5xl font-bold text-text-main leading-tight">
             Created <span className="text-brand-primary">for Farmers</span>.
-            Built to
+            <br className="hidden lg:block" /> Built to{" "}
             <span className="text-brand-primary">Protect Every Harvest</span>.
           </h2>
 

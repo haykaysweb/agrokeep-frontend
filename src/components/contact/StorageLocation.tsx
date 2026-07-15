@@ -34,7 +34,7 @@ const cardVariants = {
 export default function StorageLocation() {
   return (
     <section className="w-full max-w-7xl mx-auto px-4 md:px-12 py-16">
-      <h2 className="text-3xl md:text-4xl font-bold text-text-main text-center mb-12">
+      <h2 className="text-4xl md:text-5xl font-bold text-text-main text-center mb-12">
         Our Storage Locations
       </h2>
 
