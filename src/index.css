@@ -24,18 +24,20 @@ body {
   font-family: var(--font-sans);
 }
 
+
 @theme {
---font-sans: "Lexend", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Lexend", ui-sans-serif, system-ui, sans-serif;
 
   /* --- Base & Surfaces (Backgrounds & Containers) --- */
   --color-background: #fdfbf7; /* Main canvas/page background (from "Background" swatch) */
-   --color-backgroundTwo: #f9f6f0; /* Background color for the Contact Us and About Us */
+  --color-backgroundTwo: #f9f6f0; /* Background color for the Contact Us and About Us */
   --color-surface-card: #ffffff; /* White containers, cards, or input fields */
   --color-surface-alt: #9da49e; /* Subtle container tint (from the gray-green Auth Screen background) */
 
   /* --- Primary & Accent Colors (Branding & Actions) --- */
   --color-brand-primary: #0a4022; /* Main deep green for heavy CTAs, headers, buttons (Primary/P300) */
   --color-brand-secondary: #e68e0e; /* Accent orange for secondary highlights/buttons (Secondary/P300) */
+  --color-brand-secondary-hover: #cc7d0c; /* Slightly darker orange for interactive hover feedback */
 
   /* --- Text & Typography --- */
   --color-text-main: #1a1a1a; /* Darkest text for high-contrast headings (Grey/G600 & G700) */

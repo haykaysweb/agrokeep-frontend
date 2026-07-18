@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, Search } from "lucide-react";
-import { PrimaryButton } from "../ui/Buttons";
+import { PrimaryButton } from "@/components/ui/Buttons";
 
 const images = [
   "https://images.unsplash.com/photo-1560493676-04071c5f467b?q=80&w=1920&auto=format&fit=crop",

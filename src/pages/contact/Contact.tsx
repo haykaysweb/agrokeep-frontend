@@ -1,7 +1,7 @@
-import ContactUsFaq from "@/components/contact/ContactUsFaq";
-import ContactUsForm from "@/components/contact/ContactUsForm";
-import ContactUsHero from "@/components/contact/ContactUsHero";
-import StorageLocation from "@/components/contact/StorageLocation";
+import ContactUsFaq from "@/pages/contact/ContactUsFaq";
+import ContactUsForm from "@/pages/contact/ContactUsForm";
+import ContactUsHero from "@/pages/contact/ContactUsHero";
+import StorageLocation from "@/pages/contact/StorageLocation";
 
 export default function Contact() {
   return (

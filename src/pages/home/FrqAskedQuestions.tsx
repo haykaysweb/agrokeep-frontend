@@ -76,7 +76,7 @@ export default function FrqAskedQuestions() {
               transition={{ delay: index * 0.1 }}
               className="collapse collapse-plus bg-surface-card border border-border-light rounded-2xl"
             >
-              <input type="radio" name="faq-accordion" />
+              <input type="checkbox" name="faq-accordion" />
               <div className="collapse-title text-base font-semibold text-text-main">
                 {faq.q}
               </div>

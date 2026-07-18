@@ -7,17 +7,15 @@ import {
 } from "react-router";
 import Login from "@/pages/auth/Login";
 import SignUp from "@/pages/auth/SignUp";
-import ForgotPassword from "@/pages/auth/ForgotPassword";
-import ResetPassword from "@/pages/auth/ResetPassword";
-import VerifyAccount from "@/pages/auth/VerifyAccount";
-import VerifyForgotOtp from "@/pages/auth/VerifyForgotOtp";
 import SuspenseUi from "@/components/ui/SuspenseUi";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 const Routes = () => {
   const routes = [
     {
       path: "/",
       Component: RootLayout,
+      ErrorBoundary: ErrorBoundary, // Catches errors for home, storage hubs, about, and contact sections
       hydrateFallbackElement: <SuspenseUi />,
       children: [
         {
@@ -31,9 +29,27 @@ const Routes = () => {
           path: "storage",
           lazy: async () => {
             const { default: Component } =
-              await import("../pages/findstorage/Storage.tsx");
+              await import("../layouts/StorageLayout.tsx");
             return { Component };
           },
+          children: [
+            {
+              index: true,
+              lazy: async () => {
+                const { default: Component } =
+                  await import("../pages/findstorage/Storage.tsx");
+                return { Component };
+              },
+            },
+            {
+              path: "details",
+              lazy: async () => {
+                const { default: Component } =
+                  await import("../pages/findstorage/StorageDetails.tsx");
+                return { Component };
+              },
+            },
+          ],
         },
         {
           path: "about",
@@ -53,33 +69,53 @@ const Routes = () => {
         },
       ],
     },
+
+    // auth pages routes
     {
       path: "auth",
       Component: AuthLayout,
+      ErrorBoundary: ErrorBoundary, // Catches errors during dynamic validation, registration, or login requests
       children: [
         {
           path: "login",
-          element: <Login />,
+          Component: Login,
         },
         {
           path: "register",
-          element: <SignUp />,
+          Component: SignUp,
         },
+        //  Secondary flows (Lazy-loaded on demand to keep initial bundle tiny)
         {
           path: "forgot-password",
-          Component: ForgotPassword,
+          lazy: async () => {
+            const { default: Component } =
+              await import("../pages/auth/ForgotPassword.tsx");
+            return { Component };
+          },
         },
         {
           path: "verify-forgotpassword-otp",
-          Component: VerifyForgotOtp,
+          lazy: async () => {
+            const { default: Component } =
+              await import("../pages/auth/VerifyForgotOtp.tsx");
+            return { Component };
+          },
         },
         {
           path: "reset-password",
-          Component: ResetPassword,
+          lazy: async () => {
+            const { default: Component } =
+              await import("../pages/auth/ResetPassword.tsx");
+            return { Component };
+          },
         },
         {
           path: "verify-account",
-          Component: VerifyAccount,
+          lazy: async () => {
+            const { default: Component } =
+              await import("../pages/auth/VerifyAccount.tsx");
+            return { Component };
+          },
         },
       ],
     },

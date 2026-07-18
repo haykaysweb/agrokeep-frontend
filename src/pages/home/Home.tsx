@@ -1,11 +1,11 @@
-import BestServiceAndPlan from "@/components/home/BestServiceAndPlan";
-import ForFarmers from "@/components/home/ForFarmers";
-import FrqAskedQuestions from "@/components/home/FrqAskedQuestions";
-import HeroSection from "@/components/home/HeroSection";
-import HowItWorks from "@/components/home/HowItWorks";
-import HubPartner from "@/components/home/HubPartner";
-import Stories from "@/components/home/Stories";
-import VerifyHubs from "@/components/home/VerifyHubs";
+import BestServiceAndPlan from "@/pages/home/BestServiceAndPlan";
+import ForFarmers from "@/pages/home/ForFarmers";
+import FrqAskedQuestions from "@/pages/home/FrqAskedQuestions";
+import HeroSection from "@/pages/home/HeroSection";
+import HowItWorks from "@/pages/home/HowItWorks";
+import HubPartner from "@/pages/home/HubPartner";
+import Stories from "@/pages/home/Stories";
+import VerifyHubs from "@/pages/home/VerifyHubs";
 
 export default function Home() {
   return (

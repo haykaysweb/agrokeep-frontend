@@ -57,7 +57,6 @@ export default function ContactUsForm() {
 
   return (
     <>
-      {" "}
       <main className="w-full max-w-7xl mx-auto px-4 md:px-12 py-18">
         <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Left Column */}

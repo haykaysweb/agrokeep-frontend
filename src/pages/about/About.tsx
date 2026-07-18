@@ -1,15 +1,15 @@
-import AboutUs from "@/components/about/AboutUs";
-import CTASection from "@/components/about/CTASection";
-import ForFarmers from "@/components/about/ForFarmers";
-import OurStory from "@/components/about/OurStory";
-import StatsSection from "@/components/about/StatsSection";
-import WhatGuidesUs from "@/components/about/WhatGuidesUs";
-import WhyAgroKeep from "@/components/about/WhyAgroKeep";
+import AboutHero from "./AboutHero";
+import CTASection from "./CTASection";
+import ForFarmers from "./ForFarmers";
+import OurStory from "./OurStory";
+import StatsSection from "./StatsSection";
+import WhatGuidesUs from "./WhatGuidesUs";
+import WhyAgroKeep from "./WhyAgroKeep";
 export default function About() {
   return (
     <>
       <section className="bg-backgroundTwo">
-        <AboutUs />
+        <AboutHero />
         <OurStory />
         <WhatGuidesUs />
         <WhyAgroKeep />

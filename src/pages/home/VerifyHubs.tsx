@@ -1,6 +1,6 @@
 import { motion, type Variants } from "framer-motion";
-import { PrimaryButton } from "../ui/Buttons";
 import { ArrowUpRight } from "lucide-react";
+import { Link } from "react-router";
 
 export default function VerifyHubs() {
   const hubs = [
@@ -79,7 +79,10 @@ export default function VerifyHubs() {
   };
 
   return (
-    <section id="find-storage" className="w-full max-w-7xl mx-auto px-4 md:px-12 py-18 flex flex-col space-y-8 font-sans" >
+    <section
+      id="find-storage"
+      className="w-full max-w-7xl mx-auto px-4 md:px-12 py-18 flex flex-col space-y-8 font-sans"
+    >
       {/* Header */}
       <div className="flex justify-between items-end">
         <motion.div
@@ -209,13 +212,13 @@ export default function VerifyHubs() {
 
       {/* Mobile view all link */}
       <div className="sm:hidden flex justify-center pt-4">
-        <a
-          href="/hubs"
+        <Link
+          to="/storage"
           className="text-brand-primary font-semibold flex items-center space-x-2"
         >
           <span>Sell all hubs</span>
           <img src="/Arrow Right.svg" alt="" />
-        </a>
+        </Link>
       </div>
     </section>
   );

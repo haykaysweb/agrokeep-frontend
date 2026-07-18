@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 
-export default function AboutUs() {
+export default function AboutHero() {
   return (
     <>
       {/* hero section for the contact us */}
