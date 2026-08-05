@@ -42,6 +42,14 @@ const Routes = () => {
               },
             },
             {
+              path: "all", 
+              lazy: async () => {
+                const { default: Component } =
+                  await import("../pages/findstorage/SeeAllHub.tsx"); // Adjust path to match where you save the component
+                return { Component };
+              },
+            },
+            {
               path: "details",
               lazy: async () => {
                 const { default: Component } =
@@ -64,6 +72,14 @@ const Routes = () => {
           lazy: async () => {
             const { default: Component } =
               await import("../pages/contact/Contact.tsx");
+            return { Component };
+          },
+        },
+        {
+          path: "profile",
+          lazy: async () => {
+            const { default: Component } =
+              await import("../layouts/ProfileLayout.tsx"); // Adjust path to match where you save your profile file
             return { Component };
           },
         },

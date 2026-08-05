@@ -95,7 +95,12 @@ export default function Navbar() {
                 <div className="h-10 w-32 animate-pulse rounded-full bg-border-light/50" />
               </div>
             ) : user ? (
-              <UserAvatar name={user.fullName || "User"} />
+              <div
+                onClick={() => navigate("/profile")}
+                className="cursor-pointer inline-block"
+              >
+                <UserAvatar name={user.fullName || "User"} />
+              </div>
             ) : (
               <>
                 <Link
