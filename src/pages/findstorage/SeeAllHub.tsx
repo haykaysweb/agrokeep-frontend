@@ -59,7 +59,7 @@ export default function SeeAllHubsPage() {
         />
 
         {/* Overlay */}
-        <div className="absolute inset-0 bg-black/45" />
+        <div className="absolute inset-0 bg-black/45 min-h-[calc(100svh-80px)] lg:min-h-[calc(100svh-80px)]" />
 
         {/* Hero Content */}
         <div className="relative z-10 max-w-7xl min-h-[calc(100svh-80px)] lg:min-h-[calc(100svh-80px)] mx-auto flex justify-center items-center px-4 md:px-12">
