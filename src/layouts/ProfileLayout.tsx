@@ -19,6 +19,7 @@ import {
   updateProfile,
   uploadAvatar,
 } from "@/api/profile";
+import { showToast } from "@/utils/CustomToast";
 
 export default function ProfilePage() {
   const queryClient = useQueryClient();
@@ -74,16 +75,22 @@ export default function ProfilePage() {
   const updateProfileMutation = useMutation({
     mutationFn: updateProfile,
     onSuccess: (data) => {
-      setProfileSuccess(data?.message || "Profile updated successfully");
+      showToast.success(data?.message || "Profile updated successfully");
       setProfileError("");
-      queryClient.invalidateQueries({ queryKey: ["userProfile"] });
-      setTimeout(() => setProfileSuccess(""), 3000);
+
+      queryClient.invalidateQueries({
+        queryKey: ["userProfile"],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["currentUser"],
+      });
     },
     onError: (err: any) => {
-      setProfileError(
-        err?.response?.data?.message || "Failed to update profile.",
-      );
-      setProfileSuccess("");
+      const message =
+        err?.response?.data?.message || "Failed to update profile.";
+      showToast.error(message);
+      setProfileError(message);
     },
   });
 
@@ -340,8 +347,6 @@ export default function ProfilePage() {
               accept="image/*"
               className="hidden"
             />
-
-         
 
             <div>
               <h2 className="text-lg font-bold text-stone-900">
