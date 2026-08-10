@@ -5,46 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 import { DELIVERY_INSTRUCTIONS, formatCurrency } from "@/lib/constant";
 import { getSingleBookingApi } from "@/api/booking";
 
-interface HubInfo {
-  _id?: string;
-  name?: string;
-  address?: string;
-  operatingHours?: string;
-  proximityText?: string;
-  lga?: string;
-  state?: string;
-  slug?: string;
-  images?: string[];
-  isVerified?: boolean;
-}
-
-interface Booking {
-  _id: string;
-  bookingId: string;
-
-  hub: HubInfo;
-
-  cropType: string;
-  quantity: number;
-  unitType: string;
-
-  dropOffDate: string;
-  pickUpDate: string;
-  durationInDays: number;
-
-  storageFee: number;
-  serviceFee: number;
-  totalAmount: number;
-  depositAmount: number;
-  balanceAmount: number;
-
-  bookingStatus: string;
-  paymentStatus: string;
-
-  createdAt: string;
-  updatedAt: string;
-}
-
 export default function ViewBooking() {
   const navigate = useNavigate();
   const { bookingId } = useParams();

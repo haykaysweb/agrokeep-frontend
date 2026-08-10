@@ -1,5 +1,3 @@
-import React from "react";
-
 interface ErrorDisplayProps {
   message?: string;
   onRetry?: () => void;
@@ -34,9 +32,7 @@ export default function ErrorDisplay({
         <h3 className="text-base font-semibold text-text-main mb-1">
           Something went wrong
         </h3>
-        <p className="text-sm text-text-subtle max-w-md mb-5">
-          {message}
-        </p>
+        <p className="text-sm text-text-subtle max-w-md mb-5">{message}</p>
 
         {onRetry && (
           <button
@@ -74,9 +70,7 @@ export default function ErrorDisplay({
         <h3 className="text-base font-semibold text-text-main mb-1">
           Something went wrong
         </h3>
-        <p className="text-sm text-text-subtle max-w-md mb-5">
-          {message}
-        </p>
+        <p className="text-sm text-text-subtle max-w-md mb-5">{message}</p>
 
         {onRetry && (
           <button

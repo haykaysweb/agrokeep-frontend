@@ -1,4 +1,4 @@
-import { HelpCircle, PhoneCall } from "lucide-react";
+import { PhoneCall } from "lucide-react";
 
 export default function SupportBanner() {
   return (

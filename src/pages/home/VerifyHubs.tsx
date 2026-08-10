@@ -33,13 +33,6 @@ const getFacilityUnit = (hub: StorageHub) => {
   return unit.includes("crate") ? "crate" : "bag";
 };
 
-const formatCapacity = (hub: StorageHub) => {
-  const unit = getFacilityUnit(hub);
-  const capacity = hub.availableCapacity ?? 0;
-
-  return `${capacity.toLocaleString()} ${capacity === 1 ? unit : `${unit}s`} available`;
-};
-
 export default function VerifyHubs() {
   const {
     data: verifiedHubsData,
@@ -248,9 +241,7 @@ export default function VerifyHubs() {
                   </div>
 
                   {/* View Details */}
-                  <div
-                    className="relative shrink-0 sm:order-2 sm:w-full lg:order-none lg:w-auto"
-                  >
+                  <div className="relative shrink-0 sm:order-2 sm:w-full lg:order-none lg:w-auto">
                     <Link
                       to={`/storage/details/${hub.slug}`}
                       className="group relative block w-full lg:w-auto"

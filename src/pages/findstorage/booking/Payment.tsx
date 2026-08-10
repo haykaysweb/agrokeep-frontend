@@ -98,22 +98,17 @@ export default function Payment() {
     hubName = "Storage Hub",
     location: hubLocation = "Location unavailable",
     image = "",
-    storageType = "",
-    supportedCrops = [],
     selectedCrop = "Produce",
     quantity = 1,
     unitType = "bag",
     durationDays = 1,
     pricePerUnit = 0,
     standardDailyPrice = 0,
-    bulkDailyPrice = 0,
-    weeklyFlatPrice = 0,
     isBulkDiscountApplied = false,
     storageFee = 0,
     serviceFee = 5000,
     estimatedTotal = 0,
     deposit = 0,
-    remainingBalance = 0,
   } = bookingData;
 
   const normalizedUnit = String(unitType).toLowerCase().includes("crate")

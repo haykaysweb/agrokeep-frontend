@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { HubCard } from "./HubCard";
 import { filterStorageHubs } from "@/api/storage";
 import SupportBanner from "./SupportBanner";
-import Pagination from "@/components/Pagination";
+// import Pagination from "@/components/Pagination";
 
 export default function SeeAllHubsPage() {
   const [searchParams] = useSearchParams();

@@ -233,17 +233,17 @@ export default function Profile() {
     updateProfileMutation.mutate({ fullName, phone });
   };
 
-  const handleSavePreferences = () => {
-    updateProfileMutation.mutate({
-      notificationPreferences: {
-        bookingUpdates,
-        paymentNotifications,
-        reminderAlerts,
-        smsNotifications,
-        emailNotifications,
-      },
-    });
-  };
+  // const handleSavePreferences = () => {
+  //   updateProfileMutation.mutate({
+  //     notificationPreferences: {
+  //       bookingUpdates,
+  //       paymentNotifications,
+  //       reminderAlerts,
+  //       smsNotifications,
+  //       emailNotifications,
+  //     },
+  //   });
+  // };
 
   const handleSaveAll = () => {
     updateProfileMutation.mutate({
