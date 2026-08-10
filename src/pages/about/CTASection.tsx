@@ -54,7 +54,7 @@ export default function CTASection() {
             >
               <div className="absolute top-1.5 left-1.5 w-full h-full bg-brand-secondary rounded-full" />
               <Link
-                to="/find-storage"
+                to="/storage"
                 className="relative flex items-center bg-text-light text-brand-primary px-8 py-3 rounded-full font-bold hover:bg-stone-50 transition-transform hover:-translate-y-0.5"
               >
                 Find a storage
