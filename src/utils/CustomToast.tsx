@@ -1,6 +1,7 @@
 import { toast } from "react-toastify";
 
 export const showToast = {
+  
   success: (message: string) => {
     toast.success(
       <div className="flex items-start gap-3.5 p-1">

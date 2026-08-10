@@ -11,7 +11,6 @@ interface AxiosErrorLike {
 
 export default function ErrorBoundary() {
   const error = useRouteError();
-
   let details = "An unexpected error occurred.";
 
   if (isRouteErrorResponse(error)) {
