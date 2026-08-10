@@ -4,14 +4,37 @@ import { motion } from "framer-motion";
 interface Hub {
   _id?: string;
   name: string;
-  location: string;
-  capacity: string;
-  price: string;
-  unit: string;
-  image: string;
+  location?: string;
+  address?: string;
+  capacity?: string | number;
+  availableCapacity?: string | number;
+  unitType?: string;
+  unit?: string;
+  image?: string;
+  images?: string[];
+  pricePerBagPerDay?: number;
+  pricePerCratePerDay?: number;
+  priceWeeklyFlat?: number;
+  priceBulk100Units?: number;
+  [key: string]: any;
 }
 
 export function HubCard({ hub }: { hub: Hub }) {
+  // Normalize fields that differ between raw API shape and mapped shape
+  const unit = hub.unitType || hub.unit || "units";
+  const location = hub.location || hub.address || "";
+  const capacity = hub.capacity ?? hub.availableCapacity ?? "";
+  const image = hub.image || hub.images?.[0] || "";
+
+  // Dynamically select price based on the available unit type or property
+  const rawPrice =
+    unit.toLowerCase().includes("crate")
+      ? hub.pricePerCratePerDay || hub.pricePerBagPerDay
+      : hub.pricePerBagPerDay || hub.pricePerCratePerDay;
+
+  const displayPrice =
+    rawPrice || hub.priceWeeklyFlat || hub.priceBulk100Units || 0;
+
   return (
     <motion.div
       whileHover={{ y: -5 }}
@@ -20,11 +43,10 @@ export function HubCard({ hub }: { hub: Hub }) {
       {/* Image with Verified Badge */}
       <div className="relative mb-4">
         <img
-          src={hub.image}
+          src={image}
           alt={hub.name}
           className="w-full h-56 object-cover rounded-2xl bg-stone-100"
           onError={(e) => {
-            // Fallback image if the Cloudinary link fails to load
             (e.target as HTMLImageElement).src = "/image 1.svg";
           }}
         />
@@ -41,10 +63,10 @@ export function HubCard({ hub }: { hub: Hub }) {
         <div className="flex flex-wrap items-center gap-4 text-sm text-stone-500">
           <div className="flex items-center gap-1">
             <MapPin className="h-4 w-4 shrink-0" />{" "}
-            <span className="line-clamp-1">{hub.location}</span>
+            <span className="line-clamp-1">{location}</span>
           </div>
           <div className="flex items-center gap-1">
-            <ShoppingBag className="h-4 w-4 shrink-0" /> {hub.capacity}{" "}
+            <ShoppingBag className="h-4 w-4 shrink-0" /> {capacity}{" "}
             available
           </div>
         </div>
@@ -55,9 +77,9 @@ export function HubCard({ hub }: { hub: Hub }) {
         <div>
           <p className="text-xs text-stone-400">From</p>
           <p className="text-lg font-bold text-stone-900">
-            ₦{hub.price}
+            ₦{displayPrice}
             <span className="text-sm font-normal text-stone-500">
-              /{hub.unit}
+              /{unit}
             </span>
           </p>
         </div>

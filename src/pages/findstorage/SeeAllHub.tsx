@@ -62,18 +62,18 @@ export default function SeeAllHubsPage() {
             onChange={(e) => setSelectedLga(e.target.value)}
             className="bg-white hover:bg-stone-50 text-stone-600 px-5 py-2.5 rounded-full text-xs font-medium shrink-0 border border-stone-200 outline-none cursor-pointer appearance-none pr-8 relative"
           >
-            <option value="">L.G.A</option>
+            <option value="">Select state / LGA</option>
             <option value="Ibadan">Ibadan</option>
             <option value="Ogbomoso South">Ogbomoso South</option>
           </select>
 
-          {/* Crop Type Filter Dropdown (Customized) */}
+          {/* Crop Type Filter Dropdown */}
           <select 
             value={selectedCrop}
             onChange={(e) => setSelectedCrop(e.target.value)}
             className="bg-white hover:bg-stone-50 text-stone-600 px-5 py-2.5 rounded-full text-xs font-medium shrink-0 border border-stone-200 outline-none cursor-pointer appearance-none pr-8 relative"
           >
-            <option value="">Crop Type</option>
+            <option value="">Select crop type</option>
             <option value="yam">Yam</option>
             <option value="cassava">Cassava</option>
             <option value="maize">Maize</option>
@@ -85,7 +85,7 @@ export default function SeeAllHubsPage() {
             onChange={(e) => setSelectedStorageType(e.target.value)}
             className="bg-white hover:bg-stone-50 text-stone-600 px-5 py-2.5 rounded-full text-xs font-medium shrink-0 border border-stone-200 outline-none cursor-pointer"
           >
-            <option value="">Storage Type</option>
+            <option value="">Select storage type</option>
             <option value="Silo">Silo</option>
             <option value="Cold Storage">Cold Storage</option>
             <option value="Warehouse">Warehouse</option>
@@ -116,21 +116,22 @@ export default function SeeAllHubsPage() {
               <p className="text-stone-500 py-10">No storage hubs found matching this filter.</p>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {filteredHubs.map((hub) => (
-                  <HubCard
-                    key={hub._id}
-                    hub={{
-                      name: hub.name,
-                      location: `${hub.lga}, ${hub.state}`,
-                      capacity: `${hub.availableCapacity} ${hub.unitType}`,
-                      price: hub.pricePerBagPerWeek50kg > 0 
-                        ? String(hub.pricePerBagPerWeek50kg) 
-                        : String(hub.pricePerCratePerWeek50kg),
-                      unit: hub.unitType,
-                      image: hub.images && hub.images.length > 0 ? hub.images[0] : "/image 1.svg",
-                    }}
-                  />
-                ))}
+                {filteredHubs.map((hub) => {
+                  const { images, ...restHub } = hub;
+
+                  return (
+                    <HubCard
+                      key={hub._id}
+                      hub={{
+                        ...restHub,
+                        location: `${hub.lga}, ${hub.state}`,
+                        capacity: String(hub.availableCapacity),
+                        image: images?.[0] || "/image 1.svg",
+                        unit: hub.unitType,
+                      }}
+                    />
+                  );
+                })}
               </div>
             )}
           </div>

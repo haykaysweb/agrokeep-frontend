@@ -18,27 +18,32 @@ export default function HubsGrid({ stateGroups }: HubsGridProps) {
                 Storage Hubs in {section.state} State
               </span>
             </h2>
-            <Link to={`/storage/all?state=${encodeURIComponent(section.state)}`}className="text-[#1B4D3E]  font-bold">
+            <Link
+              to={`/storage/all?state=${encodeURIComponent(section.state)}`}
+              className="text-[#1B4D3E] font-bold"
+            >
               See all →
             </Link>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {section.hubs.map((hub) => (
-              <HubCard
-                key={hub._id}
-                hub={{
-                  name: hub.name,
-                  location: `${hub.lga}, ${hub.state}`,
-                  capacity: `${hub.availableCapacity} ${hub.unitType}`,
-                price: hub.pricePerBagPerWeek50kg > 0 
-  ? String(hub.pricePerBagPerWeek50kg) 
-  : String(hub.pricePerCratePerWeek50kg),
-                  unit: hub.unitType,
-                  image: hub.images,
-                }}
-              />
-            ))}
+            {section.hubs.map((hub) => {
+              // Destructure images out so TypeScript doesn't conflict types
+              const { images, ...restHub } = hub;
+
+              return (
+                <HubCard
+                  key={hub._id}
+                  hub={{
+                    ...restHub,
+                    location: `${hub.lga}, ${hub.state}`,
+                    capacity: String(hub.availableCapacity),
+                    image: images?.[0] || "/image 1.svg",
+                    unit: hub.unitType,
+                  }}
+                />
+              );
+            })}
           </div>
         </section>
       ))}

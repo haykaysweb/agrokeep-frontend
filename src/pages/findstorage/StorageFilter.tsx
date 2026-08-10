@@ -37,7 +37,7 @@ export default function StorageFilter({ onFilterResults }: StorageFilterProps) {
   };
 
   return (
-    <div className="w-[92%] max-w-5xl mx-auto my-6 md:my-0 md:absolute md:-bottom-16 md:left-1/2 md:-translate-x-1/2 bg-white p-4 md:p-6 rounded-3xl shadow-xl hidden md:flex flex-row items-center gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar md:overflow-visible border border-stone-100 z-30">
+    <div className="w-full max-w-7xl mx-auto my-6 md:my-0 md:absolute md:-bottom-16 md:left-1/2 md:-translate-x-1/2 bg-white p-4 md:px-12 rounded-3xl shadow-xl hidden md:flex flex-row items-center gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar md:overflow-visible border border-stone-100 z-30">
       
       {/* Location */}
       <div className="w-[260px] shrink-0 snap-start md:w-auto md:flex-1 md:shrink">

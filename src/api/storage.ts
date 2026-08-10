@@ -1,6 +1,10 @@
 import apiClient from "./apiClient";
 
 export interface Hub {
+  pricePerCratePerDay: any;
+  pricePerBagPerDay: any;
+  priceWeeklyFlat: any;
+  priceBulk100Units: any;
   _id: string;
   name: string;
   state: string;
