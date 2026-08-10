@@ -95,7 +95,14 @@ export default function Navbar() {
                 <div className="h-10 w-32 animate-pulse rounded-full bg-border-light/50" />
               </div>
             ) : user ? (
-              <UserAvatar name={user.fullName || "User"} />
+              <button
+                type="button"
+                onClick={() => navigate("/profile")}
+                className="cursor-pointer inline-block"
+                aria-label="Go to profile"
+              >
+                <UserAvatar name={user.fullName || "User"} />
+              </button>
             ) : (
               <>
                 <Link
@@ -104,19 +111,21 @@ export default function Navbar() {
                 >
                   Sign in
                 </Link>
+
                 <motion.button
+                  type="button"
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.96 }}
-                  className="relative inline-block"
+                  className="relative inline-block cursor-pointer"
+                  onClick={() => navigate("/auth/register")}
                 >
-                  <span className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-full bg-brand-secondary"></span>
+                  <span className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-full bg-brand-secondary" />
+
                   <span className="relative z-10 flex h-10 items-center gap-3 rounded-full bg-brand-primary px-4 py-3 text-text-light">
-                    <Link
-                      to="/auth/register"
-                      className="text-sm font-medium md:text-base"
-                    >
+                    <span className="text-sm font-medium md:text-base">
                       Get Started
-                    </Link>
+                    </span>
+
                     <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-secondary">
                       <ArrowUpRight
                         className="h-3 w-3 text-text-light"
