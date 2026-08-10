@@ -29,10 +29,10 @@ export default function HubsPage() {
           alt="Storage Hub"
         />
         <div className="relative z-10">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          <h1 className="text-3xl md:text-5xl px-4 md:px-12 font-bold mb-6">
             Verified Storage Hubs
           </h1>
-          <p className="text-lg md:text-xl font-light">
+          <p className="text-lg md:text-xl font-light px-4 md:px-12">
             Find verified storage hubs across Southwest Nigeria.
           </p>
         </div>
