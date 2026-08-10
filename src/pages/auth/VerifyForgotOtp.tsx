@@ -36,14 +36,8 @@ export default function VerifyForgotOtp() {
       triggerShake();
 
       if (axios.isAxiosError(error)) {
-<<<<<<< HEAD
         const backendError = error.response?.data;
 
-=======
-        console.log("SERVER VALIDATION ERROR DATA:", error.response?.data);
-
-        const backendError = error.response?.data;
->>>>>>> 52ca6ad16b46038b004b866c418ecb9041685517
         const serverMessage = Array.isArray(backendError?.message)
           ? backendError.message.join(", ")
           : backendError?.message ||
@@ -52,12 +46,6 @@ export default function VerifyForgotOtp() {
 
         setErrorMessage(serverMessage);
       } else {
-<<<<<<< HEAD
-=======
-        if (import.meta.env.DEV) {
-          console.error(error);
-        }
->>>>>>> 52ca6ad16b46038b004b866c418ecb9041685517
         setErrorMessage("An unexpected error occurred.");
       }
     },

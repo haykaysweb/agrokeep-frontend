@@ -20,16 +20,16 @@ export default function HubsPage() {
   });
 
   return (
-    <div className="relative bg-[#FAF7F0]">
+    <div className="relative">
       {/* Hero Banner */}
-      <section className="relative h-[500px] flex flex-col gap-10 items-center justify-center text-center text-white bg-stone-900">
+      <section className="relative h-[calc(100vh-80px)] flex flex-col gap-10 items-center justify-center text-center text-white bg-stone-900">
         <img
           src="/frame400.jpg"
           className="absolute inset-0 w-full h-full object-cover opacity-60"
           alt="Storage Hub"
         />
         <div className="relative z-10">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">
             Verified Storage Hubs
           </h1>
           <p className="text-lg md:text-xl font-light">
@@ -38,14 +38,21 @@ export default function HubsPage() {
         </div>
 
         {/* Filter Component with callback to update search view */}
+
         <StorageFilter onFilterResults={(data) => setFilteredResults(data)} />
       </section>
 
       {/* Content */}
-      <main className="pt-24 px-6 max-w-7xl mx-auto pb-20">
+      <main className="mt-20 py-15 max-w-7xl mx-auto px-4 md:px-12 ">
         {isLoading ? (
-          <div className="py-20 text-center text-stone-600 font-medium">
-            Loading storage hubs...
+          <div className="h-[calc(100vh-80px)] flex items-center justify-center px-4">
+            <div className="text-center">
+              <div className="w-10 h-10 border-4 border-brand-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+
+              <h2 className="text-lg font-semibold text-text-main">
+                Loading Storage Hubs...
+              </h2>
+            </div>
           </div>
         ) : error ? (
           <div className="py-20 text-center text-red-500 font-medium">
@@ -70,10 +77,10 @@ export default function HubsPage() {
                 {filteredResults.map((hub) => (
                   <div
                     key={hub._id}
-                    className="bg-white rounded-3xl p-5 shadow-sm border border-stone-200 flex flex-col justify-between space-y-4"
+                    className="bg-white rounded-3xl shadow-sm border border-stone-200 flex flex-col justify-between space-y-4 overflow-hidden h-full"
                   >
                     {hub.images?.[0] && (
-                      <div className="w-full h-48 rounded-2xl overflow-hidden bg-stone-100">
+                      <div className="w-full h-48 overflow-hidden bg-stone-100">
                         <img
                           src={hub.images[0]}
                           alt={hub.name}
@@ -81,24 +88,26 @@ export default function HubsPage() {
                         />
                       </div>
                     )}
-                    <div>
-                      <h3 className="font-bold text-lg text-stone-900">
-                        {hub.name}
-                      </h3>
-                      <p className="text-xs text-stone-500 mt-0.5">
-                        {hub.lga}, {hub.state}
-                      </p>
-                    </div>
-                    <div className="pt-2 border-t border-stone-100 flex items-center justify-between">
-                      <span className="text-xs font-medium text-stone-600">
-                        Available:{" "}
-                        <strong className="text-stone-900">
-                          {hub.availableCapacity} {hub.unitType}
-                        </strong>
-                      </span>
-                      <span className="text-xs font-bold text-[#1B4D3E] bg-emerald-50 px-3 py-1 rounded-full">
-                        {hub.storageType}
-                      </span>
+                    <div className="p-4 h-2 pt-0 space-y-4 flex-1 flex flex-col justify-between">
+                      <div>
+                        <h3 className="font-bold text-lg text-stone-900">
+                          {hub.name}
+                        </h3>
+                        <p className="text-xs text-stone-500 mt-0.5">
+                          {hub.lga}, {hub.state}
+                        </p>
+                      </div>
+                      <div className="pt-2 border-t border-stone-100 flex items-center justify-between">
+                        <span className="text-xs font-medium text-stone-600">
+                          Available:{" "}
+                          <strong className="text-stone-900">
+                            {hub.availableCapacity} {hub.unitType}
+                          </strong>
+                        </span>
+                        <span className="text-xs font-bold text-[#1B4D3E] bg-emerald-50 px-3 py-1 rounded-full">
+                          {hub.storageType}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -113,7 +122,6 @@ export default function HubsPage() {
           <HubsGrid stateGroups={stateGroups} />
         )}
       </main>
-
       <SupportBanner />
     </div>
   );

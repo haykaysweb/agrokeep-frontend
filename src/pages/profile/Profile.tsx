@@ -21,7 +21,7 @@ import {
 } from "@/api/profile";
 import { showToast } from "@/utils/CustomToast";
 
-export default function ProfilePage() {
+export default function Profile() {
   const queryClient = useQueryClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -270,38 +270,46 @@ export default function ProfilePage() {
 
   if (isLoading) {
     return (
-      <div className="bg-[#FAF7F0] min-h-screen flex items-center justify-center">
-        <p className="text-stone-500 text-sm font-medium">Loading profile...</p>
+<div className="min-h-[calc(100vh-80px)] flex items-center justify-center px-4">
+        <div className="text-center">
+          <div className="w-10 h-10 border-4 border-brand-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+
+          <h2 className="text-lg font-semibold text-text-main">
+            Loading Profile...
+          </h2>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="bg-[#FAF7F0] min-h-screen flex items-center justify-center">
+      <div className=" min-h-screen flex items-center justify-center">
         <p className="text-red-500 text-sm font-medium">
           Failed to load profile data.
         </p>
       </div>
     );
   }
-
   return (
-    <div className="bg-[#FAF7F0] min-h-screen py-10 px-4 md:px-8 relative">
+    <div className="w-full max-w-7xl mx-auto px-4 md:px-12 py-6 min-h-screen relative">
       {/* Top Header Section */}
-      <div className="max-w-7xl mx-auto mb-8">
+      <div className="w-full mb-8">
         <h1 className="text-3xl font-bold text-stone-900 tracking-tight">
           My Profile
         </h1>
+
         <p className="text-stone-500 text-sm mt-1">
           Keep your details up to date so hub managers can reach you quickly and
           we can match you with the right storage for every harvest.
         </p>
+
         {profileSuccess && (
           <div className="mt-4 bg-emerald-50 text-[#1B4D3E] text-xs p-3 rounded-xl font-medium max-w-md">
             {profileSuccess}
           </div>
         )}
+
         {profileError && (
           <div className="mt-4 bg-red-50 text-red-600 text-xs p-3 rounded-xl font-medium max-w-md">
             {profileError}
@@ -310,9 +318,9 @@ export default function ProfilePage() {
       </div>
 
       {/* Main Grid Layout */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column: User Card */}
-        <div className="lg:col-span-4 bg-white rounded-3xl p-6 shadow-sm border border-stone-100 text-center space-y-6">
+        <div className="min-w-0 lg:col-span-4 bg-white rounded-3xl p-6 shadow-sm border border-stone-100 text-center space-y-6">
           <div className="flex flex-col items-center space-y-3">
             {/* Hidden file input for uploading */}
             <input
@@ -333,39 +341,42 @@ export default function ProfilePage() {
                 alt={user?.fullName || "User"}
                 className="w-full h-full object-cover"
               />
+
               <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
                 <Camera className="h-5 w-5 mb-0.5" />
                 <span className="text-[10px] font-semibold">Edit</span>
               </div>
             </div>
 
-            {/* Hidden file input controlled by the modal */}
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleAvatarChange}
-              accept="image/*"
-              className="hidden"
-            />
-
-            <div>
-              <h2 className="text-lg font-bold text-stone-900">
+            <div className="min-w-0 w-full">
+              <h2 className="text-lg font-bold text-stone-900 break-words">
                 {user?.fullName || "User"}
               </h2>
-              <p className="text-xs text-stone-500">{user?.email || ""}</p>
+
+              <p className="text-xs text-stone-500 break-words">
+                {user?.email || ""}
+              </p>
+
               <p className="text-xs text-stone-400 flex items-center justify-center gap-1 mt-1">
-                <MapPin className="h-3 w-3 text-[#1B4D3E]" />{" "}
-                {user?.location || "Nigeria"}
+                <MapPin className="h-3 w-3 text-[#1B4D3E] shrink-0" />
+                <span className="break-words">
+                  {user?.location || "Nigeria"}
+                </span>
               </p>
             </div>
-            <div className="bg-emerald-50 text-[#1B4D3E] px-3 py-1 rounded-full text-[11px] font-semibold flex items-center gap-1 mt-1">
-              <ShieldCheck className="h-3.5 w-3.5" /> Member since{" "}
-              {user?.createdAt
-                ? new Date(user.createdAt).toLocaleDateString("en-US", {
-                    month: "long",
-                    year: "numeric",
-                  })
-                : "July 2026"}
+
+            <div className="max-w-full bg-emerald-50 text-[#1B4D3E] px-3 py-1 rounded-full text-[11px] font-semibold flex items-center justify-center gap-1 mt-1">
+              <ShieldCheck className="h-3.5 w-3.5 shrink-0" />
+
+              <span className="truncate">
+                Member since{" "}
+                {user?.createdAt
+                  ? new Date(user.createdAt).toLocaleDateString("en-US", {
+                      month: "long",
+                      year: "numeric",
+                    })
+                  : "July 2026"}
+              </span>
             </div>
           </div>
 
@@ -373,27 +384,32 @@ export default function ProfilePage() {
 
           {/* Quick Metrics */}
           <div className="grid grid-cols-3 gap-2 bg-stone-50 p-3 rounded-2xl">
-            <div className="text-center">
-              <span className="block text-lg font-bold text-stone-800">
+            <div className="text-center min-w-0">
+              <span className="block text-lg font-bold text-stone-800 truncate">
                 {stats?.totalBookings ?? 0}
               </span>
-              <span className="text-[10px] text-stone-400 font-medium">
+
+              <span className="block text-[10px] text-stone-400 font-medium truncate">
                 Bookings
               </span>
             </div>
-            <div className="text-center border-x border-stone-200">
-              <span className="block text-lg font-bold text-stone-800">
+
+            <div className="text-center min-w-0 border-x border-stone-200">
+              <span className="block text-lg font-bold text-stone-800 truncate">
                 {stats?.hubsUsed ?? 0}
               </span>
-              <span className="text-[10px] text-stone-400 font-medium">
+
+              <span className="block text-[10px] text-stone-400 font-medium truncate">
                 Hubs used
               </span>
             </div>
-            <div className="text-center">
-              <span className="block text-lg font-bold text-stone-800">
+
+            <div className="text-center min-w-0">
+              <span className="block text-lg font-bold text-stone-800 truncate">
                 {stats?.totalStoredQuantity ?? 0}t
               </span>
-              <span className="text-[10px] text-stone-400 font-medium">
+
+              <span className="block text-[10px] text-stone-400 font-medium truncate">
                 Stored
               </span>
             </div>
@@ -405,232 +421,255 @@ export default function ProfilePage() {
         </div>
 
         {/* Right Column: Information, Preferences & Security */}
-        <div className="lg:col-span-8 space-y-6">
+        <div className="min-w-0 lg:col-span-8 space-y-6">
           {/* 1. Personal Information Section */}
           <form
             onSubmit={handleSavePersonalInfo}
-            className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-stone-100 space-y-6"
+            className="w-full min-w-0 bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-stone-100 space-y-6"
           >
-            <div>
+            <div className="min-w-0">
               <h3 className="text-base font-bold text-stone-900">
                 Personal Information
               </h3>
+
               <p className="text-xs text-stone-500">
                 Used for booking confirmations and hub manager contact.
               </p>
             </div>
 
-            <div className="space-y-4">
-              <div>
+            <div className="space-y-4 min-w-0">
+              <div className="min-w-0">
                 <label className="block text-xs font-medium text-stone-600 mb-1.5">
                   Full Name
                 </label>
+
                 <input
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-xs text-stone-800 focus:outline-none focus:border-[#1B4D3E]"
+                  className="w-full min-w-0 bg-white border border-stone-200 rounded-xl px-4 py-3 text-xs text-stone-800 focus:outline-none focus:border-[#1B4D3E]"
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 min-w-0">
+                <div className="min-w-0">
                   <label className="block text-xs font-medium text-stone-600 mb-1.5">
                     Email Address{" "}
                     <span className="text-stone-400 text-[10px]">
                       (email can't be changed)
                     </span>
                   </label>
+
                   <input
                     type="email"
                     disabled
                     value={user?.email || ""}
-                    className="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-3 text-xs text-stone-500 cursor-not-allowed"
+                    className="w-full min-w-0 bg-stone-50 border border-stone-200 rounded-xl px-4 py-3 text-xs text-stone-500 cursor-not-allowed"
                   />
                 </div>
-                <div>
+
+                <div className="min-w-0">
                   <label className="block text-xs font-medium text-stone-600 mb-1.5">
                     Phone Number
                   </label>
+
                   <input
                     type="text"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="+234..."
-                    className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-xs text-stone-800 focus:outline-none focus:border-[#1B4D3E]"
+                    className="w-full min-w-0 bg-white border border-stone-200 rounded-xl px-4 py-3 text-xs text-stone-800 focus:outline-none focus:border-[#1B4D3E]"
                   />
                 </div>
               </div>
             </div>
-
-            {/* <div className="flex justify-end pt-2">
-              <button
-                type="submit"
-                disabled={updateProfileMutation.isPending}
-                className="bg-[#D9822B] hover:bg-[#c47323] text-white px-6 py-2.5 rounded-full text-xs font-semibold shadow-sm transition-colors disabled:opacity-50"
-              >
-                {updateProfileMutation.isPending ? "Saving..." : "Save Changes"}
-              </button>
-            </div> */}
           </form>
 
           {/* 2. Notification Preferences Section */}
-          <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-stone-100 space-y-6">
-            <div>
+          <div className="w-full min-w-0 bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-stone-100 space-y-6">
+            <div className="min-w-0">
               <h3 className="text-base font-bold text-stone-900">
                 Notification Preferences
               </h3>
+
               <p className="text-xs text-stone-500">
                 Choose how AgroKeep keeps you informed.
               </p>
             </div>
 
             <div className="divide-y divide-stone-100 space-y-4">
-              <div className="flex justify-between items-center pt-3">
-                <div>
+              {/* Booking Updates */}
+              <div className="flex justify-between items-center gap-4 pt-3 min-w-0">
+                <div className="min-w-0 flex-1">
                   <p className="text-xs font-bold text-stone-800">
                     Booking Updates
                   </p>
-                  <p className="text-[11px] text-stone-400">
+
+                  <p className="text-[11px] text-stone-400 break-words">
                     Confirmations, changes and hub messages
                   </p>
                 </div>
+
                 <button
                   type="button"
                   onClick={() => setBookingUpdates(!bookingUpdates)}
-                  className={`w-11 h-6 flex items-center rounded-full p-1 transition-colors ${bookingUpdates ? "bg-[#1B4D3E]" : "bg-stone-300"}`}
+                  className={`w-11 h-6 shrink-0 flex items-center rounded-full p-1 transition-colors ${
+                    bookingUpdates ? "bg-[#1B4D3E]" : "bg-stone-300"
+                  }`}
                 >
                   <div
-                    className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform ${bookingUpdates ? "translate-x-5" : "translate-x-0"}`}
+                    className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform ${
+                      bookingUpdates ? "translate-x-5" : "translate-x-0"
+                    }`}
                   />
                 </button>
               </div>
 
-              <div className="flex justify-between items-center pt-4">
-                <div>
+              {/* Payment Notifications */}
+              <div className="flex justify-between items-center gap-4 pt-4 min-w-0">
+                <div className="min-w-0 flex-1">
                   <p className="text-xs font-bold text-stone-800">
                     Payment Notifications
                   </p>
-                  <p className="text-[11px] text-stone-400">
+
+                  <p className="text-[11px] text-stone-400 break-words">
                     Deposits, balances and receipts
                   </p>
                 </div>
+
                 <button
                   type="button"
                   onClick={() => setPaymentNotifications(!paymentNotifications)}
-                  className={`w-11 h-6 flex items-center rounded-full p-1 transition-colors ${paymentNotifications ? "bg-[#1B4D3E]" : "bg-stone-300"}`}
+                  className={`w-11 h-6 shrink-0 flex items-center rounded-full p-1 transition-colors ${
+                    paymentNotifications ? "bg-[#1B4D3E]" : "bg-stone-300"
+                  }`}
                 >
                   <div
-                    className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform ${paymentNotifications ? "translate-x-5" : "translate-x-0"}`}
+                    className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform ${
+                      paymentNotifications ? "translate-x-5" : "translate-x-0"
+                    }`}
                   />
                 </button>
               </div>
 
-              <div className="flex justify-between items-center pt-4">
-                <div>
+              {/* Reminder Alerts */}
+              <div className="flex justify-between items-center gap-4 pt-4 min-w-0">
+                <div className="min-w-0 flex-1">
                   <p className="text-xs font-bold text-stone-800">
                     Reminder Alerts
                   </p>
-                  <p className="text-[11px] text-stone-400">
+
+                  <p className="text-[11px] text-stone-400 break-words">
                     Drop-off and collection reminders
                   </p>
                 </div>
+
                 <button
                   type="button"
                   onClick={() => setReminderAlerts(!reminderAlerts)}
-                  className={`w-11 h-6 flex items-center rounded-full p-1 transition-colors ${reminderAlerts ? "bg-[#1B4D3E]" : "bg-stone-300"}`}
+                  className={`w-11 h-6 shrink-0 flex items-center rounded-full p-1 transition-colors ${
+                    reminderAlerts ? "bg-[#1B4D3E]" : "bg-stone-300"
+                  }`}
                 >
                   <div
-                    className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform ${reminderAlerts ? "translate-x-5" : "translate-x-0"}`}
+                    className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform ${
+                      reminderAlerts ? "translate-x-5" : "translate-x-0"
+                    }`}
                   />
                 </button>
               </div>
 
-              <div className="flex justify-between items-center pt-4">
-                <div>
+              {/* SMS Notifications */}
+              <div className="flex justify-between items-center gap-4 pt-4 min-w-0">
+                <div className="min-w-0 flex-1">
                   <p className="text-xs font-bold text-stone-800">
                     SMS Notifications
                   </p>
-                  <p className="text-[11px] text-stone-400">
+
+                  <p className="text-[11px] text-stone-400 break-words">
                     Works without data
                   </p>
                 </div>
+
                 <button
                   type="button"
                   onClick={() => setSmsNotifications(!smsNotifications)}
-                  className={`w-11 h-6 flex items-center rounded-full p-1 transition-colors ${smsNotifications ? "bg-[#1B4D3E]" : "bg-stone-300"}`}
+                  className={`w-11 h-6 shrink-0 flex items-center rounded-full p-1 transition-colors ${
+                    smsNotifications ? "bg-[#1B4D3E]" : "bg-stone-300"
+                  }`}
                 >
                   <div
-                    className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform ${smsNotifications ? "translate-x-5" : "translate-x-0"}`}
+                    className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform ${
+                      smsNotifications ? "translate-x-5" : "translate-x-0"
+                    }`}
                   />
                 </button>
               </div>
 
-              <div className="flex justify-between items-center pt-4">
-                <div>
+              {/* Email Notifications */}
+              <div className="flex justify-between items-center gap-4 pt-4 min-w-0">
+                <div className="min-w-0 flex-1">
                   <p className="text-xs font-bold text-stone-800">
                     Email Notifications
                   </p>
-                  <p className="text-[11px] text-stone-400">
+
+                  <p className="text-[11px] text-stone-400 break-words">
                     Detailed summaries and receipts
                   </p>
                 </div>
+
                 <button
                   type="button"
                   onClick={() => setEmailNotifications(!emailNotifications)}
-                  className={`w-11 h-6 flex items-center rounded-full p-1 transition-colors ${emailNotifications ? "bg-[#1B4D3E]" : "bg-stone-300"}`}
+                  className={`w-11 h-6 shrink-0 flex items-center rounded-full p-1 transition-colors ${
+                    emailNotifications ? "bg-[#1B4D3E]" : "bg-stone-300"
+                  }`}
                 >
                   <div
-                    className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform ${emailNotifications ? "translate-x-5" : "translate-x-0"}`}
+                    className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform ${
+                      emailNotifications ? "translate-x-5" : "translate-x-0"
+                    }`}
                   />
                 </button>
               </div>
             </div>
-
-            {/* <div className="flex justify-end pt-2">
-              <button
-                type="button"
-                onClick={handleSavePreferences}
-                disabled={updateProfileMutation.isPending}
-                className="bg-[#D9822B] hover:bg-[#c47323] text-white px-6 py-2.5 rounded-full text-xs font-semibold shadow-sm transition-colors disabled:opacity-50"
-              >
-                {updateProfileMutation.isPending
-                  ? "Saving..."
-                  : "Save Preferences"}
-              </button>
-            </div> */}
           </div>
 
           {/* 3. Account Security Section */}
-          <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-stone-100 space-y-6">
+          <div className="w-full min-w-0 bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-stone-100 space-y-6">
             <div>
               <h3 className="text-base font-bold text-stone-900">
                 Account Security
               </h3>
+
               <p className="text-xs text-stone-500">
                 Keep your account protected.
               </p>
             </div>
 
-            <div className="flex justify-between items-center bg-stone-50 p-4 rounded-2xl border border-stone-100">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-white border border-stone-200 flex items-center justify-center text-stone-700 shadow-sm">
+            <div className="flex justify-between items-center gap-4 bg-stone-50 p-4 rounded-2xl border border-stone-100 min-w-0">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-9 h-9 shrink-0 rounded-xl bg-white border border-stone-200 flex items-center justify-center text-stone-700 shadow-sm">
                   <Lock className="h-4 w-4" />
                 </div>
-                <div>
+
+                <div className="min-w-0">
                   <p className="text-xs font-bold text-stone-800">Password</p>
-                  <p className="text-[11px] text-stone-400">
+
+                  <p className="text-[11px] text-stone-400 truncate">
                     {user?.passwordLastChanged || "Password never changed"}
                   </p>
                 </div>
               </div>
+
               <button
+                type="button"
                 onClick={() => {
                   setPasswordError("");
                   setPasswordSuccess("");
                   setIsPasswordModalOpen(true);
                 }}
-                className="bg-white hover:bg-stone-100 text-stone-800 border border-stone-200 px-4 py-2 rounded-full text-xs font-semibold shadow-sm transition-colors"
+                className="shrink-0 bg-white hover:bg-stone-100 text-stone-800 border border-stone-200 px-4 py-2 rounded-full text-xs font-semibold shadow-sm transition-colors"
               >
                 Change Password
               </button>
@@ -638,14 +677,20 @@ export default function ProfilePage() {
           </div>
 
           {/* Log Out & Save All Actions */}
-          <div className="flex justify-between items-center pt-2">
-            <button className="text-red-500 hover:text-red-600 text-xs font-bold flex items-center gap-1.5 px-2">
-              <LogOut className="h-4 w-4" /> Log out
-            </button>
+          <div className="flex justify-between items-center gap-4 pt-2">
             <button
+              type="button"
+              className="shrink-0 text-red-500 hover:text-red-600 text-xs font-bold flex items-center gap-1.5 px-2"
+            >
+              <LogOut className="h-4 w-4" />
+              Log out
+            </button>
+
+            <button
+              type="button"
               onClick={handleSaveAll}
               disabled={updateProfileMutation.isPending}
-              className="bg-[#D9822B] hover:bg-[#c47323] text-white px-8 py-3 rounded-full text-xs font-bold shadow-sm transition-colors disabled:opacity-50"
+              className="shrink-0 bg-[#D9822B] hover:bg-[#c47323] text-white px-8 py-3 rounded-full text-xs font-bold shadow-sm transition-colors disabled:opacity-50"
             >
               {updateProfileMutation.isPending
                 ? "Saving All..."
@@ -656,20 +701,27 @@ export default function ProfilePage() {
       </div>
 
       {/* Bottom Assistance Banner */}
-      <div className="max-w-7xl mx-auto mt-16 bg-[#1B4D3E] rounded-3xl p-8 md:p-12 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg">
-        <div className="flex items-center gap-5 text-center md:text-left flex-col md:flex-row">
+      <div className="w-full mt-16 bg-[#1B4D3E] rounded-3xl p-8 md:p-12 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg">
+        <div className="flex items-center gap-5 text-center md:text-left flex-col md:flex-row min-w-0">
           <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center shrink-0 border border-white/20">
             <HelpCircle className="h-7 w-7 text-white" />
           </div>
-          <div>
+
+          <div className="min-w-0">
             <h3 className="text-xl md:text-2xl font-bold">Need assistance?</h3>
+
             <p className="text-stone-200 text-xs md:text-sm mt-1">
               Our support team is available 7 days a week.
             </p>
           </div>
         </div>
-        <button className="bg-[#D9822B] hover:bg-[#c47323] text-white px-8 py-3.5 rounded-full text-xs font-bold shadow-md transition-colors flex items-center gap-2">
-          Contact Support <Phone className="h-3.5 w-3.5" />
+
+        <button
+          type="button"
+          className="shrink-0 bg-[#D9822B] hover:bg-[#c47323] text-white px-8 py-3.5 rounded-full text-xs font-bold shadow-md transition-colors flex items-center gap-2"
+        >
+          Contact Support
+          <Phone className="h-3.5 w-3.5" />
         </button>
       </div>
 
@@ -681,7 +733,9 @@ export default function ProfilePage() {
               <h3 className="text-base font-bold text-stone-900">
                 {previewUrl ? "Preview New Avatar" : "Manage Profile Picture"}
               </h3>
+
               <button
+                type="button"
                 onClick={() => {
                   setIsAvatarModalOpen(false);
                   setSelectedFile(null);
@@ -706,6 +760,7 @@ export default function ProfilePage() {
                 <p className="text-xs text-stone-500 mb-2">
                   What would you like to do with your profile picture?
                 </p>
+
                 <button
                   type="button"
                   onClick={() => {
@@ -735,6 +790,7 @@ export default function ProfilePage() {
                 <p className="text-xs text-stone-500">
                   Do you want to use this image as your new profile picture?
                 </p>
+
                 <div className="flex gap-3 pt-2">
                   <button
                     type="button"
@@ -742,15 +798,16 @@ export default function ProfilePage() {
                       setSelectedFile(null);
                       setPreviewUrl(null);
                     }}
-                    className="flex-1 py-2.5 rounded-full text-xs font-semibold border border-stone-200 text-stone-700 hover:bg-stone-50 transition-colors"
+                    className="flex-1 min-w-0 py-2.5 rounded-full text-xs font-semibold border border-stone-200 text-stone-700 hover:bg-stone-50 transition-colors"
                   >
                     Choose Different
                   </button>
+
                   <button
                     type="button"
                     onClick={handleConfirmUpload}
                     disabled={uploadAvatarMutation.isPending}
-                    className="flex-1 bg-[#D9822B] hover:bg-[#c47323] text-white py-2.5 rounded-full text-xs font-semibold shadow-sm transition-colors disabled:opacity-50"
+                    className="flex-1 min-w-0 bg-[#D9822B] hover:bg-[#c47323] text-white py-2.5 rounded-full text-xs font-semibold shadow-sm transition-colors disabled:opacity-50"
                   >
                     {uploadAvatarMutation.isPending
                       ? "Uploading..."
@@ -768,17 +825,20 @@ export default function ProfilePage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
           <div className="bg-white w-full max-w-md rounded-3xl p-6 md:p-8 shadow-xl border border-stone-100 relative space-y-6">
             <div className="flex justify-between items-center">
-              <div>
+              <div className="min-w-0">
                 <h3 className="text-lg font-bold text-stone-900">
                   Change Password
                 </h3>
+
                 <p className="text-xs text-stone-500">
                   Enter your current and new password below.
                 </p>
               </div>
+
               <button
+                type="button"
                 onClick={() => setIsPasswordModalOpen(false)}
-                className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 flex items-center justify-center text-stone-600 transition-colors"
+                className="w-8 h-8 shrink-0 rounded-full bg-stone-100 hover:bg-stone-200 flex items-center justify-center text-stone-600 transition-colors"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -789,6 +849,7 @@ export default function ProfilePage() {
                 {passwordError}
               </div>
             )}
+
             {passwordSuccess && (
               <div className="bg-emerald-50 text-[#1B4D3E] text-xs p-3 rounded-xl font-medium">
                 {passwordSuccess}
@@ -800,6 +861,7 @@ export default function ProfilePage() {
                 <label className="block text-xs font-medium text-stone-600 mb-1.5">
                   Current Password
                 </label>
+
                 <div className="relative">
                   <input
                     type={showCurrentPassword ? "text" : "password"}
@@ -809,6 +871,7 @@ export default function ProfilePage() {
                     placeholder="••••••••"
                     className="w-full bg-white border border-stone-200 rounded-xl pl-4 pr-10 py-3 text-xs text-stone-800 focus:outline-none focus:border-[#1B4D3E]"
                   />
+
                   <button
                     type="button"
                     onClick={() => setShowCurrentPassword(!showCurrentPassword)}
@@ -827,6 +890,7 @@ export default function ProfilePage() {
                 <label className="block text-xs font-medium text-stone-600 mb-1.5">
                   New Password
                 </label>
+
                 <div className="relative">
                   <input
                     type={showNewPassword ? "text" : "password"}
@@ -836,6 +900,7 @@ export default function ProfilePage() {
                     placeholder="••••••••"
                     className="w-full bg-white border border-stone-200 rounded-xl pl-4 pr-10 py-3 text-xs text-stone-800 focus:outline-none focus:border-[#1B4D3E]"
                   />
+
                   <button
                     type="button"
                     onClick={() => setShowNewPassword(!showNewPassword)}
@@ -854,6 +919,7 @@ export default function ProfilePage() {
                 <label className="block text-xs font-medium text-stone-600 mb-1.5">
                   Confirm New Password
                 </label>
+
                 <div className="relative">
                   <input
                     type={showConfirmPassword ? "text" : "password"}
@@ -863,6 +929,7 @@ export default function ProfilePage() {
                     placeholder="••••••••"
                     className="w-full bg-white border border-stone-200 rounded-xl pl-4 pr-10 py-3 text-xs text-stone-800 focus:outline-none focus:border-[#1B4D3E]"
                   />
+
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
@@ -885,6 +952,7 @@ export default function ProfilePage() {
                 >
                   Cancel
                 </button>
+
                 <button
                   type="submit"
                   disabled={passwordMutation.isPending}

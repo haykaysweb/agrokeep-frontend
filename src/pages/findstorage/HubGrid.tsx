@@ -8,27 +8,31 @@ interface HubsGridProps {
 
 export default function HubsGrid({ stateGroups }: HubsGridProps) {
   return (
-    <div className="bg-[#FAF7F0] py-10 md:px-6 space-y-16">
+    <div className="w-full">
       {stateGroups.map((section, idx) => (
-        <section key={section.state || idx} className="max-w-7xl mx-auto">
-          <div className="flex justify-between gap-3 md:gap-0 items-end mb-6">
-            <h2 className="text-3xl font-bold text-stone-900">
-              Featured{" "}
-              <span className="text-[#1B4D3E]">
-                Storage Hubs in {section.state} State
-              </span>
+        <section
+          key={section.state || idx}
+          className={`w-full  ${idx !== stateGroups.length - 1 ? "mb-10" : ""}`}
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl sm:text-3xl font-bold text-stone-900 leading-tight">
+              Featured <span className="text-[#1B4D3E]">Storage Hubs</span> in{" "}
+              {section.state} State
             </h2>
+
+            {/* Desktop See All */}
             <Link
               to={`/storage/all?state=${encodeURIComponent(section.state)}`}
-              className="text-[#1B4D3E] font-bold"
+              className="hidden sm:block text-[#1B4D3E] font-bold shrink-0"
             >
               See all →
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {section.hubs.map((hub) => {
-              // Destructure images out so TypeScript doesn't conflict types
               const { images, ...restHub } = hub;
 
               return (
@@ -44,6 +48,16 @@ export default function HubsGrid({ stateGroups }: HubsGridProps) {
                 />
               );
             })}
+          </div>
+
+          {/* Mobile See All */}
+          <div className="mt-5 flex justify-end sm:hidden">
+            <Link
+              to={`/storage/all?state=${encodeURIComponent(section.state)}`}
+              className="text-[#1B4D3E] font-bold"
+            >
+              See all →
+            </Link>
           </div>
         </section>
       ))}

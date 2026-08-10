@@ -3,13 +3,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, Book, Menu, X } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useQueryClient } from "@tanstack/react-query";
+
 import UserAvatar from "./UserAvatar";
 import { useAuth } from "@/hooks/useAuth";
-import Logo from "./Logo";
 import { logoutUserApi } from "@/api/auth";
 import { navigateWithDelay } from "@/utils/navigation";
 import { showToast } from "@/utils/CustomToast";
 import LogoutModal from "./LogoutModal";
+import Logo from "./Logo";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -20,6 +21,7 @@ const navLinks = [
 
 export default function Navbar() {
   const { user, isAuthenticating, setUser } = useAuth();
+
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
@@ -27,6 +29,9 @@ export default function Navbar() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
+  /*
+   * Mobile logout
+   */
   const initiateLogout = () => {
     setIsOpen(false);
     setIsLogoutModalOpen(true);
@@ -34,31 +39,45 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     setIsLogoutModalOpen(false);
+
     try {
       await logoutUserApi();
+
       showToast.success("Logged out successfully");
-      navigateWithDelay(navigate, "/auth/login");
-    } catch (error) {
-      showToast.error("Failed to log out.");
-    } finally {
+
       setUser(null);
       queryClient.setQueryData(["currentUser"], null);
+
+      navigateWithDelay(navigate, "/auth/login");
+    } catch {
+      showToast.error("Failed to log out.");
     }
   };
 
+  /*
+   * Navbar scroll behavior
+   */
   useEffect(() => {
     let ticking = false;
+
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           setIsScrolled(window.scrollY > 20);
           ticking = false;
         });
+
         ticking = true;
       }
     };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   return (
@@ -72,9 +91,10 @@ export default function Navbar() {
             : "bg-background border-transparent"
         }`}
       >
-        <div className="w-full max-w-7xl mx-auto px-4 md:px-12 h-20 flex items-center justify-between">
+        {/* Main Navbar Container */}
+        <div className="max-w-7xl mx-auto px-4 md:px-12 h-20 flex items-center justify-between">
           <Logo />
-
+          {/* Desktop Navigation Links */}
           <ul className="hidden lg:flex items-center gap-10">
             {navLinks.map((link) => (
               <li key={link.name}>
@@ -88,6 +108,7 @@ export default function Navbar() {
             ))}
           </ul>
 
+          {/* Desktop Authentication Section */}
           <div className="hidden lg:flex items-center gap-6 min-h-[40px]">
             {isAuthenticating ? (
               <div className="flex items-center gap-6">
@@ -95,14 +116,7 @@ export default function Navbar() {
                 <div className="h-10 w-32 animate-pulse rounded-full bg-border-light/50" />
               </div>
             ) : user ? (
-              <button
-                type="button"
-                onClick={() => navigate("/profile")}
-                className="cursor-pointer inline-block"
-                aria-label="Go to profile"
-              >
-                <UserAvatar name={user.fullName || "User"} />
-              </button>
+              <UserAvatar name={user.fullName || "User"} />
             ) : (
               <>
                 <Link
@@ -138,14 +152,19 @@ export default function Navbar() {
             )}
           </div>
 
+          {/* Mobile Menu Button */}
           <button
+            type="button"
             className="lg:hidden p-2 text-text-main"
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={() => setIsOpen((prev) => !prev)}
+            aria-label={isOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isOpen}
           >
             {isOpen ? <X /> : <Menu />}
           </button>
         </div>
 
+        {/* Mobile Navigation */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
@@ -154,32 +173,61 @@ export default function Navbar() {
               exit={{ height: 0, opacity: 0 }}
               className="lg:hidden absolute top-20 left-0 w-full bg-background backdrop-blur-sm border-b border-border-light overflow-hidden"
             >
+              {/* Logged-in User Information */}
               {user && (
                 <div className="max-w-7xl mx-auto px-4 md:px-12 pt-6 pb-2">
                   <div className="flex items-center gap-3 py-4 rounded-xl">
-                    <div className="h-10 w-10 flex items-center justify-center rounded-full bg-brand-primary text-white font-semibold">
-                      {user.fullName.charAt(0).toUpperCase()}
+                    {/* User Avatar */}
+                    <div className="h-10 w-10 rounded-full overflow-hidden bg-brand-primary flex items-center justify-center shrink-0">
+                      {user.avatarUrl ? (
+                        <img
+                          src={user.avatarUrl}
+                          alt={user.fullName || "User"}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-sm font-semibold text-white">
+                          {user.fullName?.charAt(0).toUpperCase() || "U"}
+                        </span>
+                      )}
                     </div>
-                    <div>
-                      <p className="text-lg font-semibold text-text-main">
-                        {user.fullName}
+
+                    {/* User Information */}
+                    <div className="min-w-0">
+                      <p className="text-lg font-semibold text-text-main truncate">
+                        {user.fullName || "User"}
                       </p>
-                      <p className="text-xs text-stone-500">{user.email}</p>
+
+                      <p className="text-xs text-stone-500 truncate">
+                        {user.email || ""}
+                      </p>
                     </div>
                   </div>
                 </div>
               )}
 
-              <ul className="flex flex-col p-6 gap-6 max-w-7xl mx-auto px-4 md:px-12">
-                <Link
-                  to="/storage/bookings"
-                  className="flex items-center gap-3  text-text-main hover:bg-stone-50 transition-colors"
-                  onClick={() => setIsOpen(false)}
-                >
-                  <Book className="h-5 w-5" />
-                  My Bookings
-                </Link>
-                <hr className="border-stone-100" />
+              <ul className="flex flex-col gap-6 max-w-7xl mx-auto px-4 md:px-12 p-6">
+                {/* My Bookings */}
+                {user && (
+                  <>
+                    <li>
+                      <Link
+                        to="/storage/bookings"
+                        className="flex items-center gap-3 text-text-main hover:bg-stone-50 transition-colors"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <Book className="h-5 w-5" />
+                        <span>My Bookings</span>
+                      </Link>
+                    </li>
+
+                    <li>
+                      <hr className="border-stone-100" />
+                    </li>
+                  </>
+                )}
+
+                {/* Main Navigation Links */}
                 {navLinks.map((link) => (
                   <li key={link.name}>
                     <Link
@@ -192,16 +240,18 @@ export default function Navbar() {
                   </li>
                 ))}
 
-                <div className="mt-4 border-t border-border-light flex flex-col gap-4">
+                {/* Mobile Authentication Actions */}
+                <li className="mt-4 border-t border-border-light pt-4">
                   {user ? (
                     <button
+                      type="button"
                       onClick={initiateLogout}
                       className="text-red-600 font-medium text-lg text-left py-4"
                     >
                       Logout
                     </button>
                   ) : (
-                    <>
+                    <div className="flex flex-col gap-4">
                       <Link
                         to="/auth/login"
                         className="bg-brand-primary text-text-light py-3 px-6 rounded-full text-center font-medium"
@@ -209,6 +259,7 @@ export default function Navbar() {
                       >
                         Sign in
                       </Link>
+
                       <Link
                         to="/auth/register"
                         className="bg-brand-primary text-text-light py-3 px-6 rounded-full text-center"
@@ -216,14 +267,16 @@ export default function Navbar() {
                       >
                         Get Started
                       </Link>
-                    </>
+                    </div>
                   )}
-                </div>
+                </li>
               </ul>
             </motion.div>
           )}
         </AnimatePresence>
       </motion.nav>
+
+      {/* Mobile Logout Confirmation Modal */}
       <LogoutModal
         isOpen={isLogoutModalOpen}
         onClose={() => setIsLogoutModalOpen(false)}

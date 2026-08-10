@@ -7,6 +7,8 @@ export interface User {
   phone: string;
   emailVerified: boolean;
   role: string;
+  avatarUrl?: string;
+  avatarPublicId?: string;
 }
 
 export interface AuthContextType {
@@ -26,11 +28,12 @@ export const AuthProviderContext = createContext<AuthContextType>({
   refetchUser: async () => {},
 });
 
-// The hook to use in your components
 export const useAuth = () => {
   const context = useContext(AuthProviderContext);
+
   if (context === undefined) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
+
   return context;
 };

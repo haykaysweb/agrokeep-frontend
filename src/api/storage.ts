@@ -35,12 +35,8 @@ export const getStorageHubsGroupedByState = async (): Promise<StateGroup[]> => {
     "/hub/grouped-by-state",
   );
 
-  // 🔍 This will print your data straight to your browser console when it works!
-  console.log("Real API Data Response:", response.data);
-
   return response.data.data || [];
 };
-
 
 export interface FilterHubsParams {
   locationState?: string;
@@ -57,8 +53,9 @@ export interface FilterHubsResponse {
 }
 
 // Function to fetch filtered storage hubs using query parameters
-export const filterStorageHubs = async (params: FilterHubsParams): Promise<Hub[]> => {
-  console.log("Sending Filter Request with Params:", params);
+export const filterStorageHubs = async (
+  params: FilterHubsParams,
+): Promise<Hub[]> => {
   const response = await apiClient.get<FilterHubsResponse>("/hub/filter", {
     params,
   });

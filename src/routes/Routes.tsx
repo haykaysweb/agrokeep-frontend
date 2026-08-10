@@ -18,18 +18,14 @@ import {
 
 const Routes = () => {
   const routes = [
-    // =========================================================
-    // PUBLIC APPLICATION ROUTES
-    // =========================================================
     {
       path: "/",
       Component: RootLayout,
       ErrorBoundary: ErrorBoundary,
 
       children: [
-        // -------------------------------------------------------
         // HOME
-        // -------------------------------------------------------
+
         {
           index: true,
           lazy: async () => {
@@ -38,9 +34,8 @@ const Routes = () => {
           },
         },
 
-        // -------------------------------------------------------
         // STORAGE
-        // -------------------------------------------------------
+
         {
           path: "storage",
           lazy: async () => {
@@ -80,12 +75,9 @@ const Routes = () => {
               },
             },
 
-            // ---------------------------------------------------
             // AUTHENTICATED BOOKING ROUTES
-            // ---------------------------------------------------
             {
               Component: PrivateRoute,
-
               children: [
                 // /storage/booking
                 {
@@ -117,12 +109,9 @@ const Routes = () => {
                   },
                 },
 
-                // -------------------------------------------------
-                // PAYMENT FLOW
-                // -------------------------------------------------
                 // These routes require:
-                // 1. User authentication
-                // 2. A valid booking flow / bookingId
+                //  User authentication
+                //  A valid booking flow / bookingId
                 {
                   Component: RequireBookingRoute,
 
@@ -153,12 +142,7 @@ const Routes = () => {
           ],
         },
 
-        // -------------------------------------------------------
-        // PAYSTACK CALLBACK
-        // -------------------------------------------------------
-        //
         // Paystack redirects here after payment.
-        //
         // IMPORTANT:
         // This must NOT be inside RequireBookingRoute because
         // Paystack needs to be able to redirect here directly.
@@ -176,21 +160,17 @@ const Routes = () => {
           },
         },
 
-        // -------------------------------------------------------
         // PROFILE
-        // -------------------------------------------------------
         {
           path: "profile",
           lazy: async () => {
             const { default: Component } =
-              await import("../layouts/ProfileLayout");
+              await import("../pages/profile/Profile");
             return { Component };
           },
         },
 
-        // -------------------------------------------------------
         // ABOUT
-        // -------------------------------------------------------
         {
           path: "about",
           lazy: async () => {
@@ -199,9 +179,7 @@ const Routes = () => {
           },
         },
 
-        // -------------------------------------------------------
         // CONTACT
-        // -------------------------------------------------------
         {
           path: "contact",
           lazy: async () => {
@@ -213,9 +191,7 @@ const Routes = () => {
       ],
     },
 
-    // =========================================================
     // AUTH ROUTES
-    // =========================================================
     {
       path: "auth",
       Component: AuthLayout,

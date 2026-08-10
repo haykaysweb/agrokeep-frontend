@@ -1,6 +1,5 @@
 import apiClient from "./apiClient";
 
-
 export interface UserProfile {
   _id?: string;
   fullName?: string;
@@ -17,7 +16,6 @@ export interface UserProfile {
 
 export async function getUserProfile(): Promise<UserProfile> {
   const response = await apiClient.get("/user/profile");
-  console.log("getUserProfile response:", response.data);
   return response.data.data || response.data;
 }
 
@@ -33,10 +31,9 @@ export interface UpdateProfilePayload {
   };
 }
 
-
 export async function updateProfile(payload: UpdateProfilePayload) {
   const response = await apiClient.patch("/user/update-profile", payload);
-  console.log("updateProfile response:", response.data);
+
   return response.data;
 }
 
@@ -49,7 +46,6 @@ export async function uploadAvatar(file: File) {
       "Content-Type": "multipart/form-data",
     },
   });
-  console.log("uploadAvatar response:", response.data);
   return response.data;
 }
 
@@ -66,7 +62,6 @@ export interface ChangePasswordPayload {
 
 export async function changePassword(payload: ChangePasswordPayload) {
   const response = await apiClient.post("/user/change-password", payload);
-  console.log("changePassword response:", response.data);
+
   return response.data;
 }
-
