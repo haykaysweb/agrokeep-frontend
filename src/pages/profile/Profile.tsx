@@ -335,12 +335,6 @@ export default function Profile() {
           we can match you with the right storage for every harvest.
         </p>
 
-        {profileSuccess && (
-          <div className="mt-4 bg-emerald-50 text-[#1B4D3E] text-xs p-3 rounded-xl font-medium max-w-md">
-            {profileSuccess}
-          </div>
-        )}
-
         {profileError && (
           <div className="mt-4 bg-red-50 text-red-600 text-xs p-3 rounded-xl font-medium max-w-md">
             {profileError}
