@@ -7,7 +7,7 @@ export interface User {
   phone: string;
   emailVerified: boolean;
   role: string;
-  avatarUrl?: string;
+  avatarUrl?: string | null;
   avatarPublicId?: string;
 }
 

@@ -15,6 +15,7 @@ import {
   PrivateRoute,
   RequireBookingRoute,
 } from "./ProtectedRoutes";
+import SuspenseUi from "@/components/ui/SuspenseUi";
 
 const Routes = () => {
   const routes = [
@@ -22,10 +23,9 @@ const Routes = () => {
       path: "/",
       Component: RootLayout,
       ErrorBoundary: ErrorBoundary,
-
+      hydrateFallbackElement: <SuspenseUi />,
       children: [
         // HOME
-
         {
           index: true,
           lazy: async () => {

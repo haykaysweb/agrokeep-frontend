@@ -106,7 +106,7 @@ export default function VerifyHubs() {
   return (
     <section
       id="find-storage"
-      className="w-full max-w-7xl mx-auto px-4 md:px-12 py-18 flex flex-col space-y-8 font-sans"
+      className="w-full max-w-7xl mx-auto px-4 md:px-12 py-5 flex flex-col space-y-8 font-sans"
     >
       {/* Header */}
       <div className="flex justify-between items-end">

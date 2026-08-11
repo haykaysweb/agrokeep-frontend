@@ -42,7 +42,7 @@ export default function ForFarmers() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
-        className="max-w-7xl mx-auto px-4 md:px-12 py-16"
+        className="max-w-7xl mx-auto px-4 md:px-12 py-10"
       >
         {/* Main Content Area */}
         <div className="flex flex-col lg:flex-row items-center gap-12 mb-16">

@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, Book, Menu, X } from "lucide-react";
+import { ArrowUpRight, Book, BookCheck, Menu, User, X } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useQueryClient } from "@tanstack/react-query";
-
 import UserAvatar from "./UserAvatar";
 import { useAuth } from "@/hooks/useAuth";
 import { logoutUserApi } from "@/api/auth";
@@ -210,16 +209,23 @@ export default function Navbar() {
                 {/* My Bookings */}
                 {user && (
                   <>
-                    <li>
-                      <Link
-                        to="/storage/bookings"
-                        className="flex items-center gap-3 text-text-main hover:bg-stone-50 transition-colors"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        <Book className="h-5 w-5" />
-                        <span>My Bookings</span>
-                      </Link>
-                    </li>
+                  <Link
+                      to="/profile"
+                      className="flex items-center gap-3 text-text-main hover:bg-stone-50 transition-colors"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <User className="h-5 w-5" />
+                      <span>My Profile</span>
+                    </Link>
+
+                    <Link
+                      to="/storage/bookings"
+                      className="flex items-center gap-3 text-text-main hover:bg-stone-50 transition-colors"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <BookCheck className="h-5 w-5" />
+                      <span>My Bookings</span>
+                    </Link>
 
                     <li>
                       <hr className="border-stone-100" />

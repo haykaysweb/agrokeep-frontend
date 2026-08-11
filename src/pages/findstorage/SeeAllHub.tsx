@@ -43,7 +43,7 @@ export default function SeeAllHubsPage() {
   return (
     <div>
       {/* 1. Hero Section */}
-      <section className="relative h-[420px] overflow-visible">
+      <section className="relative overflow-visible">
         {/* Hero Background */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -75,7 +75,7 @@ export default function SeeAllHubsPage() {
         </div>
 
         {/* Filter Bar */}
-        <div className="absolute -bottom-37 left-1/2 z-30 flex w-full max-w-6xl -translate-x-1/2 justify-between items-center gap-3 overflow-x-auto rounded-3xl border border-stone-100 bg-white p-3 shadow-lg no-scrollbar md:p-6">
+        <div className="hidden absolute -bottom-11 left-1/2 z-30 w-full max-w-4xl lg:max-w-5xl -translate-x-1/2 justify-between items-center gap-3 overflow-x-auto rounded-3xl border border-stone-100 bg-white p-3 shadow-lg no-scrollbar lg:flex lg:p-6">
           <button className="flex cursor-pointer shrink-0 items-center gap-2 rounded-full border border-stone-200 bg-white px-10 py-3 text-xs font-semibold text-stone-800 transition-colors hover:bg-stone-50">
             <SlidersHorizontal className="h-3.5 w-3.5" />
             Filters
@@ -141,7 +141,7 @@ export default function SeeAllHubsPage() {
       </section>
 
       {/* 2. Main Content Grid & Map View */}
-      <div className="mx-auto mt-50 max-w-7xl px-4 sm:px-6 md:px-12">
+      <div className="mx-auto max-w-7xl px-4 md:px-12 mt-20">
         <h2 className="mb-8 text-2xl font-bold text-stone-900 md:text-3xl">
           {filteredHubs.length} Verified{" "}
           <span className="text-[#1B4D3E]">

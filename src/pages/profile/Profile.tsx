@@ -20,8 +20,10 @@ import {
   uploadAvatar,
 } from "@/api/profile";
 import { showToast } from "@/utils/CustomToast";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Profile() {
+  const { user: authUser, setUser } = useAuth();
   const queryClient = useQueryClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -77,11 +79,9 @@ export default function Profile() {
     onSuccess: (data) => {
       showToast.success(data?.message || "Profile updated successfully");
       setProfileError("");
-
       queryClient.invalidateQueries({
         queryKey: ["userProfile"],
       });
-
       queryClient.invalidateQueries({
         queryKey: ["currentUser"],
       });
@@ -97,66 +97,98 @@ export default function Profile() {
   const uploadAvatarMutation = useMutation({
     mutationFn: uploadAvatar,
     onSuccess: (response) => {
-      setProfileSuccess(response?.message || "Avatar uploaded successfully");
+      showToast.success(response?.message || "Avatar uploaded successfully");
       setProfileError("");
       setIsAvatarModalOpen(false);
       setSelectedFile(null);
       setPreviewUrl(null);
 
-      // Map backend's 'avatarUrl' directly into your query cache
       const updatedUser = response?.data;
-      if (updatedUser) {
+
+      if (updatedUser?.avatarUrl) {
+        // Update React Query profile cache
         queryClient.setQueryData(["userProfile"], (oldData: any) => {
           if (!oldData) return oldData;
+
           if (oldData.user) {
             return {
               ...oldData,
-              user: { ...oldData.user, avatarUrl: updatedUser.avatarUrl },
+              user: {
+                ...oldData.user,
+                avatarUrl: updatedUser.avatarUrl,
+              },
             };
           }
-          return { ...oldData, avatarUrl: updatedUser.avatarUrl };
+          return {
+            ...oldData,
+            avatarUrl: updatedUser.avatarUrl,
+          };
         });
-      }
 
-      queryClient.invalidateQueries({ queryKey: ["userProfile"] });
-      setTimeout(() => setProfileSuccess(""), 3000);
+        // Update authenticated user immediately
+        if (authUser) {
+          setUser({
+            ...authUser,
+            avatarUrl: updatedUser.avatarUrl,
+          });
+        }
+      }
+      queryClient.invalidateQueries({
+        queryKey: ["userProfile"],
+      });
     },
+
     onError: (err: any) => {
-      setProfileError(
-        err?.response?.data?.message || "Failed to upload avatar.",
-      );
-      setProfileSuccess("");
+      const message =
+        err?.response?.data?.message || "Failed to upload avatar.";
+      showToast.error(message);
+      setProfileError("");
     },
   });
 
-  // 1. Add delete avatar mutation
   const deleteAvatarMutation = useMutation({
     mutationFn: deleteAvatar,
     onSuccess: (response) => {
-      setProfileSuccess(response?.message || "Avatar removed successfully");
-      setProfileError("");
+      showToast.success(response?.message || "Avatar removed successfully");
       setIsAvatarModalOpen(false);
+      setProfileError("");
+      // Clear avatarUrl from React Query profile cache immediately
+      queryClient.setQueryData(["userProfile"], (oldData: any) => {
+        if (!oldData) return oldData;
 
-      // Clear avatarUrl from cache immediately
-      const updatedUser = response?.data;
-      if (updatedUser) {
-        queryClient.setQueryData(["userProfile"], (oldData: any) => {
-          if (!oldData) return oldData;
-          if (oldData.user) {
-            return { ...oldData, user: { ...oldData.user, avatarUrl: null } };
-          }
-          return { ...oldData, avatarUrl: null };
+        if (oldData.user) {
+          return {
+            ...oldData,
+            user: {
+              ...oldData.user,
+              avatarUrl: null,
+            },
+          };
+        }
+        return {
+          ...oldData,
+          avatarUrl: null,
+        };
+      });
+
+      // Clear avatar from authenticated user immediately
+      if (authUser) {
+        setUser({
+          ...authUser,
+          avatarUrl: null,
         });
       }
 
-      queryClient.invalidateQueries({ queryKey: ["userProfile"] });
-      setTimeout(() => setProfileSuccess(""), 3000);
+      // Re-fetch profile data to keep everything in sync
+      queryClient.invalidateQueries({
+        queryKey: ["userProfile"],
+      });
     },
+
     onError: (err: any) => {
-      setProfileError(
+      showToast.error(
         err?.response?.data?.message || "Failed to remove avatar.",
       );
-      setProfileSuccess("");
     },
   });
 
@@ -270,7 +302,7 @@ export default function Profile() {
 
   if (isLoading) {
     return (
-<div className="min-h-[calc(100vh-80px)] flex items-center justify-center px-4">
+      <div className="min-h-[calc(100vh-80px)] flex items-center justify-center px-4">
         <div className="text-center">
           <div className="w-10 h-10 border-4 border-brand-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
 
