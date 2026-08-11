@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, Book, BookCheck, Menu, User, X } from "lucide-react";
+import { ArrowUpRight, BookCheck, Menu, User, X } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import UserAvatar from "./UserAvatar";
