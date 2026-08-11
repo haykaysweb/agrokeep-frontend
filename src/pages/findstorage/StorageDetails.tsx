@@ -613,28 +613,26 @@ export default function StorageDetails() {
                 {/* Booking Form Inputs */}
                 <form
                   onSubmit={handleSubmit(onSubmit)}
-                  className="flex min-w-0 flex-col gap-4"
+                  className="flex flex-col gap-4"
                 >
-                  <div className="space-y-3 min-w-0">
+                  <div className="space-y-3">
                     {/* Drop-off Date */}
-                    <div className="min-w-0">
+                    <div>
                       <label className="block text-[11px] font-medium text-text-subtle mb-1">
                         Drop-off date
                       </label>
-
-                      <div className="relative min-w-0">
+                      <div className="relative">
                         <input
                           type="date"
                           min={minDropDate}
                           {...register("dropDate")}
-                          className={`block w-full max-w-full min-w-0 box-border bg-background border ${
+                          className={`w-full bg-background border ${
                             errors.dropDate
                               ? "border-semantic-error"
                               : "border-border-input"
-                          } rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none`}
+                          } rounded-2xl px-1 py-2 text-xs text-text-main focus:outline-none`}
                         />
                       </div>
-
                       {errors.dropDate && (
                         <span className="text-[10px] text-semantic-error mt-1 block">
                           {errors.dropDate.message}
@@ -643,23 +641,21 @@ export default function StorageDetails() {
                     </div>
 
                     {/* Pick-up Date */}
-                    <div className="min-w-0">
+                    <div>
                       <label className="block text-[11px] font-medium text-text-subtle mb-1">
                         Pick-up date
                       </label>
-
-                      <div className="relative min-w-0">
+                      <div className="relative">
                         <input
                           type="date"
                           {...register("pickupDate")}
-                          className={`block w-full max-w-full min-w-0 box-border bg-background border ${
+                          className={`w-full bg-background border ${
                             errors.pickupDate
                               ? "border-semantic-error"
                               : "border-border-input"
-                          } rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none`}
+                          } rounded-2xl px-1 py-2 text-xs text-text-main focus:outline-none`}
                         />
                       </div>
-
                       {errors.pickupDate && (
                         <span className="text-[10px] text-semantic-error mt-1 block">
                           {errors.pickupDate.message}
@@ -667,22 +663,21 @@ export default function StorageDetails() {
                       )}
                     </div>
 
-                    {/* Crop type & Est. Quantity */}
-                    <div className="grid grid-cols-2 gap-3 min-w-0">
-                      {/* Crop Type */}
-                      <div className="min-w-0">
+                    {/* 3. Crop type & Est. Quantity */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
                         <label className="block text-[11px] font-medium text-text-subtle mb-1">
                           Crop type
                         </label>
-
                         <select
                           {...register("selectedCrop")}
-                          className={`block w-full max-w-full min-w-0 box-border bg-background border ${
+                          className={`w-full bg-background border ${
                             errors.selectedCrop
                               ? "border-semantic-error"
                               : "border-border-input"
-                          } rounded-2xl py-2 px-3 text-xs text-text-main focus:outline-none focus:ring-1 focus:ring-brand-primary cursor-pointer`}
+                          } rounded-2xl py-2 px-1 text-xs text-text-main focus:outline-none focus:ring-1 focus:ring-brand-primary cursor-pointer`}
                         >
+                          {/* Placeholder option */}
                           <option value="" disabled>
                             Select Crop
                           </option>
@@ -700,7 +695,6 @@ export default function StorageDetails() {
                             </option>
                           )}
                         </select>
-
                         {errors.selectedCrop && (
                           <span className="text-[10px] text-semantic-error mt-1 block">
                             {errors.selectedCrop.message}
@@ -708,22 +702,19 @@ export default function StorageDetails() {
                         )}
                       </div>
 
-                      {/* Quantity */}
-                      <div className="min-w-0">
+                      <div>
                         <label className="block text-[11px] font-medium text-text-subtle mb-1">
                           Est. Quantity ({unitLabel})
                         </label>
-
                         <input
                           type="number"
                           {...register("quantity")}
-                          className={`block w-full max-w-full min-w-0 box-border bg-background border ${
+                          className={`w-full bg-background border ${
                             errors.quantity
                               ? "border-semantic-error"
                               : "border-border-input"
-                          } rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none`}
+                          } rounded-2xl px-1 py-2 text-xs text-text-main focus:outline-none`}
                         />
-
                         {errors.quantity && (
                           <span className="text-[10px] text-semantic-error mt-1 block">
                             {errors.quantity.message}
@@ -732,23 +723,21 @@ export default function StorageDetails() {
                       </div>
                     </div>
 
-                    {/* Phone Number */}
-                    <div className="min-w-0">
+                    {/* 4. Phone Number */}
+                    <div>
                       <label className="block text-[11px] font-medium text-text-subtle mb-1">
                         Phone Number
                       </label>
-
                       <input
                         type="tel"
                         placeholder="+234 700 000 000"
                         {...register("phoneNumber")}
-                        className={`block w-full max-w-full min-w-0 box-border bg-background border ${
+                        className={`w-full bg-background border ${
                           errors.phoneNumber
                             ? "border-semantic-error"
                             : "border-border-input"
-                        } rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none placeholder:text-text-muted`}
+                        } rounded-2xl px-1 py-2 text-xs text-text-main focus:outline-none placeholder:text-text-muted`}
                       />
-
                       {errors.phoneNumber && (
                         <span className="text-[10px] text-semantic-error mt-1 block">
                           {errors.phoneNumber.message}
@@ -758,38 +747,33 @@ export default function StorageDetails() {
                   </div>
 
                   {/* Calculations Breakdown */}
-                  <div className="pt-2 border-t border-border-light space-y-2 text-xs text-text-subtle min-w-0">
-                    <div className="flex justify-between items-center gap-3 min-w-0">
-                      <span className="min-w-0 break-words">
+                  <div className="pt-2 border-t border-border-light space-y-2 text-xs text-text-subtle">
+                    <div className="flex justify-between items-center">
+                      <span>
                         ₦{pricePerUnit.toLocaleString()} x {watchedQuantity}{" "}
                         {itemUnitLabel} x {watchedDurationDays}{" "}
                         {durationUnitLabel}
                         {isBulkDiscountApplied && (
-                          <span className="ml-1.5 inline-block text-[10px] bg-brand-secondary/20 text-brand-primary px-1.5 py-0.5 rounded font-medium">
+                          <span className="ml-1.5 text-[10px] bg-brand-secondary/20 text-brand-primary px-1.5 py-0.5 rounded font-medium">
                             Bulk Rate
                           </span>
                         )}
                       </span>
-
-                      <span className="shrink-0 font-semibold text-text-main">
+                      <span className="font-semibold text-text-main">
                         ₦{subtotal.toLocaleString()}
                       </span>
                     </div>
 
-                    <div className="flex justify-between gap-3">
+                    <div className="flex justify-between">
                       <span>Service fee</span>
-
-                      <span className="shrink-0 font-semibold text-text-main">
+                      <span className="font-semibold text-text-main">
                         ₦{serviceFee.toLocaleString()}
                       </span>
                     </div>
 
-                    <div className="flex justify-between gap-3 font-bold text-text-main">
+                    <div className="flex justify-between font-bold text-text-main">
                       <span>Deposit (30%)</span>
-
-                      <span className="shrink-0">
-                        ₦{deposit.toLocaleString()}
-                      </span>
+                      <span>₦{deposit.toLocaleString()}</span>
                     </div>
                   </div>
 
@@ -798,10 +782,9 @@ export default function StorageDetails() {
                     type="submit"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="relative w-full min-w-0 cursor-pointer mt-1"
+                    className="relative w-full cursor-pointer mt-1"
                   >
-                    <span className="absolute inset-0 translate-x-[3px] translate-y-[3px] rounded-full bg-brand-secondary" />
-
+                    <span className="absolute inset-0 translate-x-[3px] translate-y-[3px] rounded-full bg-brand-secondary"></span>
                     <span className="relative z-10 flex h-11 w-full items-center justify-center rounded-full bg-brand-primary text-text-light font-semibold text-sm">
                       Book Storage
                     </span>
