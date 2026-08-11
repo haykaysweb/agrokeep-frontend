@@ -75,68 +75,81 @@ export default function SeeAllHubsPage() {
         </div>
 
         {/* Filter Bar */}
-        <div className="hidden absolute -bottom-11 left-1/2 z-30 w-full max-w-4xl lg:max-w-5xl -translate-x-1/2 justify-between items-center gap-3 overflow-x-auto rounded-3xl border border-stone-100 bg-white p-3 shadow-lg no-scrollbar lg:flex lg:p-6">
-          <button className="flex cursor-pointer shrink-0 items-center gap-2 rounded-full border border-stone-200 bg-white px-10 py-3 text-xs font-semibold text-stone-800 transition-colors hover:bg-stone-50">
-            <SlidersHorizontal className="h-3.5 w-3.5" />
-            Filters
-          </button>
+        <div className="absolute -bottom-11 left-1/2 z-30 w-[calc(100%-1.5rem)] max-w-4xl lg:max-w-5xl -translate-x-1/2 overflow-x-auto overflow-y-hidden rounded-3xl border border-stone-100 bg-white p-5 shadow-lg no-scrollbar lg:p-6">
+          <div className="flex w-max min-w-full items-center gap-3">
+            {/* Filters Button */}
+            <button
+              type="button"
+              className="flex shrink-0 cursor-pointer items-center gap-2 rounded-full border border-stone-200 bg-white px-6 py-3 text-xs font-semibold text-stone-800 transition-colors hover:bg-stone-50 sm:px-8 lg:px-10"
+            >
+              <SlidersHorizontal className="h-3.5 w-3.5 shrink-0" />
+              <span>Filters</span>
+            </button>
 
-          <div className="h-5 w-[1px] shrink-0 bg-stone-200" />
+            {/* Divider */}
+            <div className="h-5 w-px shrink-0 bg-stone-200" />
 
-          <button
-            onClick={() => {
-              setSelectedLga("");
-              setSelectedCrop("");
-              setSelectedStorageType("");
-            }}
-            className={`shrink-0 rounded-full cursor-pointer px-5 py-3 text-xs font-semibold transition-colors ${
-              !selectedLga && !selectedCrop && !selectedStorageType
-                ? "bg-[#1B4D3E] text-white"
-                : "border border-stone-200 bg-white text-stone-600 hover:bg-stone-50"
-            }`}
-          >
-            All
-          </button>
+            {/* All */}
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedLga("");
+                setSelectedCrop("");
+                setSelectedStorageType("");
+              }}
+              className={`shrink-0 cursor-pointer rounded-full px-5 py-3 text-xs font-semibold transition-colors ${
+                !selectedLga && !selectedCrop && !selectedStorageType
+                  ? "bg-[#1B4D3E] text-white"
+                  : "border border-stone-200 bg-white text-stone-600 hover:bg-stone-50"
+              }`}
+            >
+              All
+            </button>
 
-          {/* L.G.A Filter Dropdown */}
-          <select
-            value={selectedLga}
-            onChange={(e) => setSelectedLga(e.target.value)}
-            className="relative shrink-0 cursor-pointer appearance-none rounded-full border border-stone-200 bg-white px-5 py-3 pr-8 text-xs font-medium text-stone-600 outline-none hover:bg-stone-50"
-          >
-            <option value="">Select state / LGA</option>
-            <option value="Ibadan">Ibadan</option>
-            <option value="Ogbomoso South">Ogbomoso South</option>
-          </select>
+            {/* L.G.A Filter Dropdown */}
+            <select
+              value={selectedLga}
+              onChange={(e) => setSelectedLga(e.target.value)}
+              className="block w-auto min-w-[150px] shrink-0 cursor-pointer appearance-none rounded-full border border-stone-200 bg-white px-5 py-3 pr-8 text-xs font-medium text-stone-600 outline-none transition-colors hover:bg-stone-50"
+            >
+              <option value="">Select state / LGA</option>
+              <option value="Ibadan">Ibadan</option>
+              <option value="Ogbomoso South">Ogbomoso South</option>
+            </select>
 
-          {/* Crop Type Filter Dropdown */}
-          <select
-            value={selectedCrop}
-            onChange={(e) => setSelectedCrop(e.target.value)}
-            className="relative shrink-0 cursor-pointer appearance-none rounded-full border border-stone-200 bg-white px-5 py-3 pr-8 text-xs font-medium text-stone-600 outline-none hover:bg-stone-50"
-          >
-            <option value="">Select crop type</option>
-            <option value="yam">Yam</option>
-            <option value="cassava">Cassava</option>
-            <option value="maize">Maize</option>
-          </select>
+            {/* Crop Type Filter Dropdown */}
+            <select
+              value={selectedCrop}
+              onChange={(e) => setSelectedCrop(e.target.value)}
+              className="block w-auto min-w-[145px] shrink-0 cursor-pointer appearance-none rounded-full border border-stone-200 bg-white px-5 py-3 pr-8 text-xs font-medium text-stone-600 outline-none transition-colors hover:bg-stone-50"
+            >
+              <option value="">Select crop type</option>
+              <option value="yam">Yam</option>
+              <option value="cassava">Cassava</option>
+              <option value="maize">Maize</option>
+            </select>
 
-          {/* Storage Type Filter Dropdown */}
-          <select
-            value={selectedStorageType}
-            onChange={(e) => setSelectedStorageType(e.target.value)}
-            className="shrink-0 cursor-pointer rounded-full border border-stone-200 bg-white px-5 py-3 text-xs font-medium text-stone-600 outline-none hover:bg-stone-50"
-          >
-            <option value="">Select storage type</option>
-            <option value="Silo">Silo</option>
-            <option value="Cold Storage">Cold Storage</option>
-            <option value="Warehouse">Warehouse</option>
-          </select>
+            {/* Storage Type Filter Dropdown */}
+            <select
+              value={selectedStorageType}
+              onChange={(e) => setSelectedStorageType(e.target.value)}
+              className="block w-auto min-w-[150px] shrink-0 cursor-pointer rounded-full border border-stone-200 bg-white px-5 py-3 text-xs font-medium text-stone-600 outline-none transition-colors hover:bg-stone-50"
+            >
+              <option value="">Select storage type</option>
+              <option value="Silo">Silo</option>
+              <option value="Cold Storage">Cold Storage</option>
+              <option value="Warehouse">Warehouse</option>
+            </select>
 
-          <button className="flex shrink-0 items-center gap-1 rounded-full border border-stone-200 bg-white px-5 py-3 text-xs font-medium text-stone-500 transition-colors hover:bg-stone-50">
-            Availability
-            <ChevronDown className="h-3 w-3" />
-          </button>
+            {/* Availability */}
+            <button
+              type="button"
+              className="flex shrink-0 cursor-pointer items-center gap-1 rounded-full border border-stone-200 bg-white px-5 py-3 text-xs font-medium text-stone-500 transition-colors hover:bg-stone-50"
+            >
+              <span>Availability</span>
+              <ChevronDown className="h-3 w-3 shrink-0" />
+            </button>
+          </div>
         </div>
       </section>
 

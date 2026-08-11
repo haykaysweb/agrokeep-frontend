@@ -274,7 +274,7 @@ export default function BookingDetails() {
       <BookingSteps currentStep={1} />
 
       {/* Main Page Heading */}
-      <div className="mb-8">
+      <div className="mb-8 mt-7">
         <h1 className="text-2xl md:text-3xl font-bold text-text-main">
           Booking Details
         </h1>
@@ -296,32 +296,35 @@ export default function BookingDetails() {
               <span>Storage schedule</span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 min-w-0">
               {/* Drop-off date */}
-              <div>
+              <div className="min-w-0">
                 <label className="block text-xs font-medium text-text-main mb-1">
                   Drop-off date*
                 </label>
+
                 <input
                   type="date"
                   min={new Date().toISOString().split("T")[0]}
                   {...register("dropDate", {
                     required: "Drop-off date is required",
                   })}
-                  className="w-full bg-background border border-border-input rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-primary"
+                  className="block w-full max-w-full min-w-0 box-border bg-background border border-border-input rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-primary"
                 />
+
                 {errors.dropDate?.message && (
-                  <span className="text-[10px] text-red-500 mt-0.5">
+                  <span className="block text-[10px] text-red-500 mt-0.5">
                     {String(errors.dropDate.message)}
                   </span>
                 )}
               </div>
 
               {/* Pick-up date */}
-              <div>
+              <div className="min-w-0">
                 <label className="block text-xs font-medium text-text-main mb-1">
                   Pick-up date*
                 </label>
+
                 <input
                   type="date"
                   min={
@@ -330,10 +333,11 @@ export default function BookingDetails() {
                   {...register("pickupDate", {
                     required: "Pick-up date is required",
                   })}
-                  className="w-full bg-background border border-border-input rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-primary"
+                  className="block w-full max-w-full min-w-0 box-border bg-background border border-border-input rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-primary"
                 />
+
                 {errors.pickupDate?.message && (
-                  <span className="text-[10px] text-red-500 mt-0.5">
+                  <span className="block text-[10px] text-red-500 mt-0.5">
                     {String(errors.pickupDate.message)}
                   </span>
                 )}
@@ -344,13 +348,13 @@ export default function BookingDetails() {
           {/* Produce Information  */}
           <div className="bg-white border-input rounded-2xl p-5 space-y-4 shadow-sm">
             <div className="flex items-center gap-2 text-brand-primary font-semibold text-sm">
-              <img src="/plant-light.svg" alt="Calendar" className="w-5 h-5" />
+              <img src="/plant-light.svg" alt="Produce" className="w-5 h-5" />
               <span>Produce information</span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 min-w-0">
               {/* Select Crop */}
-              <div>
+              <div className="min-w-0">
                 <label className="block text-xs font-medium text-text-main mb-1">
                   Crop type*
                 </label>
@@ -359,11 +363,11 @@ export default function BookingDetails() {
                   {...register("selectedCrop", {
                     required: "Crop type is required",
                   })}
-                  className={`w-full bg-background border ${
+                  className={`block w-full max-w-full min-w-0 box-border bg-background border ${
                     errors.selectedCrop
                       ? "border-semantic-error"
                       : "border-border-input"
-                  } rounded-2xl px-1 py-2 text-xs text-text-main focus:outline-none focus:ring-1 focus:ring-brand-primary cursor-pointer capitalize`}
+                  } rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:ring-1 focus:ring-brand-primary cursor-pointer capitalize`}
                 >
                   <option value="" disabled>
                     Select Crop
@@ -395,25 +399,25 @@ export default function BookingDetails() {
               </div>
 
               {/* Quantity */}
-              <div>
+              <div className="min-w-0">
                 <label className="block text-xs font-medium text-text-main mb-1">
                   Estimated quantity*
                 </label>
 
-                <div className="flex gap-2">
+                <div className="flex gap-2 min-w-0">
                   <input
                     type="number"
                     {...register("quantity")}
-                    className={`w-full bg-background border ${
+                    className={`block flex-1 min-w-0 w-full max-w-full box-border bg-background border ${
                       errors.quantity ? "border-red-500" : "border-border-input"
                     } rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-primary`}
                   />
-                  <span className="flex items-center px-3 bg-background border border-border-input text-xs font-medium text-text-subtle rounded-2xl capitalize shrink-0">
+
+                  <span className="flex items-center justify-center px-3 bg-background border border-border-input text-xs font-medium text-text-subtle rounded-2xl capitalize shrink-0 whitespace-nowrap">
                     {watchedQuantity === 1 ? unit : `${unit}s`}
                   </span>
                 </div>
 
-                {/* Displays Zod validation error for empty or < 1 values */}
                 {errors.quantity?.message && (
                   <span className="text-[10px] text-red-500 mt-1 block font-medium">
                     {String(errors.quantity.message)}
@@ -424,94 +428,149 @@ export default function BookingDetails() {
           </div>
 
           {/* Contact Information */}
-          <div className="bg-white border-none rounded-2xl p-5 space-y-4 shadow-sm">
-            <div className="flex items-center gap-2 text-brand-primary font-semibold text-sm">
-              <img src="/Phone Rounded.svg" alt="Contact" className="w-5 h-5" />
-              <span>Contact information</span>
+          <div className="bg-white border-none rounded-2xl p-5 space-y-4 shadow-sm min-w-0">
+            {/* Section Header */}
+            <div className="flex items-center gap-2 text-brand-primary font-semibold text-sm min-w-0">
+              <img
+                src="/Phone Rounded.svg"
+                alt="Contact"
+                className="w-5 h-5 shrink-0"
+              />
+
+              <span className="min-w-0">Contact information</span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
+            {/* Name & Phone */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 min-w-0">
+              {/* Full Name */}
+              <div className="min-w-0">
                 <label className="block text-xs font-medium text-text-main mb-1">
                   Full name*
                 </label>
+
                 <input
                   type="text"
                   placeholder="Full name"
                   {...register("fullName", {
                     required: "Full name is required",
                   })}
-                  className="w-full bg-background border border-border-input rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-primary"
+                  className={`block w-full max-w-full min-w-0 box-border bg-background border ${
+                    errors.fullName
+                      ? "border-semantic-error"
+                      : "border-border-input"
+                  } rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-primary`}
                 />
+
                 {errors.fullName && (
-                  <span className="text-[10px] text-red-500 mt-0.5">
+                  <span className="text-[10px] text-red-500 mt-0.5 block">
                     {String(errors.fullName.message)}
                   </span>
                 )}
               </div>
 
-              <div>
+              {/* Phone Number */}
+              <div className="min-w-0">
                 <label className="block text-xs font-medium text-text-main mb-1">
                   Phone number*
                 </label>
+
                 <input
                   type="tel"
                   placeholder="+234 700 000 0000"
                   {...register("phoneNumber", {
                     required: "Phone number is required",
                   })}
-                  className="w-full bg-background border border-border-input rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-primary"
+                  className={`block w-full max-w-full min-w-0 box-border bg-background border ${
+                    errors.phoneNumber
+                      ? "border-semantic-error"
+                      : "border-border-input"
+                  } rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-primary`}
                 />
+
                 {errors.phoneNumber && (
-                  <span className="text-[10px] text-red-500 mt-0.5">
+                  <span className="text-[10px] text-red-500 mt-0.5 block">
                     {String(errors.phoneNumber.message)}
                   </span>
                 )}
               </div>
             </div>
 
-            <div>
+            {/* Email Address */}
+            <div className="min-w-0">
               <label className="block text-xs font-medium text-text-main mb-1">
                 Email address (optional)
               </label>
+
               <input
                 type="email"
                 placeholder="you@example.com"
                 {...register("email")}
-                className="w-full bg-background border border-border-input rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-primary"
+                className={`block w-full max-w-full min-w-0 box-border bg-background border ${
+                  errors.email ? "border-semantic-error" : "border-border-input"
+                } rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-primary`}
               />
+
+              {errors.email && (
+                <span className="text-[10px] text-red-500 mt-0.5 block">
+                  {String(errors.email.message)}
+                </span>
+              )}
             </div>
 
-            <div>
+            {/* Special Instructions */}
+            <div className="min-w-0">
               <label className="block text-xs font-medium text-text-main mb-1">
                 Special instructions (optional)
               </label>
+
               <textarea
                 rows={3}
                 placeholder="e.g. I'll arrive around 10 AM, I need truck access."
                 {...register("specialInstructions")}
-                className="w-full bg-background border border-border-input rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-primary resize-none"
+                className={`block w-full max-w-full min-w-0 box-border bg-background border ${
+                  errors.specialInstructions
+                    ? "border-semantic-error"
+                    : "border-border-input"
+                } rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-primary resize-none`}
               />
+
+              {errors.specialInstructions && (
+                <span className="text-[10px] text-red-500 mt-0.5 block">
+                  {String(errors.specialInstructions.message)}
+                </span>
+              )}
             </div>
 
-            <label className="flex items-start gap-2 cursor-pointer pt-2">
-              <input
-                type="checkbox"
-                {...register("agreedToTerms", { required: true })}
-                className="mt-0.5 text-brand-primary rounded focus:ring-0 cursor-pointer"
-              />
-              <span className="text-[11px] text-text-subtle">
-                I confirm that the information provided is correct and I agree
-                to AgroKeep's booking terms.
-              </span>
-            </label>
+            {/* Terms & Conditions */}
+            <div className="min-w-0 pt-2">
+              <label className="flex w-full min-w-0 items-start gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  {...register("agreedToTerms", {
+                    required: "You must agree to the booking terms to proceed",
+                  })}
+                  className={`mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border ${
+                    errors.agreedToTerms
+                      ? "border-semantic-error"
+                      : "border-border-input"
+                  } text-brand-primary focus:ring-0`}
+                />
 
-            {errors.agreedToTerms && (
-              <p className="text-[10px] text-red-500 font-medium animate-pulse">
-                {errors.agreedToTerms.message ||
-                  "You must agree to the booking terms to proceed"}
-              </p>
-            )}
+                <span className="min-w-0 flex-1 text-[11px] leading-5 text-text-subtle">
+                  I confirm that the information provided is correct and I agree
+                  to AgroKeep&apos;s booking terms.
+                </span>
+              </label>
+
+              {errors.agreedToTerms && (
+                <p className="text-[10px] text-red-500 font-medium mt-1 animate-pulse">
+                  {String(
+                    errors.agreedToTerms.message ||
+                      "You must agree to the booking terms to proceed",
+                  )}
+                </p>
+              )}
+            </div>
           </div>
 
           {/* Form Actions */}

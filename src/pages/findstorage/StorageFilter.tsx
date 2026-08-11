@@ -13,7 +13,6 @@ export default function StorageFilter({ onFilterResults }: StorageFilterProps) {
   const [cropType, setCropType] = useState("");
   const [storageType, setStorageType] = useState("");
 
-  // Mutation to handle filtering on the same page
   const filterMutation = useMutation({
     mutationFn: () =>
       filterStorageHubs({
@@ -28,8 +27,8 @@ export default function StorageFilter({ onFilterResults }: StorageFilterProps) {
       }
     },
 
-    onError: (error) => {
-      console.error("Failed to fetch filtered hubs:", error);
+    onError: () => {
+      // Handle the error through your UI/toast if needed.
     },
   });
 
@@ -45,7 +44,6 @@ export default function StorageFilter({ onFilterResults }: StorageFilterProps) {
         left-1/2
         -translate-x-1/2
         -bottom-16
-
         w-full
         max-w-7xl
         px-4
@@ -56,118 +54,175 @@ export default function StorageFilter({ onFilterResults }: StorageFilterProps) {
       {/* Filter Box */}
       <div
         className="
-          hidden
-          md:flex
           w-full
-          flex-row
-          items-center
-          gap-4
+          min-w-0
           overflow-x-auto
-          snap-x
-          snap-mandatory
-          scroll-smooth
+          overflow-y-hidden
           no-scrollbar
-          md:overflow-visible
-
-          bg-white
-          p-4
           rounded-3xl
+          bg-white
+          p-3
           shadow-xl
-          border
-          border-stone-100
+          sm:p-4
         "
       >
-        {/* Location */}
-        <div className="w-[260px] shrink-0 text-sm snap-start md:w-auto md:flex-1 md:shrink">
-          <CustomDropdown
-            label="Location"
-            icon={MapPin}
-            options={[
-              "Select state",
-              "Oyo",
-              "Osun",
-              "Ekiti",
-              "Ondo",
-              "Ogun",
-              "Lagos",
-              "Kano",
-            ]}
-            onSelect={(val) => setLocation(val === "Select state" ? "" : val)}
-          />
-        </div>
-
-        {/* Crop type */}
-        <div className="w-[260px] text-sm shrink-0 snap-start md:w-auto md:flex-1 md:shrink">
-          <CustomDropdown
-            label="Crop type"
-            icon={Leaf}
-            options={[
-              "Select crop type",
-              "Yam",
-              "Cassava",
-              "Tomatoes",
-              "Maize",
-            ]}
-            onSelect={(val) =>
-              setCropType(val === "Select crop type" ? "" : val)
-            }
-          />
-        </div>
-
-        {/* Storage type */}
-        <div className="w-[260px] text-sm shrink-0 snap-start md:w-auto md:flex-1 md:shrink">
-          <CustomDropdown
-            label="Storage type"
-            icon={Warehouse}
-            options={[
-              "Select storage type",
-              "Cold Room",
-              "Cold storage",
-              "Silo",
-              "Warehouse",
-            ]}
-            onSelect={(val) =>
-              setStorageType(val === "Select storage type" ? "" : val)
-            }
-          />
-        </div>
-
-        {/* Search Button with Amber Outline Pattern */}
+        {/* Horizontal scrolling content */}
         <div
-          className="relative text-sm mt-0 shrink-0 snap-start md:mt-7 md:mr-2 hover:-translate-y-0.5"
-          
+          className="
+            flex
+            w-max
+            min-w-full
+            items-center
+            gap-3
+            sm:gap-4
+          "
         >
-          <div className="absolute left-1 top-1 hidden h-full w-full rounded-full bg-amber-500 md:block" />
-
-          <button
-            onClick={handleSearch}
-            disabled={filterMutation.isPending}
+          {/* Location */}
+          <div
             className="
-              relative
-              flex
-              w-full
-              items-center
-              justify-center
-              gap-2
-              whitespace-nowrap
-              rounded-full
-              bg-brand-primary
-              px-8
-              py-3.5
-              font-medium
-              text-white
-              shadow-md
-              transition-transform
-              md:w-auto
-              md:shadow-none
-              cursor-pointer
-              disabled:opacity-50
+              w-[200px]
+              min-w-[200px]
+              shrink-0
+              text-sm
+              sm:w-[240px]
+              sm:min-w-[240px]
+              md:flex-1
             "
           >
-            <Search className="h-4 w-4" />
+            <CustomDropdown
+              label="Location"
+              icon={MapPin}
+              options={[
+                "Select state",
+                "Oyo",
+                "Osun",
+                "Ekiti",
+                "Ondo",
+                "Ogun",
+                "Lagos",
+                "Kano",
+              ]}
+              onSelect={(val) => setLocation(val === "Select state" ? "" : val)}
+            />
+          </div>
 
-            {filterMutation.isPending ? "Searching..." : "Search"}
-          </button>
+          {/* Crop Type */}
+          <div
+            className="
+              w-[200px]
+              min-w-[200px]
+              shrink-0
+              text-sm
+              sm:w-[240px]
+              sm:min-w-[240px]
+              md:flex-1
+            "
+          >
+            <CustomDropdown
+              label="Crop type"
+              icon={Leaf}
+              options={[
+                "Select crop type",
+                "Yam",
+                "Cassava",
+                "Tomatoes",
+                "Maize",
+              ]}
+              onSelect={(val) =>
+                setCropType(val === "Select crop type" ? "" : val)
+              }
+            />
+          </div>
+
+          {/* Storage Type */}
+          <div
+            className="
+              w-[200px]
+              min-w-[200px]
+              shrink-0
+              text-sm
+              sm:w-[240px]
+              sm:min-w-[240px]
+              md:flex-1
+            "
+          >
+            <CustomDropdown
+              label="Storage type"
+              icon={Warehouse}
+              options={[
+                "Select storage type",
+                "Cold Room",
+                "Cold storage",
+                "Silo",
+                "Warehouse",
+              ]}
+              onSelect={(val) =>
+                setStorageType(val === "Select storage type" ? "" : val)
+              }
+            />
+          </div>
+
+          {/* Search Button */}
+          <div
+            className="
+              relative
+              shrink-0
+              text-sm
+              transition-transform
+              hover:-translate-y-0.5
+              md:mr-2
+              md:mt-7
+            "
+          >
+            {/* Amber offset layer */}
+            <div
+              className="
+                absolute
+                left-1
+                top-1
+                h-full
+                w-full
+                rounded-full
+                bg-amber-500
+              "
+            />
+
+            <button
+              type="button"
+              onClick={handleSearch}
+              disabled={filterMutation.isPending}
+              className="
+                relative
+                flex
+                min-w-[110px]
+                shrink-0
+                cursor-pointer
+                items-center
+                justify-center
+                gap-2
+                whitespace-nowrap
+                rounded-full
+                bg-brand-primary
+                px-6
+                py-3.5
+                font-medium
+                text-white
+                shadow-md
+                transition-opacity
+                hover:opacity-95
+                disabled:cursor-not-allowed
+                disabled:opacity-50
+                sm:min-w-[130px]
+                sm:px-8
+                md:w-auto
+                md:shadow-none
+              "
+            >
+              <Search className="h-4 w-4 shrink-0" />
+
+              {filterMutation.isPending ? "Searching..." : "Search"}
+            </button>
+          </div>
         </div>
       </div>
     </div>

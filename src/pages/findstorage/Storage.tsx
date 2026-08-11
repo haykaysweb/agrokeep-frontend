@@ -43,7 +43,7 @@ export default function HubsPage() {
       </section>
 
       {/* Content */}
-      <main className="mt-20 py-15 max-w-7xl mx-auto px-4 md:px-12 ">
+      <main className="mt-15 py-15 max-w-7xl mx-auto px-4 md:px-12 ">
         {isLoading ? (
           <div className="h-[calc(100vh-80px)] flex items-center justify-center px-4">
             <div className="text-center">
