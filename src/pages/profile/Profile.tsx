@@ -52,7 +52,6 @@ export default function Profile() {
   const [phone, setPhone] = useState("");
 
   // Feedback states
-  const [profileSuccess, setProfileSuccess] = useState("");
   const [profileError, setProfileError] = useState("");
 
   // Avatar Preview Modal States
