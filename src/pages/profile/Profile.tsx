@@ -508,6 +508,8 @@ export default function Profile() {
                 </div>
               </div>
             </div>
+
+           
           </form>
 
           {/* 2. Notification Preferences Section */}
@@ -658,6 +660,7 @@ export default function Profile() {
                 </button>
               </div>
             </div>
+
           </div>
 
           {/* 3. Account Security Section */}
