@@ -170,7 +170,7 @@ export default function MyBookings() {
               </div>
 
               {/* Content Container */}
-              <div className="flex-1 p-4 md:p-5 flex flex-col justify-between space-y-4">
+              <div className="flex-1 p-4 flex flex-col justify-between space-y-4">
                 {/* Top Details & Badges */}
                 <div className="space-y-1.5">
                   <div className="flex flex-wrap items-start justify-between gap-2">

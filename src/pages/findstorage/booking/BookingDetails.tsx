@@ -395,7 +395,7 @@ export default function BookingDetails() {
 
               {/* Quantity */}
               <div>
-                <label className="block text-xs font-medium text-text-main mb-1">
+                <label className="block text-base md:text-xs font-medium text-text-main mb-1">
                   Estimated quantity*
                 </label>
 
@@ -407,7 +407,7 @@ export default function BookingDetails() {
                       errors.quantity ? "border-red-500" : "border-border-input"
                     } rounded-2xl px-3 py-2 text-base md:text-xs text-text-main focus:outline-none focus:border-brand-primary`}
                   />
-                  <span className="flex items-center justify-center px-3 py-2 bg-background border border-border-input text-xs font-medium text-text-subtle rounded-2xl capitalize shrink-0">
+                  <span className="flex items-center justify-center px-3 py-2 bg-background border border-border-input text-base md:text-xs font-medium text-text-subtle rounded-2xl capitalize shrink-0">
                     {watchedQuantity === 1 ? unit : `${unit}s`}
                   </span>
                 </div>
@@ -439,7 +439,7 @@ export default function BookingDetails() {
                   {...register("fullName", {
                     required: "Full name is required",
                   })}
-                  className="w-full bg-background border border-border-input rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-primary"
+                  className="w-full bg-background border border-border-input rounded-2xl px-3 py-2 text-base md:text-xs text-text-main focus:outline-none focus:border-brand-primary"
                 />
                 {errors.fullName && (
                   <span className="text-[10px] text-red-500 mt-0.5">
@@ -458,7 +458,7 @@ export default function BookingDetails() {
                   {...register("phoneNumber", {
                     required: "Phone number is required",
                   })}
-                  className="w-full bg-background border border-border-input rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-primary"
+                  className="w-full bg-background border border-border-input rounded-2xl px-3 py-2 text-base md:text-xs text-text-main focus:outline-none focus:border-brand-primary"
                 />
                 {errors.phoneNumber && (
                   <span className="text-[10px] text-red-500 mt-0.5">
@@ -476,7 +476,7 @@ export default function BookingDetails() {
                 type="email"
                 placeholder="you@example.com"
                 {...register("email")}
-                className="w-full bg-background border border-border-input rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-primary"
+                className="w-full bg-background border border-border-input rounded-2xl px-3 py-2 text-base md:text-xs text-text-main focus:outline-none focus:border-brand-primary"
               />
             </div>
 
