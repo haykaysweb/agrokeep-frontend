@@ -31,7 +31,7 @@ export default function ErrorBoundary() {
   const errorStatus = isRouteErrorResponse(error) ? error.status : null;
 
   return (
-    <div>
+    <div className="min-h-screen w-full flex flex-col items-center justify-center">
       {errorStatus === 404 ? <></> : <></>}
 
       <h1 className="text-3xl font-bold tracking-tight">

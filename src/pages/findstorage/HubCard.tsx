@@ -138,7 +138,7 @@ export function HubCard({ hub }: { hub: Hub }) {
               type="button"
               className="relative bg-[#1B4D3E] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-medium flex items-center justify-center text-[9px] sm:text-[13px] whitespace-nowrap hover:bg-[#153d31] transition-transform cursor-pointer"
             >
-              Book Now
+              View Details
             </button>
           </div>
         </div>

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Search } from "lucide-react";
 import { PrimaryButton } from "@/components/ui/Buttons";
+import { useNavigate } from "react-router";
 
 const images = [
   "https://images.unsplash.com/photo-1560493676-04071c5f467b?q=80&w=1920&auto=format&fit=crop",
@@ -10,6 +11,7 @@ const images = [
 ];
 
 export default function HeroSection() {
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -68,7 +70,8 @@ export default function HeroSection() {
               <motion.button
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
-                className="relative inline-block"
+                className="relative inline-block cursor-pointer"
+                onClick={() => navigate("/storage")}
               >
                 <span className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-full bg-brand-secondary" />
 

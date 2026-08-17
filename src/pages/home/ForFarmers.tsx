@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import { useNavigate } from "react-router";
 
 export default function ForFarmers() {
+  const navigate = useNavigate();
   const benefits = [
     "Reduce post-harvest losses by up to 60%",
     "Transparent per-bag, per-crate weekly pricing",
@@ -98,11 +100,11 @@ export default function ForFarmers() {
               variants={itemVariants}
               className="relative inline-block w-fit"
             >
-              <motion.a
-                href="#get-started"
+              <motion.button
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
-                className="relative inline-block"
+                className="relative inline-block cursor-pointer"
+                onClick={() => navigate("/storage")}
               >
                 <span className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-full bg-brand-secondary"></span>
                 <span className="relative z-10 flex items-center gap-2 rounded-full bg-brand-primary px-6 py-3 text-text-light">
@@ -116,7 +118,7 @@ export default function ForFarmers() {
                     />
                   </span>
                 </span>
-              </motion.a>
+              </motion.button>
             </motion.div>
           </div>
         </div>

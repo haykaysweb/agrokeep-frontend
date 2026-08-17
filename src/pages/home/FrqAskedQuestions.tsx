@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router";
 
 const faqs = [
   {
@@ -28,8 +29,9 @@ const faqs = [
 ];
 
 export default function FrqAskedQuestions() {
+  const navigate = useNavigate();
   return (
-    <section id="contact" className="w-full ">
+    <section id="contact" className="w-full">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-16 py-20 px-4 md:px-12">
         {/* Left Side: Content */}
         <div className="w-full lg:w-2/5 flex flex-col space-y-6">
@@ -59,7 +61,10 @@ export default function FrqAskedQuestions() {
 
           <div className="relative inline-block w-fit">
             <span className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-full bg-brand-secondary"></span>
-            <button className="relative z-10 bg-brand-primary text-text-light px-8 py-3 rounded-full font-medium">
+            <button
+              onClick={() => navigate("contact")}
+              className="relative z-10 bg-brand-primary text-text-light px-8 py-3 rounded-full font-medium cursor-pointer"
+            >
               Contact Support
             </button>
           </div>
