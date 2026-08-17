@@ -58,14 +58,12 @@ export default function Confirmation() {
 
       try {
         const response = await verifyPaymentApi(reference);
-
         // Save the COMPLETE verification response
         if (response) {
           localStorage.setItem(
             `agrokeep_confirmed_${reference}`,
             JSON.stringify(response),
           );
-
           localStorage.setItem("agrokeep_last_ref", reference);
         }
 
@@ -86,24 +84,16 @@ export default function Confirmation() {
     }
   }, [verificationData]);
 
-  // =========================
   // VERIFIED BOOKING
-  // =========================
 
   const resolvedBooking =
     verificationData?.data?.booking ||
     cachedBooking?.data?.booking ||
     draftData;
 
-  // =========================
   // BOOKING ID
-  // =========================
-
   const bookingId = resolvedBooking?.bookingId || reference || "AK-PENDING";
-
-  // =========================
   // HUB
-  // =========================
 
   const hub = resolvedBooking?.hub;
 
@@ -114,49 +104,34 @@ export default function Confirmation() {
     [hub?.lga, hub?.state].filter(Boolean).join(", ") ||
     "Location unavailable";
 
-  // =========================
   // CROP
-  // =========================
-
   const cropType =
     resolvedBooking?.cropType || draftData?.cropType || "Produce";
 
-  // =========================
   // QUANTITY
-  // =========================
-
   const quantity = resolvedBooking?.quantity ?? draftData?.quantity ?? 0;
 
-  // =========================
   // UNIT
-  // =========================
-
   const rawUnit = String(
     resolvedBooking?.unitType || draftData?.unitType || "bags",
   ).toLowerCase();
 
   const unitType = rawUnit.includes("crate") ? "crate" : "bag";
 
-  // =========================
   // PAYMENT METHOD
-  // =========================
 
   const paymentMethod =
     verificationData?.data?.payment?.paymentMethod ||
     draftData?.paymentMethod ||
     "Paystack";
 
-  // =========================
   // DROP-OFF DATE
-  // =========================
 
   const startDateRaw = resolvedBooking?.dropOffDate || draftData?.dropOffDate;
 
   const startDate = startDateRaw ? formatBookingDate(startDateRaw) : "";
 
-  // =========================
   // DURATION
-  // =========================
 
   const durationDays =
     resolvedBooking?.durationInDays ?? draftData?.durationInDays ?? 1;
@@ -168,19 +143,13 @@ export default function Confirmation() {
         }`
       : `${durationDays} ${durationDays === 1 ? "day" : "days"}`;
 
-  // =========================
   // AMOUNT PAID
-  // =========================
-
   const amountPaid =
     resolvedBooking?.depositAmount ??
     verificationData?.data?.payment?.amount ??
     0;
 
-  // =========================
   // RECEIPT
-  // =========================
-
   const handleDownloadReceipt = async () => {
     try {
       if (!reference) {
@@ -439,10 +408,10 @@ export default function Confirmation() {
         </div>
 
         {/* NEED ASSISTANCE */}
-        <div className="bg-brand-primary text-text-light rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm md:px-8 w-full">
+        <div className="bg-brand-priary text-text-light rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm md:px-8 w-full">
           <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
             <div className="flex items-center justify-center shrink-0">
-              <img src="/Question Circle.svg" alt="Help icon" />
+              <img src="/cycle.svg" alt="Help icon" />
             </div>
 
             <div>

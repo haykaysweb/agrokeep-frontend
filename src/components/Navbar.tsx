@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, BookCheck, Menu, User, X } from "lucide-react";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, NavLink } from "react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import UserAvatar from "./UserAvatar";
 import { useAuth } from "@/hooks/useAuth";
@@ -53,9 +53,7 @@ export default function Navbar() {
     }
   };
 
-  /*
-   * Navbar scroll behavior
-   */
+  /* Navbar scroll behavior*/
   useEffect(() => {
     let ticking = false;
 
@@ -94,19 +92,36 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 md:px-12 h-20 flex items-center justify-between">
           <Logo />
           {/* Desktop Navigation Links */}
-          <ul className="hidden lg:flex items-center gap-10">
+          <ul className="hidden lg:flex items-center gap-9">
             {navLinks.map((link) => (
               <li key={link.name}>
-                <Link
+                <NavLink
                   to={link.href}
-                  className="text-text-subtle font-medium text-base hover:text-brand-primary transition-colors"
+                  className={({ isActive }) =>
+                    `group relative flex items-center py-2 text-base font-medium transition-colors duration-200 ${
+                      isActive
+                        ? "text-brand-primary"
+                        : "text-text-subtle hover:text-brand-primary"
+                    }`
+                  }
                 >
-                  {link.name}
-                </Link>
+                  {({ isActive }) => (
+                    <>
+                      <span>{link.name}</span>
+
+                      <span
+                        className={`absolute -bottom-0.5 left-1/2 h-[3px] -translate-x-1/2 rounded-full bg-brand-primary transition-all duration-300 ${
+                          isActive
+                            ? "w-7 opacity-100"
+                            : "w-0 opacity-0 group-hover:w-4 group-hover:opacity-70"
+                        }`}
+                      />
+                    </>
+                  )}
+                </NavLink>
               </li>
             ))}
           </ul>
-
           {/* Desktop Authentication Section */}
           <div className="hidden lg:flex items-center gap-6 min-h-[40px]">
             {isAuthenticating ? (
@@ -209,7 +224,7 @@ export default function Navbar() {
                 {/* My Bookings */}
                 {user && (
                   <>
-                  <Link
+                    <Link
                       to="/profile"
                       className="flex items-center gap-3 text-text-main hover:bg-stone-50 transition-colors"
                       onClick={() => setIsOpen(false)}

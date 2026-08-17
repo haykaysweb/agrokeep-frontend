@@ -265,7 +265,7 @@ export default function BookingDetails() {
       <button
         type="button"
         onClick={handleBack}
-        className="flex items-center gap-2 text-sm cursor-pointer text-text-subtle hover:text-text-main transition-colors mb-4"
+        className="flex items-center gap-2 text-sm cursor-pointer text-text-subtle hover:text-text-main transition-colors mb-7"
       >
         <img src="/Arrow Left.svg" alt="Arrow Back" className="h-5 w-5" /> Back
       </button>
@@ -308,7 +308,7 @@ export default function BookingDetails() {
                   {...register("dropDate", {
                     required: "Drop-off date is required",
                   })}
-                  className="w-full bg-background border border-border-input rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-primary"
+                  className="w-full block box-border bg-background border border-border-input rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-primary appearance-none [&::-webkit-date-and-time-value]:text-left"
                 />
                 {errors.dropDate?.message && (
                   <span className="text-[10px] text-red-500 mt-0.5">
@@ -330,7 +330,7 @@ export default function BookingDetails() {
                   {...register("pickupDate", {
                     required: "Pick-up date is required",
                   })}
-                  className="w-full bg-background border border-border-input rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-primary"
+                  className="w-full block box-border bg-background border border-border-input rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-primary appearance-none [&::-webkit-date-and-time-value]:text-left"
                 />
                 {errors.pickupDate?.message && (
                   <span className="text-[10px] text-red-500 mt-0.5">
@@ -359,16 +359,15 @@ export default function BookingDetails() {
                   {...register("selectedCrop", {
                     required: "Crop type is required",
                   })}
-                  className={`w-full bg-background border ${
+                  className={`w-full block box-border bg-background border ${
                     errors.selectedCrop
                       ? "border-semantic-error"
                       : "border-border-input"
-                  } rounded-2xl px-1 py-2 text-xs text-text-main focus:outline-none focus:ring-1 focus:ring-brand-primary cursor-pointer capitalize`}
+                  } rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:ring-1 focus:ring-brand-primary cursor-pointer capitalize`}
                 >
                   <option value="" disabled>
                     Select Crop
                   </option>
-
                   {Array.isArray(bookingState?.supportedCrops) &&
                   bookingState.supportedCrops.length > 0 ? (
                     bookingState.supportedCrops.map((crop: string) => (
@@ -400,20 +399,19 @@ export default function BookingDetails() {
                   Estimated quantity*
                 </label>
 
-                <div className="flex gap-2">
+                <div className="flex items-center gap-2">
                   <input
                     type="number"
                     {...register("quantity")}
-                    className={`w-full bg-background border ${
+                    className={`flex-1 min-w-0 block box-border bg-background border ${
                       errors.quantity ? "border-red-500" : "border-border-input"
                     } rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-primary`}
                   />
-                  <span className="flex items-center px-3 bg-background border border-border-input text-xs font-medium text-text-subtle rounded-2xl capitalize shrink-0">
+                  <span className="flex items-center justify-center px-3 py-2 bg-background border border-border-input text-xs font-medium text-text-subtle rounded-2xl capitalize shrink-0">
                     {watchedQuantity === 1 ? unit : `${unit}s`}
                   </span>
                 </div>
 
-                {/* Displays Zod validation error for empty or < 1 values */}
                 {errors.quantity?.message && (
                   <span className="text-[10px] text-red-500 mt-1 block font-medium">
                     {String(errors.quantity.message)}

@@ -483,7 +483,7 @@ export default function ViewBooking() {
       <div className="bg-brand-primary text-text-light rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm md:px-8 w-full">
         <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
           <div className="flex items-center justify-center shrink-0">
-            <img src="Question Circle.svg" alt="Help icon" />
+            <img src="cycle.svg" alt="Help icon" />
           </div>
           <div>
             <h3 className="text-sm sm:text-base font-semibold text-text-light">

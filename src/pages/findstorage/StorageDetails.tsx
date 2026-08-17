@@ -34,10 +34,6 @@ export default function StorageDetails() {
   const draft = bookingStorage.getDraft(slug);
   useScrollToTopOnChange(data);
 
-  // Unit & Labels
-  const unit = hub?.unitType?.toLowerCase().includes("crate") ? "crate" : "bag";
-  const unitLabel = unit === "crate" ? "Crates" : "Bags";
-
   // Date Defaults
   const { todayStr, tomorrowStr, minDropDate } = getInitialDates();
 
@@ -69,6 +65,10 @@ export default function StorageDetails() {
     [watchedDropDate, watchedPickupDate],
   );
 
+  // Unit & Labels
+  const unit = hub?.unitType?.toLowerCase().includes("crate") ? "crate" : "bag";
+  const unitLabel = unit === "crate" ? "Crates" : "Bags";
+
   // Pricing
   const standardDailyPrice =
     unit === "crate"
@@ -83,7 +83,6 @@ export default function StorageDetails() {
     : standardDailyPrice;
 
   // Cost Breakdown
-
   const subtotal = pricePerUnit * watchedQuantity * watchedDurationDays;
   const storageFee = subtotal;
   const serviceFee = 5000;
@@ -206,7 +205,7 @@ export default function StorageDetails() {
           </div>
 
           {/* Top Left Secondary Sub-angle */}
-          <div className="h-[140px] sm:h-[180px] md:h-full rounded-xl md:rounded-2xl overflow-hidden shadow-xs">
+          <div className="h-[140px] sm:h-[180px] md:h-full rounded-2xl md:rounded-2xl overflow-hidden shadow-xs">
             <LazyLoadImageRC
               src={galleryImage}
               alt="Storage configuration alternate view 1"
@@ -215,7 +214,7 @@ export default function StorageDetails() {
           </div>
 
           {/* Top Right Secondary Sub-angle */}
-          <div className="h-[140px] sm:h-[180px] md:h-full rounded-xl md:rounded-2xl overflow-hidden shadow-xs">
+          <div className="h-[140px] sm:h-[180px] md:h-full rounded-2xl md:rounded-2xl overflow-hidden shadow-xs">
             <LazyLoadImageRC
               src={galleryImage}
               alt="Storage configuration alternate view 2"
@@ -224,7 +223,7 @@ export default function StorageDetails() {
           </div>
 
           {/* Bottom Left Secondary Sub-angle */}
-          <div className="h-[140px] sm:h-[180px] md:h-full rounded-xl md:rounded-2xl overflow-hidden shadow-xs">
+          <div className="h-[140px] sm:h-[180px] md:h-full rounded-2xl md:rounded-2xl overflow-hidden shadow-xs">
             <LazyLoadImageRC
               src={galleryImage}
               alt="Storage configuration alternate view 3"
@@ -233,7 +232,7 @@ export default function StorageDetails() {
           </div>
 
           {/* Bottom Right Secondary Sub-angle */}
-          <div className="h-[140px] sm:h-[180px] md:h-full rounded-xl md:rounded-2xl overflow-hidden shadow-xs">
+          <div className="h-[140px] sm:h-[180px] md:h-full rounded-2xl md:rounded-2xl overflow-hidden shadow-xs">
             <LazyLoadImageRC
               src={galleryImage}
               alt="Storage configuration alternate view 4"
@@ -293,7 +292,7 @@ export default function StorageDetails() {
 
           {/* Cards Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-surface-card border border-border-input rounded-xl p-4 flex flex-col justify-between shadow-xs">
+            <div className="bg-surface-card border border-border-input rounded-2xl p-4 flex flex-col justify-between shadow-xs">
               <div>
                 <img
                   src="/Garage.svg"
@@ -309,7 +308,7 @@ export default function StorageDetails() {
               </p>
             </div>
 
-            <div className="bg-surface-card border border-border-input rounded-xl p-4 flex flex-col justify-between shadow-xs">
+            <div className="bg-surface-card border border-border-input rounded-2xl p-4 flex flex-col justify-between shadow-xs">
               <div>
                 <img
                   src="/famicons.svg"
@@ -326,7 +325,7 @@ export default function StorageDetails() {
             </div>
 
             {/* Card 3: Supported Crops */}
-            <div className="bg-surface-card border border-border-input rounded-xl p-4 flex flex-col justify-between shadow-xs">
+            <div className="bg-surface-card border border-border-input rounded-2xl p-4 flex flex-col justify-between shadow-xs">
               <div>
                 <img
                   src="/plant-light.svg"
@@ -343,7 +342,7 @@ export default function StorageDetails() {
             </div>
 
             {/* Card 4: Operating Hours */}
-            <div className="bg-surface-card border border-border-input rounded-xl p-4 flex flex-col justify-between shadow-xs">
+            <div className="bg-surface-card border border-border-input rounded-2xl p-4 flex flex-col justify-between shadow-xs">
               <div>
                 <img
                   src="/Clock Circle.svg"
@@ -401,7 +400,7 @@ export default function StorageDetails() {
 
                 {/* 2x3 Details Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="border border-border-brand-secondary/40 border-brand-secondary/50 bg-surface-card rounded-xl p-3.5">
+                  <div className="border border-border-brand-secondary/40 border-brand-secondary/50 bg-surface-card rounded-2xl p-3.5">
                     <p className="text-[12px] uppercase font-bold tracking-wider text-brand-primary mb-0.5">
                       STORAGE METHOD
                     </p>
@@ -410,7 +409,7 @@ export default function StorageDetails() {
                     </p>
                   </div>
 
-                  <div className="border border-brand-secondary/50 bg-surface-card rounded-xl p-3.5">
+                  <div className="border border-brand-secondary/50 bg-surface-card rounded-2xl p-3.5">
                     <p className="text-[12px] uppercase font-bold tracking-wider text-brand-primary mb-0.5">
                       FACILITY SIZE
                     </p>
@@ -419,7 +418,7 @@ export default function StorageDetails() {
                     </p>
                   </div>
 
-                  <div className="border border-brand-secondary/50 bg-surface-card rounded-xl p-3.5">
+                  <div className="border border-brand-secondary/50 bg-surface-card rounded-2xl p-3.5">
                     <p className="text-[12px] uppercase font-bold tracking-wider text-brand-primary mb-0.5">
                       CLIMATE CONTROL
                     </p>
@@ -428,7 +427,7 @@ export default function StorageDetails() {
                     </p>
                   </div>
 
-                  <div className="border border-brand-secondary/50 bg-surface-card rounded-xl p-3.5">
+                  <div className="border border-brand-secondary/50 bg-surface-card rounded-2xl p-3.5">
                     <p className="text-[12px] uppercase font-bold tracking-wider text-brand-primary mb-0.5">
                       SECURITY
                     </p>
@@ -437,7 +436,7 @@ export default function StorageDetails() {
                     </p>
                   </div>
 
-                  <div className="border border-brand-secondary/50 bg-surface-card rounded-xl p-3.5">
+                  <div className="border border-brand-secondary/50 bg-surface-card rounded-2xl p-3.5">
                     <p className="text-[12px] uppercase font-bold tracking-wider text-brand-primary mb-0.5">
                       ACCESSIBILITY
                     </p>
@@ -446,7 +445,7 @@ export default function StorageDetails() {
                     </p>
                   </div>
 
-                  <div className="border border-brand-secondary/50 bg-surface-card rounded-xl p-3.5">
+                  <div className="border border-brand-secondary/50 bg-surface-card rounded-2xl p-3.5">
                     <p className="text-[12px] uppercase font-bold tracking-wider text-brand-primary mb-0.5">
                       NEAREST MAJOR MARKET
                     </p>
@@ -495,7 +494,7 @@ export default function StorageDetails() {
                     hub.features.map((feature, index) => (
                       <div
                         key={index}
-                        className="bg-surface-card border border-border-light rounded-xl p-4 flex flex-col items-start gap-2.5 shadow-2xs"
+                        className="bg-surface-card border border-border-light rounded-2xl p-4 flex flex-col items-start gap-2.5 shadow-2xs"
                       >
                         <img
                           src="/VerifiedCheck.svg"
@@ -508,7 +507,7 @@ export default function StorageDetails() {
                       </div>
                     ))
                   ) : (
-                    <div className="col-span-full p-4 border border-border-light rounded-xl bg-surface-card text-xs text-text-muted">
+                    <div className="col-span-full p-4 border border-border-light rounded-2xl bg-surface-card text-xs text-text-muted">
                       No specific features listed
                     </div>
                   )}
@@ -594,7 +593,7 @@ export default function StorageDetails() {
 
             {/* RIGHT COLUMN: Booking Card */}
             <div className="lg:col-span-5">
-              <div className="bg-surface-card border border-border-light rounded-3xl p-5 shadow-xs flex flex-col gap-4">
+              <div className="bg-surface-card border border-border-light rounded-3xl p-4 shadow-xs flex flex-col gap-4">
                 {/* Dynamic Price Header */}
                 <div className="flex items-start justify-between">
                   <div>
@@ -617,7 +616,7 @@ export default function StorageDetails() {
                 >
                   <div className="space-y-3">
                     {/* Drop-off Date */}
-                    <div>
+                    <div className="w-full">
                       <label className="block text-[11px] font-medium text-text-subtle mb-1">
                         Drop-off date
                       </label>
@@ -626,11 +625,11 @@ export default function StorageDetails() {
                           type="date"
                           min={minDropDate}
                           {...register("dropDate")}
-                          className={`w-full bg-background border ${
+                          className={`w-full block box-border bg-background border ${
                             errors.dropDate
                               ? "border-semantic-error"
                               : "border-border-input"
-                          } rounded-2xl px-1 py-2 text-xs text-text-main focus:outline-none`}
+                          } rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none appearance-none [&::-webkit-date-and-time-value]:text-left`}
                         />
                       </div>
                       {errors.dropDate && (
@@ -641,7 +640,7 @@ export default function StorageDetails() {
                     </div>
 
                     {/* Pick-up Date */}
-                    <div>
+                    <div className="w-full">
                       <label className="block text-[11px] font-medium text-text-subtle mb-1">
                         Pick-up date
                       </label>
@@ -649,11 +648,11 @@ export default function StorageDetails() {
                         <input
                           type="date"
                           {...register("pickupDate")}
-                          className={`w-full bg-background border ${
+                          className={`w-full block box-border bg-background border ${
                             errors.pickupDate
                               ? "border-semantic-error"
                               : "border-border-input"
-                          } rounded-2xl px-1 py-2 text-xs text-text-main focus:outline-none`}
+                          } rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none appearance-none [&::-webkit-date-and-time-value]:text-left`}
                         />
                       </div>
                       {errors.pickupDate && (
@@ -663,19 +662,19 @@ export default function StorageDetails() {
                       )}
                     </div>
 
-                    {/* 3. Crop type & Est. Quantity */}
-                    <div className="grid grid-cols-2 gap-3">
+                    {/* Crop type & Est. Quantity*/}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
                         <label className="block text-[11px] font-medium text-text-subtle mb-1">
                           Crop type
                         </label>
                         <select
                           {...register("selectedCrop")}
-                          className={`w-full bg-background border ${
+                          className={`w-full block box-border bg-background border ${
                             errors.selectedCrop
                               ? "border-semantic-error"
                               : "border-border-input"
-                          } rounded-2xl py-2 px-1 text-xs text-text-main focus:outline-none focus:ring-1 focus:ring-brand-primary cursor-pointer`}
+                          } rounded-2xl py-2 px-3 text-xs text-text-main focus:outline-none focus:ring-1 focus:ring-brand-primary cursor-pointer`}
                         >
                           {/* Placeholder option */}
                           <option value="" disabled>
@@ -709,11 +708,11 @@ export default function StorageDetails() {
                         <input
                           type="number"
                           {...register("quantity")}
-                          className={`w-full bg-background border ${
+                          className={`w-full block box-border bg-background border ${
                             errors.quantity
                               ? "border-semantic-error"
                               : "border-border-input"
-                          } rounded-2xl px-1 py-2 text-xs text-text-main focus:outline-none`}
+                          } rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none`}
                         />
                         {errors.quantity && (
                           <span className="text-[10px] text-semantic-error mt-1 block">
@@ -723,7 +722,7 @@ export default function StorageDetails() {
                       </div>
                     </div>
 
-                    {/* 4. Phone Number */}
+                    {/* Phone Number */}
                     <div>
                       <label className="block text-[11px] font-medium text-text-subtle mb-1">
                         Phone Number
@@ -732,11 +731,11 @@ export default function StorageDetails() {
                         type="tel"
                         placeholder="+234 700 000 000"
                         {...register("phoneNumber")}
-                        className={`w-full bg-background border ${
+                        className={`w-full block box-border bg-background border ${
                           errors.phoneNumber
                             ? "border-semantic-error"
                             : "border-border-input"
-                        } rounded-2xl px-1 py-2 text-xs text-text-main focus:outline-none placeholder:text-text-muted`}
+                        } rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none placeholder:text-text-muted`}
                       />
                       {errors.phoneNumber && (
                         <span className="text-[10px] text-semantic-error mt-1 block">
@@ -799,11 +798,11 @@ export default function StorageDetails() {
                 <div className="border border-border-light rounded-2xl p-3 flex items-center justify-between mt-1">
                   <div className="flex items-center gap-2">
                     <img
-                      src="/icons/headset.svg"
+                      src="/phoneTwo.svg"
                       alt=""
                       className="w-4 h-4 text-text-subtle"
                     />
-                    <span className="text-xs font-medium text-text-main">
+                    <span className="text-xs font-medium text-[#4B5563]">
                       Talk to support
                     </span>
                   </div>
