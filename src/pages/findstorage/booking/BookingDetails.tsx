@@ -299,7 +299,7 @@ export default function BookingDetails() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Drop-off date */}
               <div>
-                <label className="block text-xs font-medium text-text-main mb-1">
+                <label className="block text-base md:text-xs font-medium text-text-main mb-1">
                   Drop-off date*
                 </label>
                 <input
@@ -308,7 +308,7 @@ export default function BookingDetails() {
                   {...register("dropDate", {
                     required: "Drop-off date is required",
                   })}
-                  className="w-full block box-border bg-background border border-border-input rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-primary appearance-none [&::-webkit-date-and-time-value]:text-left"
+                  className="w-full block box-border bg-background border border-border-input rounded-2xl px-3 py-2 text-base md:text-xs text-text-main focus:outline-none focus:border-brand-primary appearance-none [&::-webkit-date-and-time-value]:text-left"
                 />
                 {errors.dropDate?.message && (
                   <span className="text-[10px] text-red-500 mt-0.5">
@@ -319,7 +319,7 @@ export default function BookingDetails() {
 
               {/* Pick-up date */}
               <div>
-                <label className="block text-xs font-medium text-text-main mb-1">
+                <label className="block text-base md:text-xs font-medium text-text-main mb-1">
                   Pick-up date*
                 </label>
                 <input
@@ -330,7 +330,7 @@ export default function BookingDetails() {
                   {...register("pickupDate", {
                     required: "Pick-up date is required",
                   })}
-                  className="w-full block box-border bg-background border border-border-input rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-primary appearance-none [&::-webkit-date-and-time-value]:text-left"
+                  className="w-full block box-border bg-background border border-border-input rounded-2xl px-3 py-2 text-base md:text-xs text-text-main focus:outline-none focus:border-brand-primary appearance-none [&::-webkit-date-and-time-value]:text-left"
                 />
                 {errors.pickupDate?.message && (
                   <span className="text-[10px] text-red-500 mt-0.5">
@@ -351,7 +351,7 @@ export default function BookingDetails() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Select Crop */}
               <div>
-                <label className="block text-xs font-medium text-text-main mb-1">
+                <label className="block text-base md:text-xs font-medium text-text-main mb-1">
                   Crop type*
                 </label>
 
@@ -363,7 +363,7 @@ export default function BookingDetails() {
                     errors.selectedCrop
                       ? "border-semantic-error"
                       : "border-border-input"
-                  } rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:ring-1 focus:ring-brand-primary cursor-pointer capitalize`}
+                  } rounded-2xl px-3 py-2 text-base md:text-xs text-text-main focus:outline-none focus:ring-1 focus:ring-brand-primary cursor-pointer capitalize`}
                 >
                   <option value="" disabled>
                     Select Crop
@@ -405,7 +405,7 @@ export default function BookingDetails() {
                     {...register("quantity")}
                     className={`flex-1 min-w-0 block box-border bg-background border ${
                       errors.quantity ? "border-red-500" : "border-border-input"
-                    } rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-primary`}
+                    } rounded-2xl px-3 py-2 text-base md:text-xs text-text-main focus:outline-none focus:border-brand-primary`}
                   />
                   <span className="flex items-center justify-center px-3 py-2 bg-background border border-border-input text-xs font-medium text-text-subtle rounded-2xl capitalize shrink-0">
                     {watchedQuantity === 1 ? unit : `${unit}s`}
@@ -430,7 +430,7 @@ export default function BookingDetails() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-text-main mb-1">
+                <label className="block text-base md:text-xs font-medium text-text-main mb-1">
                   Full name*
                 </label>
                 <input
@@ -449,7 +449,7 @@ export default function BookingDetails() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-text-main mb-1">
+                <label className="block text-base md:text-xs font-medium text-text-main mb-1">
                   Phone number*
                 </label>
                 <input
@@ -469,7 +469,7 @@ export default function BookingDetails() {
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-text-main mb-1">
+              <label className="block text-base md:text-xs font-medium text-text-main mb-1">
                 Email address (optional)
               </label>
               <input
@@ -481,7 +481,7 @@ export default function BookingDetails() {
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-text-main mb-1">
+              <label className="block text-base md:text-xs font-medium text-text-main mb-1">
                 Special instructions (optional)
               </label>
               <textarea

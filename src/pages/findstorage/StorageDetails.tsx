@@ -629,7 +629,7 @@ export default function StorageDetails() {
                             errors.dropDate
                               ? "border-semantic-error"
                               : "border-border-input"
-                          } rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none appearance-none [&::-webkit-date-and-time-value]:text-left`}
+                          } rounded-2xl px-3 py-2 text-base md:text-xs text-text-main focus:outline-none appearance-none [&::-webkit-date-and-time-value]:text-left`}
                         />
                       </div>
                       {errors.dropDate && (
@@ -652,7 +652,7 @@ export default function StorageDetails() {
                             errors.pickupDate
                               ? "border-semantic-error"
                               : "border-border-input"
-                          } rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none appearance-none [&::-webkit-date-and-time-value]:text-left`}
+                          } rounded-2xl px-3 py-2 text-base md:text-xs text-text-main focus:outline-none appearance-none [&::-webkit-date-and-time-value]:text-left`}
                         />
                       </div>
                       {errors.pickupDate && (
@@ -674,7 +674,7 @@ export default function StorageDetails() {
                             errors.selectedCrop
                               ? "border-semantic-error"
                               : "border-border-input"
-                          } rounded-2xl py-2 px-3 text-xs text-text-main focus:outline-none focus:ring-1 focus:ring-brand-primary cursor-pointer`}
+                          } rounded-2xl py-2 px-3 text-base md:text-xs text-text-main focus:outline-none focus:ring-1 focus:ring-brand-primary cursor-pointer`}
                         >
                           {/* Placeholder option */}
                           <option value="" disabled>
@@ -712,7 +712,7 @@ export default function StorageDetails() {
                             errors.quantity
                               ? "border-semantic-error"
                               : "border-border-input"
-                          } rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none`}
+                          } rounded-2xl px-3 py-2 text-base md:text-xs text-text-main focus:outline-none`}
                         />
                         {errors.quantity && (
                           <span className="text-[10px] text-semantic-error mt-1 block">
@@ -735,7 +735,7 @@ export default function StorageDetails() {
                           errors.phoneNumber
                             ? "border-semantic-error"
                             : "border-border-input"
-                        } rounded-2xl px-3 py-2 text-xs text-text-main focus:outline-none placeholder:text-text-muted`}
+                        } rounded-2xl px-3 py-2 text-base md:text-xs text-text-main focus:outline-none placeholder:text-text-muted`}
                       />
                       {errors.phoneNumber && (
                         <span className="text-[10px] text-semantic-error mt-1 block">
