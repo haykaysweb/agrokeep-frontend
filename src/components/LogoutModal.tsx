@@ -27,13 +27,13 @@ export default function LogoutModal({ isOpen, onClose, onConfirm }: LogoutModalP
             <div className="flex gap-4">
               <button
                 onClick={onClose}
-                className="flex-1 py-3 rounded-full border border-border-base hover:bg-gray-50"
+                className="flex-1 py-3 rounded-full border border-border-base hover:bg-gray-50 cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 onClick={onConfirm}
-                className="flex-1 py-3 rounded-full bg-semantic-error text-text-light font-medium"
+                className="flex-1 py-3 rounded-full bg-semantic-error text-text-light font-medium cursor-pointer"
               >
                 Logout
               </button>

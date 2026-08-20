@@ -21,11 +21,16 @@ import {
 import { showToast } from "@/utils/CustomToast";
 import { useAuth } from "@/hooks/useAuth";
 import { Link } from "react-router";
+import { logoutUserApi } from "@/api/auth";
+import { useNavigate } from "react-router";
+import { navigateWithDelay } from "@/utils/navigation";
+import LogoutModal from "@/components/LogoutModal";
 
 export default function Profile() {
   const { user: authUser, setUser } = useAuth();
   const queryClient = useQueryClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
   const {
     data: responseData,
@@ -71,6 +76,7 @@ export default function Profile() {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
   // Mutation for updating profile data
   const updateProfileMutation = useMutation({
@@ -299,6 +305,23 @@ export default function Profile() {
     passwordMutation.mutate({ currentPassword, newPassword, confirmPassword });
   };
 
+  const handleLogout = async () => {
+    setIsLogoutModalOpen(false);
+
+    try {
+      await logoutUserApi();
+      showToast.success("Logged out successfully");
+      setUser(null);
+
+      // Wipes out all cached data across the entire application instantly
+      queryClient.clear();
+
+      navigateWithDelay(navigate, "/auth/login");
+    } catch {
+      showToast.error("Failed to log out. Please try again.");
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-[calc(100vh-80px)] flex items-center justify-center px-4">
@@ -374,7 +397,7 @@ export default function Profile() {
                     {user?.fullName
                       ? user.fullName
                           .split(" ")
-                          .map((n:string) => n[0])
+                          .map((n: string) => n[0])
                           .join("")
                           .toUpperCase()
                           .slice(0, 2)
@@ -384,7 +407,7 @@ export default function Profile() {
               </div>
 
               {/* Persistent Camera Badge (So they always know it's clickable for an upload) */}
-              <div className="absolute bottom-0 right-0 bg-brand-secondary text-white p-2 rounded-full shadow-md border-2 border-white flex items-center z-50 justify-center group-hover:scale-110 transition-transform">
+              <div className="absolute bottom-0 right-0 bg-brand-secondary text-white p-2 rounded-full shadow-md border-2 border-white flex items-center z-20 justify-center group-hover:scale-110 transition-transform">
                 <Camera className="h-4 w-4" />
               </div>
 
@@ -728,6 +751,7 @@ export default function Profile() {
           <div className="flex justify-between items-center gap-4 pt-2">
             <button
               type="button"
+              onClick={() => setIsLogoutModalOpen(true)}
               className="shrink-0 text-semantic-error hover:text-shadow-semantic-error cursor-pointer text-xs font-bold flex items-center gap-1.5 px-2"
             >
               <LogOut className="h-4 w-4" />
@@ -812,7 +836,7 @@ export default function Profile() {
                     {user?.fullName
                       ? user.fullName
                           .split(" ")
-                          .map((n:string) => n[0])
+                          .map((n: string) => n[0])
                           .join("")
                           .toUpperCase()
                           .slice(0, 2)
@@ -1034,6 +1058,11 @@ export default function Profile() {
           </div>
         </div>
       )}
+      <LogoutModal
+        isOpen={isLogoutModalOpen}
+        onClose={() => setIsLogoutModalOpen(false)}
+        onConfirm={handleLogout}
+      />
     </div>
   );
 }
