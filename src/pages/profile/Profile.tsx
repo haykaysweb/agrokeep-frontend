@@ -5,7 +5,6 @@ import {
   Lock,
   LogOut,
   Phone,
-  HelpCircle,
   X,
   Eye,
   EyeOff,
