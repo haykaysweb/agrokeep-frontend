@@ -172,7 +172,7 @@ export default function HeroSection() {
                 value={locationState}
                 onChange={(e) => setLocationState(e.target.value)}
                 placeholder="Enter state"
-                className="h-10 w-full rounded-full border border-white/20 bg-surface-card px-4 text-sm text-text-main outline-none transition-colors placeholder:text-text-muted focus:border-white"
+                className="h-10 w-full rounded-full border border-white/20 bg-surface-card px-4 text-sm sm:text-base text-text-main outline-none transition-colors placeholder:text-text-muted focus:border-white"
               />
             </div>
 
@@ -192,7 +192,7 @@ export default function HeroSection() {
                 value={cropType}
                 onChange={(e) => setCropType(e.target.value)}
                 placeholder="Enter your crop type. Eg Yam"
-                className="h-10 w-full rounded-full border border-white/20 bg-surface-card px-4 text-sm text-text-main outline-none transition-colors placeholder:text-text-muted focus:border-white"
+                className="h-10 w-full rounded-full border border-white/20 bg-surface-card px-4 text-sm sm:text-base text-text-main outline-none transition-colors placeholder:text-text-muted focus:border-white"
               />
             </div>
 
