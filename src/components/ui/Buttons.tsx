@@ -20,7 +20,7 @@ export function PrimaryButton({
     <>
       <span className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-full bg-brand-secondary" />
       <span className="relative z-10 flex h-12 items-center gap-3 rounded-full bg-brand-primary px-8 py-3 text-text-light">
-        <span className="text-sm font-medium md:text-base whitespace-nowrap">
+        <span className="text-sm font-medium md:text-base whitespace-nowrap cursor-pointer">
           {text}
         </span>
         <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-secondary">
@@ -80,7 +80,7 @@ export function SecondaryButton({
   const content = (
     <>
       <span className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-full bg-brand-secondary" />
-      <span className="relative z-10 flex h-12 items-center justify-center rounded-full bg-white px-8 py-3 text-brand-primary font-medium text-sm md:text-base whitespace-nowrap">
+      <span className="relative z-10 flex h-12 items-center justify-center rounded-full bg-white px-8 py-3 text-brand-primary font-medium text-sm md:text-base whitespace-nowrap cursor-pointer">
         {text}
       </span>
     </>

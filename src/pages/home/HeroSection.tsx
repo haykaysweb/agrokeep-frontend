@@ -14,10 +14,27 @@ export default function HeroSection() {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const [locationState, setLocationState] = useState("");
+  const [cropType, setCropType] = useState("");
+
+  const handleFindHub = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    const params = new URLSearchParams();
+    if (locationState.trim()) {
+      params.set("locationState", locationState.trim());
+    }
+    if (cropType.trim()) {
+      params.set("cropType", cropType.trim());
+    }
+
+    navigate(`/storage?${params.toString()}`);
+  };
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
-    }, 60000);
+    }, 8000);
 
     return () => clearInterval(interval);
   }, []);
@@ -127,7 +144,10 @@ export default function HeroSection() {
         transition={{ delay: 0.8, duration: 0.8 }}
         className="relative z-20 mx-auto -mt-16 w-full max-w-7xl px-4 sm:-mt-10 sm:px-6 md:-mt-20 md:px-12"
       >
-        <div className="rounded-[24px] bg-brand-primary p-4 shadow-2xl sm:rounded-[28px] md:p-6">
+        <form
+          onSubmit={handleFindHub}
+          className="rounded-[24px] bg-brand-primary p-4 shadow-2xl sm:rounded-[28px] md:p-6"
+        >
           {/* Instruction */}
           <div className="mb-4 flex items-start gap-3 text-white">
             <Search className="mt-0.5 h-5 w-5 shrink-0 text-white/70" />
@@ -149,7 +169,9 @@ export default function HeroSection() {
 
               <input
                 type="text"
-                placeholder="Oyo, Osun"
+                value={locationState}
+                onChange={(e) => setLocationState(e.target.value)}
+                placeholder="Enter state"
                 className="h-10 w-full rounded-full border border-white/20 bg-surface-card px-4 text-sm text-text-main outline-none transition-colors placeholder:text-text-muted focus:border-white"
               />
             </div>
@@ -167,17 +189,19 @@ export default function HeroSection() {
 
               <input
                 type="text"
-                placeholder="Yam, Cassava, Tomato"
+                value={cropType}
+                onChange={(e) => setCropType(e.target.value)}
+                placeholder="Enter your crop type. Eg Yam"
                 className="h-10 w-full rounded-full border border-white/20 bg-surface-card px-4 text-sm text-text-main outline-none transition-colors placeholder:text-text-muted focus:border-white"
               />
             </div>
 
             {/* Find Hub */}
-            <div className="flex shrink-0 items-end">
+            <div className="flex shrink-0 items-end ">
               <PrimaryButton text="Find a Hub" type="submit" />
             </div>
           </div>
-        </div>
+        </form>
       </motion.div>
     </section>
   );

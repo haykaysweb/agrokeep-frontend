@@ -1,12 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HubsGrid from "./HubGrid";
 import StorageFilter from "./StorageFilter";
 import SupportBanner from "./SupportBanner";
 import { getStorageHubsGroupedByState } from "@/api/storage";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate, useSearchParams } from "react-router";
 
 export default function HubsPage() {
+  const navigate = useNavigate();
   // Local state to store filtered results when the search button is triggered
+  const [searchParams] = useSearchParams();
+  const locationStateParam = searchParams.get("locationState");
+  const cropTypeParam = searchParams.get("cropType");
+
   const [filteredResults, setFilteredResults] = useState<any[] | null>(null);
 
   // Use React Query to fetch the storage hubs on page load
@@ -18,6 +24,28 @@ export default function HubsPage() {
     queryKey: ["storageHubsGroupedByState"],
     queryFn: getStorageHubsGroupedByState,
   });
+
+  useEffect(() => {
+    if ((locationStateParam || cropTypeParam) && stateGroups.length > 0) {
+      const allHubs = stateGroups.flatMap((group: any) => group.hubs || []);
+
+      const results = allHubs.filter((hub: any) => {
+        const matchesState = locationStateParam
+          ? hub.state?.toLowerCase().includes(locationStateParam.toLowerCase())
+          : true;
+
+        const matchesCrop = cropTypeParam
+          ? hub.crops?.some((c: string) =>
+              c.toLowerCase().includes(cropTypeParam.toLowerCase()),
+            )
+          : true;
+
+        return matchesState && matchesCrop;
+      });
+
+      setFilteredResults(results);
+    }
+  }, [searchParams, stateGroups]);
 
   return (
     <div className="relative">
@@ -104,9 +132,23 @@ export default function HubsPage() {
                             {hub.availableCapacity} {hub.unitType}
                           </strong>
                         </span>
-                        <span className="text-xs font-bold text-[#1B4D3E] bg-emerald-50 px-3 py-1 rounded-full">
-                          {hub.storageType}
-                        </span>
+                        <div
+                          className="relative shrink-0"
+                          onClick={() =>
+                            navigate(`/storage/details/${hub.slug}`)
+                          }
+                        >
+                          {/* Amber offset */}
+                          <div className="absolute top-1 left-1 w-full h-full bg-brand-secondary rounded-full" />
+
+                          {/* Button */}
+                          <button
+                            type="button"
+                            className="relative bg-brand-primary text-white px-6 sm:px-5 py-1.5 sm:py-2 rounded-full font-medium flex items-center justify-center text-[9px] sm:text-[13px] whitespace-nowrap hover:bg-[#153d31] transition-transform cursor-pointer"
+                          >
+                            View Details
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>

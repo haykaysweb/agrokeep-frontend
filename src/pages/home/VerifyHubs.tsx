@@ -71,7 +71,7 @@ export default function VerifyHubs() {
 
   if (isPending) {
     return (
-      <section className="max-w-7xl mx-auto py-10">
+      <section className="max-w-7xl mx-auto px-4 md:px-12 py-10">
         <div className="flex items-center justify-between mb-5">
           <div>
             <div className="h-3 w-20 rounded bg-background-subtle animate-pulse" />

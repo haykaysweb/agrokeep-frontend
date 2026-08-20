@@ -23,7 +23,7 @@ export default function SupportBanner() {
 
         {/* Right Side: Action Button with Amber Shadow Layer */}
         <div className="relative shrink-0 mt-4 md:mt-0">
-          <div className="absolute top-1 left-1 w-full h-full bg-amber-500 rounded-2xl" />
+          <div className="absolute top-1 left-1 w-full h-full bg-brand-secondary rounded-2xl" />
           <button
             onClick={() => navigate("/contact")}
             className="relative cursor-pointer bg-white text-stone-900 px-8 py-4 rounded-2xl font-semibold flex items-center gap-2 hover:bg-stone-50 transition-transform hover:-translate-y-0.5"

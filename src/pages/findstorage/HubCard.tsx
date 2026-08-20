@@ -131,12 +131,12 @@ export function HubCard({ hub }: { hub: Hub }) {
           {/* Book Now */}
           <div className="relative shrink-0" onClick={() => navigate(`/storage/details/${hub.slug}`)}>
             {/* Amber offset */}
-            <div className="absolute top-1 left-1 w-full h-full bg-amber-500 rounded-full" />
+            <div className="absolute top-1 left-1 w-full h-full bg-brand-secondary rounded-full" />
 
             {/* Button */}
             <button
               type="button"
-              className="relative bg-[#1B4D3E] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-medium flex items-center justify-center text-[9px] sm:text-[13px] whitespace-nowrap hover:bg-[#153d31] transition-transform cursor-pointer"
+              className="relative bg-brand-primary text-white px-6 sm:px-5 py-1.5 sm:py-2 rounded-full font-medium flex items-center justify-center text-[9px] sm:text-[13px] whitespace-nowrap hover:bg-[#153d31] transition-transform cursor-pointer"
             >
               View Details
             </button>
