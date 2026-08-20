@@ -4,13 +4,13 @@ import { User, LogOut, ChevronDown, Book } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "@/hooks/useAuth";
 import { logoutUserApi } from "@/api/auth";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { showToast } from "@/utils/CustomToast";
 import { navigateWithDelay } from "@/utils/navigation";
 import LogoutModal from "./LogoutModal";
 
 interface UserAvatarProps {
-  name: string;
+  name?: string; // Optional now, since we can fallback to cached user data
 }
 
 export default function UserAvatar({ name }: UserAvatarProps) {
@@ -23,6 +23,18 @@ export default function UserAvatar({ name }: UserAvatarProps) {
 
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
+  // Pull the latest profile data straight from the cache to stay fully synced
+  const { data: profileData } = useQuery<any>({
+    queryKey: ["userProfile"],
+    enabled: false,
+    staleTime: Infinity,
+  });
+
+  // Resolve the current profile details dynamically
+  const currentUser = profileData?.user || profileData || user;
+  const displayName = name || currentUser?.fullName || "User";
+  const avatarUrl = currentUser?.avatarUrl;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -56,23 +68,34 @@ export default function UserAvatar({ name }: UserAvatarProps) {
 
       showToast.success("Logged out successfully");
 
-      // Clear authenticated user state
       setUser(null);
 
       // Clear cached current user
       queryClient.setQueryData(["currentUser"], null);
+      queryClient.setQueryData(["userProfile"], null);
 
-      // Redirect to login
       navigateWithDelay(navigate, "/auth/login");
     } catch {
       showToast.error("Failed to log out. Please try again.");
     }
   };
 
-  const initial =
-    user?.fullName?.charAt(0)?.toUpperCase() ||
-    name?.charAt(0)?.toUpperCase() ||
-    "U";
+// Replace the old 'initial' calculation with this:
+  const initial = currentUser?.fullName
+    ? currentUser.fullName
+        .split(" ")
+        .map((n: string) => n[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2)
+    : name
+    ? name
+        .split(" ")
+        .map((n: string) => n[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2)
+    : "U";
 
   return (
     <div ref={dropdownRef} className="relative">
@@ -85,21 +108,20 @@ export default function UserAvatar({ name }: UserAvatarProps) {
         aria-label="Open user menu"
         className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full bg-white border border-stone-200 hover:bg-stone-50 transition-colors shadow-sm"
       >
-        {/* Avatar */}
-        <div className="h-8 w-8 rounded-full overflow-hidden bg-brand-primary flex items-center justify-center shrink-0">
-          {user?.avatarUrl ? (
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-primary text-white text-sm font-semibold overflow-hidden">
+          {avatarUrl ? (
             <img
-              src={user.avatarUrl}
-              alt={user.fullName || name || "User"}
-              className="h-full w-full object-cover"
+              src={avatarUrl}
+              alt={displayName}
+              className="w-full h-full object-cover"
             />
           ) : (
-            <span className="text-sm font-semibold text-white">{initial}</span>
+            initial
           )}
         </div>
 
         {/* User name */}
-        <span className="text-sm font-medium text-stone-800">{name}</span>
+        <span className="text-sm font-medium text-stone-800">{displayName}</span>
 
         {/* Dropdown arrow */}
         <ChevronDown
@@ -147,9 +169,7 @@ export default function UserAvatar({ name }: UserAvatarProps) {
 
             {/* Logout */}
             <button
-              type="button"
               onClick={initiateLogout}
-              role="menuitem"
               className="flex w-full items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 transition-colors"
             >
               <LogOut className="h-4 w-4" />
