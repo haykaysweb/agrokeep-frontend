@@ -337,7 +337,7 @@ export default function Profile() {
         </p>
 
         {profileError && (
-          <div className="mt-4 bg-red-50 text-red-600 text-xs p-3 rounded-xl font-medium max-w-md">
+          <div className="mt-4 bg-red-50 text-semantic-error text-xs p-3 rounded-xl font-medium max-w-md">
             {profileError}
           </div>
         )}
@@ -375,7 +375,7 @@ export default function Profile() {
                     {user?.fullName
                       ? user.fullName
                           .split(" ")
-                          .map((n) => n[0])
+                          .map((n:string) => n[0])
                           .join("")
                           .toUpperCase()
                           .slice(0, 2)
@@ -385,7 +385,7 @@ export default function Profile() {
               </div>
 
               {/* Persistent Camera Badge (So they always know it's clickable for an upload) */}
-              <div className="absolute bottom-0 right-0 bg-[#D9822B] text-white p-2 rounded-full shadow-md border-2 border-white flex items-center justify-center group-hover:scale-110 transition-transform">
+              <div className="absolute bottom-0 right-0 bg-brand-secondary text-white p-2 rounded-full shadow-md border-2 border-white flex items-center z-50 justify-center group-hover:scale-110 transition-transform">
                 <Camera className="h-4 w-4" />
               </div>
 
@@ -406,14 +406,14 @@ export default function Profile() {
               </p>
 
               <p className="text-xs text-stone-400 flex items-center justify-center gap-1 mt-1">
-                <MapPin className="h-3 w-3 text-[#1B4D3E] shrink-0" />
+                <MapPin className="h-3 w-3 text-brand-primbg-brand-primary shrink-0" />
                 <span className="break-words">
                   {user?.location || "Nigeria"}
                 </span>
               </p>
             </div>
 
-            <div className="max-w-full bg-emerald-50 text-[#1B4D3E] px-3 py-1 rounded-full text-[11px] font-semibold flex items-center justify-center gap-1 mt-1">
+            <div className="max-w-full bg-emerald-50 text-brand-primbg-brand-primary px-3 py-1 rounded-full text-[11px] font-semibold flex items-center justify-center gap-1 mt-1">
               <ShieldCheck className="h-3.5 w-3.5 shrink-0" />
 
               <span className="truncate">
@@ -463,7 +463,7 @@ export default function Profile() {
             </div>
           </div>
           <Link to="/storage/bookings">
-            <button className="w-full border-2 border-[#D9822B] hover:bg-orange-50 text-stone-900 py-3 rounded-full text-xs font-bold transition-colors">
+            <button className="w-full border-2 border-brand-sebg-brand-secondary hover:bg-orange-50 text-stone-900 py-3 rounded-full text-xs font-bold transition-colors cursor-pointer">
               View My Bookings
             </button>
           </Link>
@@ -496,7 +496,7 @@ export default function Profile() {
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full min-w-0 bg-white border border-stone-200 rounded-xl px-4 py-3 text-xs text-stone-800 focus:outline-none focus:border-[#1B4D3E]"
+                  className="w-full min-w-0 bg-white border border-stone-200 rounded-xl px-4 py-3 text-xs text-stone-800 focus:outline-none focus:border-brand-primbg-brand-primary"
                 />
               </div>
 
@@ -527,14 +527,14 @@ export default function Profile() {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="+234..."
-                    className="w-full min-w-0 bg-white border border-stone-200 rounded-xl px-4 py-3 text-xs text-stone-800 focus:outline-none focus:border-[#1B4D3E]"
+                    className="w-full min-w-0 bg-white border border-stone-200 rounded-xl px-4 py-3 text-xs text-stone-800 focus:outline-none focus:border-brand-primbg-brand-primary"
                   />
                 </div>
               </div>
             </div>
           </form>
 
-          {/* 2. Notification Preferences Section */}
+          {/* Notification Preferences Section */}
           <div className="w-full min-w-0 bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-stone-100 space-y-6">
             <div className="min-w-0">
               <h3 className="text-base font-bold text-stone-900">
@@ -563,7 +563,7 @@ export default function Profile() {
                   type="button"
                   onClick={() => setBookingUpdates(!bookingUpdates)}
                   className={`w-11 h-6 shrink-0 flex items-center rounded-full p-1 transition-colors ${
-                    bookingUpdates ? "bg-[#1B4D3E]" : "bg-stone-300"
+                    bookingUpdates ? "bg-brand-primary" : "bg-stone-300"
                   }`}
                 >
                   <div
@@ -590,7 +590,7 @@ export default function Profile() {
                   type="button"
                   onClick={() => setPaymentNotifications(!paymentNotifications)}
                   className={`w-11 h-6 shrink-0 flex items-center rounded-full p-1 transition-colors ${
-                    paymentNotifications ? "bg-[#1B4D3E]" : "bg-stone-300"
+                    paymentNotifications ? "bg-brand-primary" : "bg-stone-300"
                   }`}
                 >
                   <div
@@ -617,7 +617,7 @@ export default function Profile() {
                   type="button"
                   onClick={() => setReminderAlerts(!reminderAlerts)}
                   className={`w-11 h-6 shrink-0 flex items-center rounded-full p-1 transition-colors ${
-                    reminderAlerts ? "bg-[#1B4D3E]" : "bg-stone-300"
+                    reminderAlerts ? "bg-brand-primary" : "bg-stone-300"
                   }`}
                 >
                   <div
@@ -644,7 +644,7 @@ export default function Profile() {
                   type="button"
                   onClick={() => setSmsNotifications(!smsNotifications)}
                   className={`w-11 h-6 shrink-0 flex items-center rounded-full p-1 transition-colors ${
-                    smsNotifications ? "bg-[#1B4D3E]" : "bg-stone-300"
+                    smsNotifications ? "bg-brand-primary" : "bg-stone-300"
                   }`}
                 >
                   <div
@@ -671,7 +671,7 @@ export default function Profile() {
                   type="button"
                   onClick={() => setEmailNotifications(!emailNotifications)}
                   className={`w-11 h-6 shrink-0 flex items-center rounded-full p-1 transition-colors ${
-                    emailNotifications ? "bg-[#1B4D3E]" : "bg-stone-300"
+                    emailNotifications ? "bg-brand-primary" : "bg-stone-300"
                   }`}
                 >
                   <div
@@ -684,7 +684,7 @@ export default function Profile() {
             </div>
           </div>
 
-          {/* 3. Account Security Section */}
+          {/* Account Security Section */}
           <div className="w-full min-w-0 bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-stone-100 space-y-6">
             <div>
               <h3 className="text-base font-bold text-stone-900">
@@ -718,7 +718,7 @@ export default function Profile() {
                   setPasswordSuccess("");
                   setIsPasswordModalOpen(true);
                 }}
-                className="shrink-0 bg-white hover:bg-stone-100 text-stone-800 border border-stone-200 px-4 py-2 rounded-full text-xs font-semibold shadow-sm transition-colors"
+                className="shrink-0 bg-white hover:bg-stone-100 text-stone-800 border border-stone-200 px-4 py-2 rounded-full text-xs font-semibold shadow-sm transition-colors cursor-pointer"
               >
                 Change Password
               </button>
@@ -729,7 +729,7 @@ export default function Profile() {
           <div className="flex justify-between items-center gap-4 pt-2">
             <button
               type="button"
-              className="shrink-0 text-red-500 hover:text-red-600 text-xs font-bold flex items-center gap-1.5 px-2"
+              className="shrink-0 text-semantic-error hover:text-shadow-semantic-error cursor-pointer text-xs font-bold flex items-center gap-1.5 px-2"
             >
               <LogOut className="h-4 w-4" />
               Log out
@@ -739,7 +739,7 @@ export default function Profile() {
               type="button"
               onClick={handleSaveAll}
               disabled={updateProfileMutation.isPending}
-              className="shrink-0 bg-[#D9822B] hover:bg-[#c47323] text-white px-8 py-3 rounded-full text-xs font-bold shadow-sm transition-colors disabled:opacity-50"
+              className="shrink-0 bg-brand-secondary hover:bg-brand-secondary/80 cursor-pointer text-white px-8 py-3 rounded-full text-xs font-bold shadow-sm transition-colors disabled:opacity-50"
             >
               {updateProfileMutation.isPending
                 ? "Saving All..."
@@ -750,11 +750,9 @@ export default function Profile() {
       </div>
 
       {/* Bottom Assistance Banner */}
-      <div className="w-full mt-16 bg-[#1B4D3E] rounded-3xl p-8 md:p-12 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg">
+      <div className="w-full mt-16 bg-brand-primary rounded-3xl p-8 md:p-12 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg">
         <div className="flex items-center gap-5 text-center md:text-left flex-col md:flex-row min-w-0">
-          <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center shrink-0 border border-white/20">
-            <HelpCircle className="h-7 w-7 text-white" />
-          </div>
+          <img src="/cycle.svg" alt="" />
 
           <div className="min-w-0">
             <h3 className="text-xl md:text-2xl font-bold">Need assistance?</h3>
@@ -767,7 +765,7 @@ export default function Profile() {
         <Link to="/contact">
           <button
             type="button"
-            className="shrink-0 bg-[#D9822B] hover:bg-[#c47323] text-white px-8 py-3.5 rounded-full text-xs font-bold shadow-md transition-colors flex items-center gap-2"
+            className="shrink-0 bg-brand-secondary hover:bg-brand-secondary/80 cursor-pointer text-white px-8 py-3.5 rounded-full text-xs font-bold shadow-md transition-colors flex items-center gap-2"
           >
             Contact Support
             <Phone className="h-3.5 w-3.5" />
@@ -815,7 +813,7 @@ export default function Profile() {
                     {user?.fullName
                       ? user.fullName
                           .split(" ")
-                          .map((n) => n[0])
+                          .map((n:string) => n[0])
                           .join("")
                           .toUpperCase()
                           .slice(0, 2)
@@ -837,7 +835,7 @@ export default function Profile() {
                     setIsAvatarModalOpen(false);
                     fileInputRef.current?.click();
                   }}
-                  className="w-full bg-[#D9822B] hover:bg-[#c47323] text-white py-2.5 rounded-full text-xs font-semibold shadow-sm transition-colors"
+                  className="w-full bg-brand-secondary hover:bg-brand-secondary text-white py-2.5 rounded-full text-xs font-semibold shadow-sm transition-colors"
                 >
                   Upload New Avatar
                 </button>
@@ -877,7 +875,7 @@ export default function Profile() {
                     type="button"
                     onClick={handleConfirmUpload}
                     disabled={uploadAvatarMutation.isPending}
-                    className="flex-1 min-w-0 bg-[#D9822B] hover:bg-[#c47323] text-white py-2.5 rounded-full text-xs font-semibold shadow-sm transition-colors disabled:opacity-50"
+                    className="flex-1 min-w-0 bg-brand-secondary hover:bg-brand-secondary text-white py-2.5 rounded-full text-xs font-semibold shadow-sm transition-colors disabled:opacity-50"
                   >
                     {uploadAvatarMutation.isPending
                       ? "Uploading..."
@@ -921,7 +919,7 @@ export default function Profile() {
             )}
 
             {passwordSuccess && (
-              <div className="bg-emerald-50 text-[#1B4D3E] text-xs p-3 rounded-xl font-medium">
+              <div className="bg-emerald-50 text-brand-primbg-brand-primary text-xs p-3 rounded-xl font-medium">
                 {passwordSuccess}
               </div>
             )}
@@ -939,7 +937,7 @@ export default function Profile() {
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full bg-white border border-stone-200 rounded-xl pl-4 pr-10 py-3 text-xs text-stone-800 focus:outline-none focus:border-[#1B4D3E]"
+                    className="w-full bg-white border border-stone-200 rounded-xl pl-4 pr-10 py-3 text-xs text-stone-800 focus:outline-none focus:border-brand-primbg-brand-primary"
                   />
 
                   <button
@@ -968,7 +966,7 @@ export default function Profile() {
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full bg-white border border-stone-200 rounded-xl pl-4 pr-10 py-3 text-xs text-stone-800 focus:outline-none focus:border-[#1B4D3E]"
+                    className="w-full bg-white border border-stone-200 rounded-xl pl-4 pr-10 py-3 text-xs text-stone-800 focus:outline-none focus:border-brand-primbg-brand-primary"
                   />
 
                   <button
@@ -997,7 +995,7 @@ export default function Profile() {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full bg-white border border-stone-200 rounded-xl pl-4 pr-10 py-3 text-xs text-stone-800 focus:outline-none focus:border-[#1B4D3E]"
+                    className="w-full bg-white border border-stone-200 rounded-xl pl-4 pr-10 py-3 text-xs text-stone-800 focus:outline-none focus:border-brand-primbg-brand-primary"
                   />
 
                   <button
@@ -1026,7 +1024,7 @@ export default function Profile() {
                 <button
                   type="submit"
                   disabled={passwordMutation.isPending}
-                  className="bg-[#D9822B] hover:bg-[#c47323] text-white px-6 py-2.5 rounded-full text-xs font-semibold shadow-sm transition-colors disabled:opacity-50"
+                  className="bg-brand-secondary hover:bg-brand-secondary text-white px-6 py-2.5 rounded-full text-xs font-semibold shadow-sm transition-colors disabled:opacity-50"
                 >
                   {passwordMutation.isPending
                     ? "Updating..."
