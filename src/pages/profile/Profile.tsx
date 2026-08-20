@@ -21,6 +21,7 @@ import {
 } from "@/api/profile";
 import { showToast } from "@/utils/CustomToast";
 import { useAuth } from "@/hooks/useAuth";
+import { Link } from "react-router";
 
 export default function Profile() {
   const { user: authUser, setUser } = useAuth();
@@ -359,15 +360,37 @@ export default function Profile() {
             {/* Avatar container with upload overlay */}
             <div
               onClick={() => setIsAvatarModalOpen(true)}
-              className="relative group w-24 h-24 rounded-full overflow-hidden border-2 border-stone-100 shadow-inner bg-stone-100 mx-auto cursor-pointer"
+              className="relative group w-24 h-24 rounded-full overflow-visible border-2 border-stone-100 shadow-inner bg-brand-primary/10 flex items-center justify-center mx-auto cursor-pointer"
             >
-              <img
-                src={user?.avatarUrl || "/avatar-adebayo.jpg"}
-                alt={user?.fullName || "User"}
-                className="w-full h-full object-cover"
-              />
+              {/* Inner image or initials container */}
+              <div className="w-full h-full rounded-full overflow-hidden flex items-center justify-center bg-stone-100">
+                {user?.avatarUrl ? (
+                  <img
+                    src={user.avatarUrl}
+                    alt={user?.fullName || "User"}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-2xl font-bold text-brand-primary">
+                    {user?.fullName
+                      ? user.fullName
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")
+                          .toUpperCase()
+                          .slice(0, 2)
+                      : "U"}
+                  </span>
+                )}
+              </div>
 
-              <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
+              {/* Persistent Camera Badge (So they always know it's clickable for an upload) */}
+              <div className="absolute bottom-0 right-0 bg-[#D9822B] text-white p-2 rounded-full shadow-md border-2 border-white flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Camera className="h-4 w-4" />
+              </div>
+
+              {/* Full Hover Overlay */}
+              <div className="absolute inset-0 bg-black/40 rounded-full flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
                 <Camera className="h-5 w-5 mb-0.5" />
                 <span className="text-[10px] font-semibold">Edit</span>
               </div>
@@ -439,10 +462,11 @@ export default function Profile() {
               </span>
             </div>
           </div>
-
-          <button className="w-full border-2 border-[#D9822B] hover:bg-orange-50 text-stone-900 py-3 rounded-full text-xs font-bold transition-colors">
-            View My Bookings
-          </button>
+          <Link to="/storage/bookings">
+            <button className="w-full border-2 border-[#D9822B] hover:bg-orange-50 text-stone-900 py-3 rounded-full text-xs font-bold transition-colors">
+              View My Bookings
+            </button>
+          </Link>
         </div>
 
         {/* Right Column: Information, Preferences & Security */}
@@ -508,8 +532,6 @@ export default function Profile() {
                 </div>
               </div>
             </div>
-
-           
           </form>
 
           {/* 2. Notification Preferences Section */}
@@ -660,7 +682,6 @@ export default function Profile() {
                 </button>
               </div>
             </div>
-
           </div>
 
           {/* 3. Account Security Section */}
@@ -743,14 +764,15 @@ export default function Profile() {
             </p>
           </div>
         </div>
-
-        <button
-          type="button"
-          className="shrink-0 bg-[#D9822B] hover:bg-[#c47323] text-white px-8 py-3.5 rounded-full text-xs font-bold shadow-md transition-colors flex items-center gap-2"
-        >
-          Contact Support
-          <Phone className="h-3.5 w-3.5" />
-        </button>
+        <Link to="/contact">
+          <button
+            type="button"
+            className="shrink-0 bg-[#D9822B] hover:bg-[#c47323] text-white px-8 py-3.5 rounded-full text-xs font-bold shadow-md transition-colors flex items-center gap-2"
+          >
+            Contact Support
+            <Phone className="h-3.5 w-3.5" />
+          </button>
+        </Link>
       </div>
 
       {/* Avatar Action Modal */}
@@ -775,12 +797,32 @@ export default function Profile() {
               </button>
             </div>
 
-            <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-stone-100 shadow-md bg-stone-100 mx-auto">
-              <img
-                src={previewUrl || user?.avatarUrl || "/avatar-adebayo.jpg"}
-                alt="Avatar Preview"
-                className="w-full h-full object-cover"
-              />
+            <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-stone-100 shadow-md bg-stone-100 mx-auto flex items-center justify-center relative">
+              {previewUrl || user?.avatarUrl ? (
+                <img
+                  src={previewUrl || user?.avatarUrl}
+                  alt="Avatar Preview"
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    // Fallback gracefully if the image fails to load
+                    (e.target as HTMLElement).style.display = "none";
+                  }}
+                />
+              ) : (
+                <div className="flex flex-col items-center justify-center text-stone-400 bg-brand-primary/10 w-full h-full">
+                  <Camera className="h-8 w-8 mb-1 text-brand-primary/60" />
+                  <span className="text-xs font-semibold text-stone-500">
+                    {user?.fullName
+                      ? user.fullName
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")
+                          .toUpperCase()
+                          .slice(0, 2)
+                      : "Add Photo"}
+                  </span>
+                </div>
+              )}
             </div>
 
             {!previewUrl ? (

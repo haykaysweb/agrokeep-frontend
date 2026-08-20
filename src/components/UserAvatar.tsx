@@ -25,7 +25,7 @@ export default function UserAvatar({ name }: UserAvatarProps) {
   const queryClient = useQueryClient();
 
   // Pull the latest profile data straight from the cache to stay fully synced
-const { data: profileData } = useQuery<any>({
+  const { data: profileData } = useQuery<any>({
     queryKey: ["userProfile"],
     enabled: false,
     staleTime: Infinity,
@@ -80,10 +80,22 @@ const { data: profileData } = useQuery<any>({
     }
   };
 
-  const initial =
-    user?.fullName?.charAt(0)?.toUpperCase() ||
-    name?.charAt(0)?.toUpperCase() ||
-    "U";
+// Replace the old 'initial' calculation with this:
+  const initial = currentUser?.fullName
+    ? currentUser.fullName
+        .split(" ")
+        .map((n: string) => n[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2)
+    : name
+    ? name
+        .split(" ")
+        .map((n: string) => n[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2)
+    : "U";
 
   return (
     <div ref={dropdownRef} className="relative">
@@ -96,8 +108,16 @@ const { data: profileData } = useQuery<any>({
         aria-label="Open user menu"
         className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full bg-white border border-stone-200 hover:bg-stone-50 transition-colors shadow-sm"
       >
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-primary text-white text-sm font-semibold">
-          {user?.fullName.charAt(0).toUpperCase() || "U"}
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-primary text-white text-sm font-semibold overflow-hidden">
+          {avatarUrl ? (
+            <img
+              src={avatarUrl}
+              alt={displayName}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            initial
+          )}
         </div>
 
         {/* User name */}
