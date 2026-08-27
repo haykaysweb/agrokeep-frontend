@@ -16,6 +16,7 @@ import {
   RequireBookingRoute,
 } from "./ProtectedRoutes";
 import SuspenseUi from "@/components/ui/SuspenseUi";
+import AdminLayout from "@/layouts/AdminLayout.tsx";
 
 const Routes = () => {
   const routes = [
@@ -254,6 +255,59 @@ const Routes = () => {
               },
             },
           ],
+        },
+      ],
+    },
+  {
+      path: "admin",
+      element: (
+        // <AdminRoute>
+          <AdminLayout />
+        // </AdminRoute>
+      ),
+      ErrorBoundary: ErrorBoundary,
+      children: [
+        {
+          index: true,
+          lazy: async () => {
+            const { default: Component } = await import("../pages/admin/Dashboard");
+            return { Component };
+         },
+        },
+          {
+          path: "bookings",
+          lazy: async () => {
+            const { default: Component } = await import("../pages/admin/AdminBooking");
+            return { Component };
+          },
+        },
+          {
+          path: "storage-hubs",
+          lazy: async () => {
+            const { default: Component } = await import("../pages/admin/AdminStorageHub");
+            return { Component };
+          },
+        },
+          {
+          path: "hub-applications",
+          lazy: async () => {
+            const { default: Component } = await import("../pages/admin/HubApplications");
+            return { Component };
+          },
+        },
+          {
+          path: "farmers",
+          lazy: async () => {
+            const { default: Component } = await import("../pages/admin/AdminFarmers");
+            return { Component };
+          },
+        },
+          {
+          path: "payments",
+          lazy: async () => {
+            const { default: Component } = await import("../pages/admin/AdminPayments");
+            return { Component };
+          },
         },
       ],
     },

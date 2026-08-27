@@ -1,0 +1,86 @@
+import { Calendar, Warehouse, Building2, Wallet, TrendingUp, Minus } from "lucide-react";
+
+interface StatCardProps {
+  title: string;
+  value: string | number;
+  trend: string;
+  isPositive: boolean;
+  isNeutral?: boolean;
+  icon: React.ReactNode;
+  iconBgColor: string;
+  iconColor: string;
+}
+
+export default function AdminStatsGrid() {
+  const statsData = [
+    {
+      title: "Total Bookings",
+      value: "248",
+      trend: "+12.4%",
+      isPositive: true,
+      icon: <Calendar className="h-6 w-6 text-blue-600" />,
+    },
+    {
+      title: "Active Storage",
+      value: "86",
+      trend: "+8.1%",
+      isPositive: true,
+      icon: <Warehouse className="h-6 w-6 text-emerald-700" />,
+    },
+    {
+      title: "Storage Hubs",
+      value: "42",
+      trend: "0%",
+      isPositive: false,
+      isNeutral: true,
+      icon: <Building2 className="h-6 w-6 text-amber-600" />,
+    },
+    {
+      title: "Revenue",
+      value: "₦8.4M",
+      trend: "+15.7%",
+      isPositive: true,
+      icon: <Wallet className="h-6 w-6 text-emerald-500" />,
+    },
+  ];
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
+      {statsData.map((stat, index) => (
+        <div
+          key={index}
+          className="bg-white rounded-2xl p-5 border border-stone-100 shadow-xs flex justify-between items-start transition-all hover:shadow-md"
+        >
+          {/* Left Side: Title, Value, and Trend */}
+          <div className="space-y-2">
+            <span className="text-sm font-medium text-stone-500 block">
+              {stat.title}
+            </span>
+            <h2 className="text-2xl lg:text-3xl font-bold text-stone-900 tracking-tight">
+              {stat.value}
+            </h2>
+            <div className="flex items-center gap-1.5 pt-0.5">
+              {stat.isNeutral ? (
+                <Minus className="h-3.5 w-3.5 text-stone-400" />
+              ) : (
+                <TrendingUp className="h-3.5 w-3.5 text-emerald-600" />
+              )}
+              <span
+                className={`text-xs font-semibold ${
+                  stat.isNeutral ? "text-stone-500" : "text-emerald-600"
+                }`}
+              >
+                {stat.trend}
+              </span>
+            </div>
+          </div>
+
+          {/* Right Side: Feature Icon Container */}
+          <div className="p-3 rounded-xl bg-stone-50/80 border border-stone-100 flex items-center justify-center shrink-0">
+            {stat.icon}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
