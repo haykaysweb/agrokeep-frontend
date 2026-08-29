@@ -14,6 +14,7 @@ import {
   PublicRoute,
   PrivateRoute,
   RequireBookingRoute,
+  // AdminRoute,
 } from "./ProtectedRoutes";
 import SuspenseUi from "@/components/ui/SuspenseUi";
 import AdminLayout from "@/layouts/AdminLayout.tsx";
@@ -26,7 +27,6 @@ const Routes = () => {
       ErrorBoundary: ErrorBoundary,
       hydrateFallbackElement: <SuspenseUi />,
       children: [
-        // HOME
         {
           index: true,
           lazy: async () => {
@@ -34,9 +34,6 @@ const Routes = () => {
             return { Component };
           },
         },
-
-        // STORAGE
-
         {
           path: "storage",
           lazy: async () => {
@@ -44,9 +41,7 @@ const Routes = () => {
               await import("../layouts/StorageLayout");
             return { Component };
           },
-
           children: [
-            // /storage
             {
               index: true,
               lazy: async () => {
@@ -55,8 +50,6 @@ const Routes = () => {
                 return { Component };
               },
             },
-
-            // /storage/all
             {
               path: "all",
               lazy: async () => {
@@ -65,8 +58,6 @@ const Routes = () => {
                 return { Component };
               },
             },
-
-            // /storage/details/:slug
             {
               path: "details/:slug",
               lazy: async () => {
@@ -75,12 +66,9 @@ const Routes = () => {
                 return { Component };
               },
             },
-
-            // AUTHENTICATED BOOKING ROUTES
             {
               Component: PrivateRoute,
               children: [
-                // /storage/booking
                 {
                   path: "booking",
                   lazy: async () => {
@@ -89,8 +77,6 @@ const Routes = () => {
                     return { Component };
                   },
                 },
-
-                // /storage/bookings
                 {
                   path: "bookings",
                   lazy: async () => {
@@ -99,8 +85,6 @@ const Routes = () => {
                     return { Component };
                   },
                 },
-
-                // /storage/viewbooking/:bookingId
                 {
                   path: "viewbooking/:bookingId",
                   lazy: async () => {
@@ -109,15 +93,9 @@ const Routes = () => {
                     return { Component };
                   },
                 },
-
-                // These routes require:
-                //  User authentication
-                //  A valid booking flow / bookingId
                 {
                   Component: RequireBookingRoute,
-
                   children: [
-                    // /storage/payment
                     {
                       path: "payment",
                       lazy: async () => {
@@ -126,8 +104,6 @@ const Routes = () => {
                         return { Component };
                       },
                     },
-
-                    // /storage/confirmation
                     {
                       path: "confirmation",
                       lazy: async () => {
@@ -142,26 +118,14 @@ const Routes = () => {
             },
           ],
         },
-
-        // Paystack redirects here after payment.
-        // IMPORTANT:
-        // This must NOT be inside RequireBookingRoute because
-        // Paystack needs to be able to redirect here directly.
-        //
-        // The Confirmation component then calls:
-        // verifyPaymentApi(reference)
-        //
         {
           path: "verify-payment",
           lazy: async () => {
             const { default: Component } =
               await import("../pages/findstorage/booking/Confirmation");
-
             return { Component };
           },
         },
-
-        // PROFILE
         {
           path: "profile",
           lazy: async () => {
@@ -170,8 +134,6 @@ const Routes = () => {
             return { Component };
           },
         },
-
-        // ABOUT
         {
           path: "about",
           lazy: async () => {
@@ -179,8 +141,6 @@ const Routes = () => {
             return { Component };
           },
         },
-
-        // CONTACT
         {
           path: "contact",
           lazy: async () => {
@@ -191,31 +151,22 @@ const Routes = () => {
         },
       ],
     },
-
-    // AUTH ROUTES
     {
       path: "auth",
       Component: AuthLayout,
       ErrorBoundary: ErrorBoundary,
-
       children: [
         {
           Component: PublicRoute,
-
           children: [
-            // /auth/login
             {
               path: "login",
               Component: Login,
             },
-
-            // /auth/register
             {
               path: "register",
               Component: SignUp,
             },
-
-            // /auth/forgot-password
             {
               path: "forgot-password",
               lazy: async () => {
@@ -224,8 +175,6 @@ const Routes = () => {
                 return { Component };
               },
             },
-
-            // /auth/verify-forgotpassword-otp
             {
               path: "verify-forgotpassword-otp",
               lazy: async () => {
@@ -234,8 +183,6 @@ const Routes = () => {
                 return { Component };
               },
             },
-
-            // /auth/reset-password
             {
               path: "reset-password",
               lazy: async () => {
@@ -244,8 +191,6 @@ const Routes = () => {
                 return { Component };
               },
             },
-
-            // /auth/verify-account
             {
               path: "verify-account",
               lazy: async () => {
@@ -258,56 +203,64 @@ const Routes = () => {
         },
       ],
     },
-  {
+    {
       path: "admin",
-      element: (
-        // <AdminRoute>
-          <AdminLayout />
-        // </AdminRoute>
-      ),
+      // Component: AdminRoute,
       ErrorBoundary: ErrorBoundary,
+      hydrateFallbackElement: <SuspenseUi />,
       children: [
         {
-          index: true,
-          lazy: async () => {
-            const { default: Component } = await import("../pages/admin/Dashboard");
-            return { Component };
-         },
-        },
-          {
-          path: "bookings",
-          lazy: async () => {
-            const { default: Component } = await import("../pages/admin/AdminBooking");
-            return { Component };
-          },
-        },
-          {
-          path: "storage-hubs",
-          lazy: async () => {
-            const { default: Component } = await import("../pages/admin/AdminStorageHub");
-            return { Component };
-          },
-        },
-          {
-          path: "hub-applications",
-          lazy: async () => {
-            const { default: Component } = await import("../pages/admin/HubApplications");
-            return { Component };
-          },
-        },
-          {
-          path: "farmers",
-          lazy: async () => {
-            const { default: Component } = await import("../pages/admin/AdminFarmers");
-            return { Component };
-          },
-        },
-          {
-          path: "payments",
-          lazy: async () => {
-            const { default: Component } = await import("../pages/admin/AdminPayments");
-            return { Component };
-          },
+          Component: AdminLayout,
+          children: [
+            {
+              index: true,
+              lazy: async () => {
+                const { default: Component } =
+                  await import("../pages/admin/Dashboard");
+                return { Component };
+              },
+            },
+            {
+              path: "bookings",
+              lazy: async () => {
+                const { default: Component } =
+                  await import("../pages/admin/AdminBooking");
+                return { Component };
+              },
+            },
+            {
+              path: "storage-hubs",
+              lazy: async () => {
+                const { default: Component } =
+                  await import("../pages/admin/AdminStorageHub");
+                return { Component };
+              },
+            },
+            {
+              path: "hub-applications",
+              lazy: async () => {
+                const { default: Component } =
+                  await import("../pages/admin/HubApplications");
+                return { Component };
+              },
+            },
+            {
+              path: "farmers",
+              lazy: async () => {
+                const { default: Component } =
+                  await import("../pages/admin/AdminFarmers");
+                return { Component };
+              },
+            },
+            {
+              path: "payments",
+              lazy: async () => {
+                const { default: Component } =
+                  await import("../pages/admin/AdminPayments");
+                return { Component };
+              },
+            },
+          ],
         },
       ],
     },

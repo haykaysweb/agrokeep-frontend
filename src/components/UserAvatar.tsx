@@ -27,6 +27,7 @@ export default function UserAvatar({ name }: UserAvatarProps) {
   // Pull the latest profile data straight from the cache to stay fully synced
   const { data: profileData } = useQuery<any>({
     queryKey: ["userProfile"],
+    queryFn: async () => null,
     enabled: false,
     staleTime: Infinity,
   });

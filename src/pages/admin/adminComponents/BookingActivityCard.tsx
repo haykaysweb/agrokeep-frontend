@@ -11,7 +11,7 @@ export default function BookingActivityCard() {
   ];
 
   return (
-    <div className="bg-white rounded-3xl p-6 md:p-8 border border-stone-100 shadow-xs flex flex-col justify-between w-full">
+    <div className="bg-white rounded-3xl p-4 md:p-6 border border-stone-100 shadow-xs flex flex-col justify-between w-full">
       {/* Card Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
@@ -22,15 +22,15 @@ export default function BookingActivityCard() {
         </div>
 
         {/* Time Tabs */}
-        <div className="flex items-center bg-stone-100/80 p-1 rounded-full border border-stone-200/60 self-start sm:self-auto">
+        <div className="flex items-center bg-stone-100/80 p-1 rounded-full border border-stone-200/60 self-start sm:self-auto shrink-0">
           {["Daily", "Weekly", "Monthly"].map((tab) => (
             <button
               key={tab}
               onClick={() => setBookingTab(tab)}
               type="button"
-              className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${
+              className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all whitespace-nowrap ${
                 bookingTab === tab
-                  ? "bg-[#1B4D3E] text-white shadow-sm"
+                  ? "bg-[#1E5E3A] text-white shadow-sm"
                   : "text-stone-600 hover:text-stone-900"
               }`}
             >
@@ -77,23 +77,23 @@ export default function BookingActivityCard() {
       {/* Chart X-Axis Labels & Legend */}
       <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex justify-between w-full sm:w-[75%] px-4 text-xs font-medium text-stone-500">
-          <span>Week 1</span>
-          <span>Week 2</span>
-          <span>Week 3</span>
-          <span>Week 4</span>
+          <span className="whitespace-nowrap">Week 1</span>
+          <span className="whitespace-nowrap">Week 2</span>
+          <span className="whitespace-nowrap">Week 3</span>
+          <span className="whitespace-nowrap">Week 4</span>
         </div>
 
-        <div className="flex items-center gap-4 text-xs text-stone-600">
-          <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-blue-600" />
+        <div className="flex items-center gap-4 text-xs text-stone-600 shrink-0">
+          <div className="flex items-center gap-1.5 whitespace-nowrap">
+            <span className="w-2.5 h-2.5 rounded-full bg-blue-600 shrink-0" />
             <span>Confirmed</span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-600" />
+          <div className="flex items-center gap-1.5 whitespace-nowrap">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 shrink-0" />
             <span>Completed</span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-stone-400" />
+          <div className="flex items-center gap-1.5 whitespace-nowrap">
+            <span className="w-2.5 h-2.5 rounded-full bg-stone-400 shrink-0" />
             <span>Canceled</span>
           </div>
         </div>

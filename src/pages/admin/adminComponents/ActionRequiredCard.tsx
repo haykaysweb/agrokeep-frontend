@@ -39,7 +39,7 @@ export default function ActionRequiredCard() {
   };
 
   return (
-    <div className="bg-white rounded-3xl p-6 md:p-8 border border-stone-100 shadow-xs w-full">
+    <div className="bg-white rounded-3xl p-4 md:p-6 border border-stone-100 shadow-xs w-full">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>

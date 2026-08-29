@@ -1,18 +1,23 @@
-import { Calendar, Warehouse, Building2, Wallet, TrendingUp, Minus } from "lucide-react";
+import {
+  Calendar,
+  Warehouse,
+  Building2,
+  Wallet,
+  TrendingUp,
+  Minus,
+} from "lucide-react";
 
-interface StatCardProps {
+interface StatItem {
   title: string;
   value: string | number;
   trend: string;
   isPositive: boolean;
   isNeutral?: boolean;
   icon: React.ReactNode;
-  iconBgColor: string;
-  iconColor: string;
 }
 
 export default function AdminStatsGrid() {
-  const statsData = [
+  const statsData: StatItem[] = [
     {
       title: "Total Bookings",
       value: "248",
@@ -53,17 +58,17 @@ export default function AdminStatsGrid() {
         >
           {/* Left Side: Title, Value, and Trend */}
           <div className="space-y-2">
-            <span className="text-sm font-medium text-stone-500 block">
+            <span className="text-sm font-medium text-stone-500 block whitespace-nowrap">
               {stat.title}
             </span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-stone-900 tracking-tight">
+            <h2 className="text-2xl lg:text-3xl font-bold text-stone-900 tracking-tight whitespace-nowrap">
               {stat.value}
             </h2>
-            <div className="flex items-center gap-1.5 pt-0.5">
+            <div className="flex items-center gap-1.5 pt-0.5 whitespace-nowrap">
               {stat.isNeutral ? (
-                <Minus className="h-3.5 w-3.5 text-stone-400" />
+                <Minus className="h-3.5 w-3.5 text-stone-400 shrink-0" />
               ) : (
-                <TrendingUp className="h-3.5 w-3.5 text-emerald-600" />
+                <TrendingUp className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
               )}
               <span
                 className={`text-xs font-semibold ${

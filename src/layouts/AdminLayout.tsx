@@ -1,17 +1,17 @@
 import AdminNav from "@/components/AdminNav";
 import Sidebar from "@/components/Sidebar";
-import { Outlet, ScrollRestoration } from "react-router";
+import { Outlet } from "react-router";
 
 export default function AdminLayout() {
   return (
-    <div>
+    <div className="min-h-dvh bg-[#F9F6F0]">
       <Sidebar />
-      <div className="lg:ml-[240px] ">
+      <div className="min-h-screen lg:ml-60 flex flex-col">
+        {/* AdminNav is fixed, so pt-20 ensures content starts below it */}
         <AdminNav />
-        <div className="bg-[#F9F6F0] ">
-          <ScrollRestoration />
+        <main className="flex-1 pt-20 px-4 md:px-6 pb-8">
           <Outlet />
-        </div>
+        </main>
       </div>
     </div>
   );
