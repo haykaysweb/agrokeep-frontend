@@ -17,6 +17,7 @@ export interface AuthContextType {
   isAuthenticating: boolean;
   setIsAuthenticating: (value: boolean) => void;
   refetchUser: () => Promise<void>;
+    handleLogout: () => Promise<void>;
 }
 
 // Initial state matching the AuthContextType
@@ -26,6 +27,7 @@ export const AuthProviderContext = createContext<AuthContextType>({
   isAuthenticating: false,
   setIsAuthenticating: () => {},
   refetchUser: async () => {},
+   handleLogout: async () => {}, 
 });
 
 export const useAuth = () => {
