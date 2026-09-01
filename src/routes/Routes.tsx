@@ -14,7 +14,7 @@ import {
   PublicRoute,
   PrivateRoute,
   RequireBookingRoute,
-  // AdminRoute,
+  AdminRoute,
 } from "./ProtectedRoutes";
 import SuspenseUi from "@/components/ui/SuspenseUi";
 import AdminLayout from "@/layouts/AdminLayout.tsx";

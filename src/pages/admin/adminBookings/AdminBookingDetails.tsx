@@ -287,7 +287,7 @@ export default function AdminBookingDetails() {
             </div>
           </div>
 
-          {/* Right Column (Sidebar Widgets) */}
+          {/* Right Column  */}
           <div className="space-y-6">
             {/* Price Breakdown Card */}
             <div className="bg-surface-card rounded-2xl p-3 sm:p-5 shadow-xs border border-card-border space-y-4">
