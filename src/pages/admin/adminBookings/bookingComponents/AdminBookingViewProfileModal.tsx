@@ -35,19 +35,19 @@ export default function AdminBookingViewProfileModal({
         <div className="space-y-3.5">
           <button 
             onClick={() => alert("Calling Adewale...")}
-            className="w-full py-3.5 px-4 border border-card-border text-text-main font-medium rounded-xl hover:bg-brand-primary hover:text-white hover:border-transparent transition-all duration-200 text-base cursor-pointer text-center"
+            className="w-full py-3.5 px-4 border border-card-border text-text-main font-medium rounded-2xl hover:bg-brand-primary hover:text-white hover:border-transparent transition-all duration-200 text-base cursor-pointer text-center"
           >
             Call Adewale
           </button>
           <button 
             onClick={() => alert("Opening SMS...")}
-            className="w-full py-3.5 px-4 border border-card-border text-text-main font-medium rounded-xl hover:bg-brand-primary hover:text-white hover:border-transparent transition-all duration-200 text-base cursor-pointer text-center"
+            className="w-full py-3.5 px-4 border border-card-border text-text-main font-medium rounded-2xl hover:bg-brand-primary hover:text-white hover:border-transparent transition-all duration-200 text-base cursor-pointer text-center"
           >
             Send SMS Update
           </button>
           <button 
             onClick={() => alert("Opening Email...")}
-            className="w-full py-3.5 px-4 border border-card-border text-text-main font-medium rounded-xl hover:bg-brand-primary hover:text-white hover:border-transparent transition-all duration-200 text-base cursor-pointer text-center"
+            className="w-full py-3.5 px-4 border border-card-border text-text-main font-medium rounded-2xl hover:bg-brand-primary hover:text-white hover:border-transparent transition-all duration-200 text-base cursor-pointer text-center"
           >
             Send Email Update
           </button>

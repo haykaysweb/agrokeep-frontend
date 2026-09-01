@@ -205,7 +205,7 @@ const Routes = () => {
     },
     {
       path: "admin",
-      // Component: AdminRoute,
+      Component: AdminRoute,
       ErrorBoundary: ErrorBoundary,
       hydrateFallbackElement: <SuspenseUi />,
       children: [

@@ -40,13 +40,13 @@ export default function AdminBookingCancelModal({
         <div className="flex flex-col sm:flex-row gap-3 pt-2">
           <button
             onClick={onKeepBooking || onClose}
-            className="w-full sm:w-1/2 py-3.5 px-4 border border-card-border text-text-main font-medium rounded-xl hover:bg-surface-hover transition-all duration-200 text-base cursor-pointer text-center"
+            className="w-full sm:w-1/2 py-3.5 px-4 border border-card-border text-text-main font-medium rounded-2xl hover:bg-surface-hover transition-all duration-200 text-base cursor-pointer text-center"
           >
             Keep Booking
           </button>
           <button
             onClick={onConfirmCancel || (() => alert("Booking cancelled..."))}
-            className="w-full sm:w-1/2 py-3.5 px-4 bg-semantic-error text-white font-medium rounded-xl hover:bg-semantic-error/85 transition-all duration-200 text-base cursor-pointer text-center shadow-xs"
+            className="w-full sm:w-1/2 py-3.5 px-4 bg-semantic-error text-white font-medium rounded-2xl hover:bg-semantic-error/85 transition-all duration-200 text-base cursor-pointer text-center shadow-xs"
           >
             Cancel Booking
           </button>
