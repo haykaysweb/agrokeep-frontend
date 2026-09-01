@@ -7,7 +7,6 @@ export default function AdminLayout() {
     <div className="min-h-dvh bg-[#F9F6F0]">
       <Sidebar />
       <div className="min-h-screen lg:ml-60 flex flex-col">
-        {/* AdminNav is fixed, so pt-20 ensures content starts below it */}
         <AdminNav />
         <main className="flex-1 pt-20 px-4 md:px-6 pb-8">
           <Outlet />

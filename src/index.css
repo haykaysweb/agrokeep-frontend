@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 @import "tailwindcss";
 @plugin "daisyui";
-@import 'leaflet/dist/leaflet.css';
+@import "leaflet/dist/leaflet.css";
 
 * {
   scroll-behavior: smooth;
@@ -19,12 +19,10 @@
   scrollbar-width: none;
 }
 
-
 html,
 body {
   font-family: var(--font-sans);
 }
-
 
 @theme {
   --font-sans: "Lexend", ui-sans-serif, system-ui, sans-serif;
@@ -59,6 +57,28 @@ body {
 
   /* --- Overlays --- */
   --color-overlay-dark: #222222; /* Dark overlay for text readability */
+
+  /* --- Chart & Analytics Colors --- */
+  --color-chart-blue: #3b82f6;
+  --color-chart-green: #22c55e;
+  --color-chart-gray: #71717a;
+  --color-chart-red: #ef4444;
+
+  /* --- Status Badge Backgrounds --- */
+  --color-badge-confirmed-bg: #d1fae5;
+  --color-badge-confirmed-text: #065f46;
+  --color-badge-active-bg: #dbeafe;
+  --color-badge-active-text: #1e40af;
+  --color-badge-completed-bg: #e4e4e7;
+  --color-badge-completed-text: #3f3f46;
+  --color-badge-pending-bg: #fef3c7;
+  --color-badge-pending-text: #92400e;
+  --color-badge-cancelled-bg: #fee2e2;
+  --color-badge-cancelled-text: #991b1b;
+
+  /* --- Tables & Action Cards --- */
+  --color-table-header: #1e5e3a;
+  --color-card-border: #f3f4f6;
 }
 
 /*custom auth animation */
@@ -96,5 +116,3 @@ body {
 .animate-shake {
   animation: shake 0.4s ease-in-out;
 }
-
-

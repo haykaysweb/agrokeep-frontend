@@ -30,7 +30,7 @@ export default function AdminStatsGrid() {
       value: "86",
       trend: "+8.1%",
       isPositive: true,
-      icon: <Warehouse className="h-6 w-6 text-emerald-700" />,
+      icon: <Warehouse className="h-6 w-6 text-brand-primary" />,
     },
     {
       title: "Storage Hubs",
@@ -45,7 +45,7 @@ export default function AdminStatsGrid() {
       value: "₦8.4M",
       trend: "+15.7%",
       isPositive: true,
-      icon: <Wallet className="h-6 w-6 text-emerald-500" />,
+      icon: <Wallet className="h-6 w-6 text-brand-primary" />,
     },
   ];
 
@@ -54,25 +54,25 @@ export default function AdminStatsGrid() {
       {statsData.map((stat, index) => (
         <div
           key={index}
-          className="bg-white rounded-2xl p-5 border border-stone-100 shadow-xs flex justify-between items-start transition-all hover:shadow-md"
+          className="bg-surface-card rounded-2xl p-5 border border-border-input shadow-xs flex justify-between items-start transition-all hover:shadow-md"
         >
           {/* Left Side: Title, Value, and Trend */}
           <div className="space-y-2">
-            <span className="text-sm font-medium text-stone-500 block whitespace-nowrap">
+            <span className="text-sm font-medium text-text-subtle block whitespace-nowrap">
               {stat.title}
             </span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-stone-900 tracking-tight whitespace-nowrap">
+            <h2 className="text-2xl lg:text-3xl font-bold text-text-main tracking-tight whitespace-nowrap">
               {stat.value}
             </h2>
             <div className="flex items-center gap-1.5 pt-0.5 whitespace-nowrap">
               {stat.isNeutral ? (
-                <Minus className="h-3.5 w-3.5 text-stone-400 shrink-0" />
+                <Minus className="h-3.5 w-3.5 text-text-muted shrink-0" />
               ) : (
-                <TrendingUp className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                <TrendingUp className="h-3.5 w-3.5 text-brand-primary shrink-0" />
               )}
               <span
                 className={`text-xs font-semibold ${
-                  stat.isNeutral ? "text-stone-500" : "text-emerald-600"
+                  stat.isNeutral ? "text-text-subtle" : "text-brand-primary"
                 }`}
               >
                 {stat.trend}
@@ -81,7 +81,7 @@ export default function AdminStatsGrid() {
           </div>
 
           {/* Right Side: Feature Icon Container */}
-          <div className="p-3 rounded-xl bg-stone-50/80 border border-stone-100 flex items-center justify-center shrink-0">
+          <div className="p-3 rounded-xl bg-surface-hover border border-border-input flex items-center justify-center shrink-0">
             {stat.icon}
           </div>
         </div>

@@ -224,7 +224,17 @@ const Routes = () => {
               path: "bookings",
               lazy: async () => {
                 const { default: Component } =
-                  await import("../pages/admin/AdminBooking");
+                  await import("../pages/admin/adminBookings/AdminBooking");
+
+                return { Component };
+              },
+            },
+            {
+              path: "bookings/details",
+              lazy: async () => {
+                const { default: Component } =
+                  await import("../pages/admin/adminBookings/AdminBookingDetails");
+
                 return { Component };
               },
             },

@@ -132,4 +132,34 @@ export const DELIVERY_INSTRUCTIONS = [
   "Contact the facility if you expect delays.",
 ];
 
+export const bookingColumns = [
+  { name: "BOOKING ID", uid: "bookingId" },
+  { name: "NAME", uid: "farmerName" },
+  { name: "STORAGE HUB", uid: "storageHub" },
+  { name: "LOCATION", uid: "location" },
+  { name: "CROP", uid: "crop" },
+  { name: "QUANTITY", uid: "quantity" },
+  { name: "DROP-OFF", uid: "dropOff" },
+  { name: "DURATION", uid: "duration" },
+  { name: "AMOUNT", uid: "amount" },
+  { name: "STATUS", uid: "status" },
+] as const;
 
+export type BookingStatus =
+  | "confirmed"
+  | "active"
+  | "completed"
+  | "pending"
+  | "cancelled";
+
+export const bookingStatusColors: Record<BookingStatus, string> = {
+  confirmed: "bg-brand-primary/25 text-brand-primary",
+
+  active: "bg-badge-active-bg text-badge-active-text",
+
+  completed: "bg-badge-completed-bg text-badge-completed-text",
+
+  pending: "bg-badge-pending-bg text-badge-pending-text",
+
+  cancelled: "bg-badge-cancelled-bg text-badge-cancelled-text",
+};

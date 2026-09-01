@@ -14,21 +14,21 @@ export default function ActionRequiredCard() {
     {
       id: "1",
       priority: "High",
-      priorityColor: "bg-red-50 text-red-600 border-red-200",
-      borderColor: "border-l-red-500",
+      priorityColor: "bg-semantic-error/10 text-semantic-error border-semantic-error/20",
+      borderColor: "border-l-semantic-error",
       title: "5 Payment issues requiring attention",
     },
     {
       id: "2",
       priority: "Medium",
-      priorityColor: "bg-amber-50 text-amber-600 border-amber-200",
+      priorityColor: "bg-amber-500/10 text-amber-600 border-amber-500/20",
       borderColor: "border-l-amber-500",
       title: "5 Hub applications awaiting verification",
     },
     {
       id: "3",
       priority: "Low",
-      priorityColor: "bg-blue-50 text-blue-600 border-blue-200",
+      priorityColor: "bg-blue-500/10 text-blue-600 border-blue-500/20",
       borderColor: "border-l-blue-500",
       title: "2 Storage hubs with low available capacity",
     },
@@ -39,14 +39,14 @@ export default function ActionRequiredCard() {
   };
 
   return (
-    <div className="bg-white rounded-3xl p-4 md:p-6 border border-stone-100 shadow-xs w-full">
+    <div className="bg-surface-card rounded-3xl p-4 md:p-6 border border-border-input shadow-xs w-full">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-lg font-bold text-stone-900">Action Required</h2>
-          <p className="text-xs text-stone-500 mt-0.5">Items requiring administrative action right now.</p>
+          <h2 className="text-lg font-bold text-text-main">Action Required</h2>
+          <p className="text-xs text-text-subtle mt-0.5">Items requiring administrative action right now.</p>
         </div>
-        <button type="button" className="text-xs font-semibold text-stone-600 hover:text-stone-900 transition-colors">
+        <button type="button" className="text-xs font-semibold text-text-subtle hover:text-text-main transition-colors cursor-pointer">
           View Details
         </button>
       </div>
@@ -56,7 +56,7 @@ export default function ActionRequiredCard() {
         {actions.map((item) => (
           <div
             key={item.id}
-            className={`relative bg-white rounded-2xl p-5 border border-stone-200/80 border-l-4 ${item.borderColor} shadow-xs flex flex-col justify-between`}
+            className={`relative bg-surface-card rounded-2xl p-5 border border-border-input border-l-4 ${item.borderColor} shadow-xs flex flex-col justify-between`}
           >
             {/* Top Row: Priority Tag & Dismiss X */}
             <div className="flex items-center justify-between mb-3">
@@ -67,20 +67,20 @@ export default function ActionRequiredCard() {
               <button
                 onClick={() => dismissCard(item.id)}
                 type="button"
-                className="text-stone-400 hover:text-stone-600 transition-colors"
+                className="text-text-muted hover:text-text-main transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             {/* Title / Description */}
-            <p className="text-sm font-medium text-stone-800 mb-6">{item.title}</p>
+            <p className="text-sm font-medium text-text-main mb-6">{item.title}</p>
 
             {/* Review Button */}
             <div className="flex justify-end">
               <button
                 type="button"
-                className="px-4 py-1.5 rounded-full border border-stone-200 text-xs font-semibold text-stone-700 hover:bg-stone-50 transition-colors"
+                className="px-4 py-1.5 rounded-full border border-border-input text-xs font-semibold text-text-subtle hover:bg-surface-hover transition-colors cursor-pointer"
               >
                 Review
               </button>
