@@ -87,7 +87,7 @@ export default function AdminBookingDetails() {
           {/* Left Column (Spans 2 columns on large screens) */}
           <div className="lg:col-span-2 space-y-6">
             {/* Reservation Summary Card */}
-            <div className="bg-surface-card rounded-2xl p-5 sm:p-6 shadow-xs border border-card-border w-full">
+            <div className="bg-surface-card rounded-2xl p-3 sm:p-5 shadow-xs border border-card-border w-full">
               {/* Header Section */}
               <div className="flex items-center justify-between mb-4 gap-4">
                 <span className="w-full md:w-[50%]">
@@ -209,7 +209,7 @@ export default function AdminBookingDetails() {
             </div>
 
             {/* Farmer Information Card */}
-            <div className="bg-surface-card rounded-2xl p-5 sm:p-6 shadow-xs border border-card-border">
+            <div className="bg-surface-card rounded-2xl p-3 sm:p-5 shadow-xs border border-card-border">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold text-text-main">Farmer</h2>
                 <img src="/adminProfile.svg" alt="" />
@@ -256,7 +256,7 @@ export default function AdminBookingDetails() {
             </div>
 
             {/* Booking Timeline Card */}
-            <div className="bg-surface-card rounded-2xl p-5 sm:p-6 shadow-xs border border-card-border">
+            <div className="bg-surface-card rounded-2xl p-3 sm:p-5 shadow-xs border border-card-border">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-lg font-semibold text-text-main">
                   Booking Timeline
@@ -290,7 +290,7 @@ export default function AdminBookingDetails() {
           {/* Right Column (Sidebar Widgets) */}
           <div className="space-y-6">
             {/* Price Breakdown Card */}
-            <div className="bg-surface-card rounded-2xl p-5 sm:p-6 shadow-xs border border-card-border space-y-4">
+            <div className="bg-surface-card rounded-2xl p-3 sm:p-5 shadow-xs border border-card-border space-y-4">
               <h2 className="text-lg font-semibold text-text-main border-b border-border-light pb-3">
                 Price Breakdown
               </h2>
@@ -356,7 +356,7 @@ export default function AdminBookingDetails() {
             </div>
 
             {/* Payment Info Card */}
-            <div className="bg-surface-card rounded-2xl p-5 sm:p-6 shadow-xs border border-card-border space-y-4">
+            <div className="bg-surface-card rounded-2xl p-3 sm:p-5 shadow-xs border border-card-border space-y-4">
               <h2 className="text-lg font-semibold text-text-main border-border-light pb-3">
                 Payment
               </h2>

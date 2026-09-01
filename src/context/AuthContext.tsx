@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { logoutUserApi } from "@/api/auth"; 
 import { AuthProviderContext, type User } from "@/hooks/useAuth";
 import apiClient from "@/api/apiClient";
-import { useQuery } from "@tanstack/react-query";
 
-export default function AuthProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const { data, isLoading, refetch } = useQuery({
+export default function AuthProvider({ children }: { children: any }) {
+  const queryClient = useQueryClient();
+
+  const { data: user = null, isLoading, refetch } = useQuery<User | null>({
     queryKey: ["currentUser"],
     queryFn: async () => {
       try {
@@ -22,19 +20,19 @@ export default function AuthProvider({
     retry: false,
   });
 
-  const [user, setUserState] = useState<User | null>(null);
+  const handleSetUser = (newUser: User | null) => {
+    queryClient.setQueryData(["currentUser"], newUser);
+  };
 
-  // Sync Query data with Local State
-  useEffect(() => {
-    if (data) {
-      setUserState(data);
-    } else {
-      setUserState(null);
+  const handleLogout = async () => {
+    try {
+      await logoutUserApi(); // Calls your API function
+    } catch (error) {
+      console.error("Logout failed", error);
+    } finally {
+      queryClient.setQueryData(["currentUser"], null);
+      queryClient.clear();
     }
-  }, [data]);
-
-  const handleSetUser = (user: User | null) => {
-    setUserState(user);
   };
 
   return (
@@ -43,10 +41,11 @@ export default function AuthProvider({
         user,
         setUser: handleSetUser,
         isAuthenticating: isLoading,
-        setIsAuthenticating: () => {}, // Handled by useQuery
+        setIsAuthenticating: () => {},
         refetchUser: async () => {
           await refetch();
         },
+        handleLogout,
       }}
     >
       {children}

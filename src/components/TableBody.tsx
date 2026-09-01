@@ -53,24 +53,24 @@ export default function TableBody({
 
   return (
     <div className="w-full overflow-hidden border border-stone-200/80 bg-surface-card shadow-xs">
-      {/* Only allow horizontal scrolling when the screen is too small */}
-      <div className="w-full overflow-x-auto lg:overflow-x-visible">
-        <table className="w-full table-fixed border-collapse text-left">
+      {/* Scrollable container for small screens */}
+      <div className="w-full overflow-x-auto">
+        <table className="w-full min-w-[750px] border-collapse text-left">
           <thead>
             <tr className="border-b border-stone-200/80 bg-border-input text-[11px] font-semibold tracking-wider text-stone-500 uppercase">
-              {/* Checkbox */}
-              <th className="w-[3%] px-3 py-4">
+              {/* Checkbox Column */}
+              <th className="w-12 px-4 py-4 text-center">
                 <input
                   type="checkbox"
                   checked={allSelected}
                   onChange={handleSelectAll}
                   aria-label="Select all rows"
-                  className="size-4 cursor-pointer rounded border-stone-300 bg-border-input"
+                  className="size-4 cursor-pointer rounded border-stone-300 bg-border-input accent-emerald-700"
                 />
               </th>
 
               {tableColumns.map((column) => (
-                <th key={column.uid} className="px-2 py-4 whitespace-nowrap">
+                <th key={column.uid} className="px-4 py-4 whitespace-nowrap">
                   {column.name}
                 </th>
               ))}
@@ -93,7 +93,7 @@ export default function TableBody({
                   >
                     {/* Row Checkbox */}
                     <td
-                      className="px-3 py-4"
+                      className="px-4 py-4 text-center"
                       onClick={(event) => event.stopPropagation()}
                     >
                       <input
@@ -101,12 +101,15 @@ export default function TableBody({
                         checked={isSelected}
                         onChange={() => handleSelectRow(rowId)}
                         aria-label={`Select row ${index + 1}`}
-                        className="size-4 cursor-pointer rounded border-stone-300"
+                        className="size-4 cursor-pointer rounded border-stone-300 accent-emerald-700"
                       />
                     </td>
 
                     {tableColumns.map((column) => (
-                      <td key={column.uid} className="px-2 py-4">
+                      <td
+                        key={column.uid}
+                        className="px-4 py-4 whitespace-nowrap"
+                      >
                         {renderCell(item, column.uid)}
                       </td>
                     ))}
@@ -127,22 +130,23 @@ export default function TableBody({
         </table>
       </div>
 
-      {/* Pagination */}
-      <div className="flex items-center justify-between border-t border-stone-200/80 bg-surface-card px-3 py-6 text-sm text-[#4B5563]">
-        <div>Showing 1-10 of 248 bookings</div>
+      {/* Pagination Footer - Fully Responsive */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-stone-200/80 bg-surface-card px-4 sm:px-6 py-4 text-sm text-[#4B5563]">
+        <div className="text-xs sm:text-sm">Showing 1-10 of 248 bookings</div>
 
         <div className="flex items-center gap-1 text-stone-400">
           <button
             type="button"
             disabled
             className="cursor-pointer px-2 py-1 hover:text-stone-700 disabled:cursor-not-allowed disabled:opacity-50"
+            aria-label="Previous page"
           >
-            <ChevronLeft className="h-6 w-6" strokeWidth={1.5} />
+            <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" strokeWidth={1.5} />
           </button>
 
           <button
             type="button"
-            className="flex size-6 items-center justify-center rounded-full bg-emerald-800 font-medium text-white"
+            className="flex size-7 items-center justify-center rounded-full bg-emerald-800 font-medium text-white text-xs sm:text-sm"
           >
             1
           </button>
@@ -150,8 +154,9 @@ export default function TableBody({
           <button
             type="button"
             className="cursor-pointer px-2 py-1 hover:text-stone-700"
+            aria-label="Next page"
           >
-            <ChevronRight className="h-6 w-6" strokeWidth={1.5} />
+            <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6" strokeWidth={1.5} />
           </button>
         </div>
       </div>

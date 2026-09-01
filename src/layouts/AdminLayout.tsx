@@ -1,6 +1,6 @@
 import AdminNav from "@/components/AdminNav";
 import Sidebar from "@/components/Sidebar";
-import { Outlet } from "react-router";
+import { Outlet, ScrollRestoration } from "react-router";
 
 export default function AdminLayout() {
   return (
@@ -9,6 +9,7 @@ export default function AdminLayout() {
       <div className="min-h-screen lg:ml-60 flex flex-col">
         <AdminNav />
         <main className="flex-1 pt-20 px-4 md:px-6 pb-8">
+          <ScrollRestoration/>
           <Outlet />
         </main>
       </div>

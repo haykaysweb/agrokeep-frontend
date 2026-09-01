@@ -134,7 +134,7 @@ export const DELIVERY_INSTRUCTIONS = [
 
 export const bookingColumns = [
   { name: "BOOKING ID", uid: "bookingId" },
-  { name: "NAME", uid: "farmerName" },
+  { name: "FARMER'S NAME", uid: "farmerName" },
   { name: "STORAGE HUB", uid: "storageHub" },
   { name: "LOCATION", uid: "location" },
   { name: "CROP", uid: "crop" },
