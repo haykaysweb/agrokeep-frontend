@@ -1,18 +1,23 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { logoutUserApi } from "@/api/auth"; 
+import type { ReactNode } from "react";
+import { logoutUserApi } from "@/api/auth";
 import { AuthProviderContext, type User } from "@/hooks/useAuth";
 import apiClient from "@/api/apiClient";
 
-export default function AuthProvider({ children }: { children: any }) {
+export default function AuthProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient();
 
-  const { data: user = null, isLoading, refetch } = useQuery<User | null>({
+  const {
+    data: user = null,
+    isLoading,
+    refetch,
+  } = useQuery<User | null>({
     queryKey: ["currentUser"],
     queryFn: async () => {
       try {
         const res = await apiClient.get("/user/me");
         return res?.data?.data || null;
-      } catch (error) {
+      } catch {
         return null;
       }
     },

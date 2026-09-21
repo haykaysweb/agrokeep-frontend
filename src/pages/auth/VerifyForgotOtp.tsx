@@ -64,7 +64,6 @@ export default function VerifyForgotOtp() {
         setErrorMessage(
           error?.response?.data?.message || "Failed to resend OTP code.",
         );
-        error;
       } else {
         setErrorMessage("An error occurred. Please try again.");
       }
