@@ -9,16 +9,18 @@ import {
   formatPaymentStatus,
   formatDuration,
   formatQuantity,
+  getBookingStatusStyles,
 } from "@/lib/constant";
 import { useState } from "react";
 import Pagination from "@/components/Pagination";
 import { useScrollToTopOnChange } from "@/hooks/useScrollToTopOnChange";
+import BookingCardSkeleton from "@/pages/admin/adminBookings/bookingComponents/BookingCardSkeleton";
 
 export default function MyBookings() {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data, isLoading, isError } = useMyBookings(currentPage);
+  const { data, isPending, isFetching, isError } = useMyBookings(currentPage);
 
   const bookings = data?.data?.bookings ?? [];
 
@@ -30,62 +32,10 @@ export default function MyBookings() {
 
   const pagination = data?.data?.pagination;
 
-  const getBookingStatusStyles = (status?: string) => {
-    const normalizedStatus = status?.toLowerCase();
-
-    if (normalizedStatus === "confirmed") {
-      return "bg-brand-primary/10 text-brand-primary";
-    }
-
-    if (normalizedStatus === "in_storage") {
-      return "bg-blue-100 text-blue-600";
-    }
-
-    if (normalizedStatus === "completed") {
-      return "bg-slate-200 text-slate-700";
-    }
-
-    if (normalizedStatus === "cancelled") {
-      return "bg-red-100 text-red-600";
-    }
-
-    if (normalizedStatus === "pending") {
-      return "bg-amber-100 text-amber-700";
-    }
-
-    return "bg-background-subtle text-text-subtle";
-  };
-
   useScrollToTopOnChange(currentPage);
-  if (isLoading) {
-    return (
-      <div className="min-h-[calc(100vh-80px)] flex items-center justify-center px-4">
-        <div className="text-center">
-          <div className="w-10 h-10 border-4 border-brand-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
 
-          <h2 className="text-lg font-semibold text-text-main">
-            Loading Bookings...
-          </h2>
-        </div>
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="text-center">
-          <h2 className="text-lg font-semibold text-text-main">
-            Unable to load your bookings
-          </h2>
-
-          <p className="text-sm text-text-subtle mt-1">
-            Please try again later.
-          </p>
-        </div>
-      </div>
-    );
-  }
+  const showListSkeleton = isPending;
+  const showBackgroundRefresh = isFetching && !isPending;
 
   return (
     <div className="max-w-7xl mx-auto px-4 md:px-12 py-8">
@@ -97,6 +47,7 @@ export default function MyBookings() {
           View and manage all your storage reservations in one place.
         </p>
       </div>
+
       {/* Overview Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-10">
         {/* Upcoming */}
@@ -142,9 +93,27 @@ export default function MyBookings() {
           </div>
         </div>
       </div>
+
       {/* Bookings List */}
-      <div className="space-y-6 py-5">
-        {bookings.length === 0 ? (
+      <div
+        className={`space-y-6 py-5 transition-opacity duration-200 ${
+          showBackgroundRefresh ? "opacity-60" : "opacity-100"
+        }`}
+      >
+        {isError ? (
+          <div className="bg-surface-card rounded-2xl border border-border-light/60 p-10 text-center">
+            <h2 className="text-lg font-semibold text-text-main">
+              Unable to load your bookings
+            </h2>
+            <p className="text-sm text-text-subtle mt-1">
+              Please try again later.
+            </p>
+          </div>
+        ) : showListSkeleton ? (
+          Array.from({ length: 3 }).map((_, index) => (
+            <BookingCardSkeleton key={index} />
+          ))
+        ) : bookings.length === 0 ? (
           <div className="bg-surface-card rounded-2xl border border-border-light/60 p-10 text-center">
             <CalendarDays className="w-10 h-10 mx-auto text-text-subtle mb-3" />
             <h2 className="text-lg font-semibold text-text-main">
@@ -336,6 +305,7 @@ export default function MyBookings() {
                       </span>
                     </span>
                   </motion.button>
+
                   {/* Get Directions */}
                   <motion.button
                     whileHover={{ scale: 1.02 }}
@@ -365,6 +335,7 @@ export default function MyBookings() {
           ))
         )}
       </div>
+
       {pagination && (
         <Pagination
           currentPage={pagination.currentPage}
