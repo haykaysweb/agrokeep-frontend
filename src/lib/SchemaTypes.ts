@@ -33,7 +33,7 @@ export const validateSignupSchema = z
       .refine(
         (val) => {
           if (val === "") return true;
-          const cleanNumber = val.replace(/[\s\-\(\)]/g, "");
+          const cleanNumber = val.replace(/[\s\-()]/g, "");
           return /^\+?[1-9]\d{7,14}$/.test(cleanNumber);
         },
         { message: "Invalid phone number format" },
@@ -245,3 +245,76 @@ export const bookingDetailsSchema = bookingBaseObject
   });
 
 export type BookingDetailsInputs = z.infer<typeof bookingDetailsSchema>;
+
+// Admin — Create Booking Schema
+export const adminBookingSchema = z
+  .object({
+    state: z.string().min(1, "Please select a location"),
+    lga: z.string().min(1, "Please select a location"),
+    hub: z.string().min(1, "Please select a storage hub"),
+    cropType: z.string().min(1, "Please select a crop type"),
+
+    quantity: z.coerce
+      .number()
+      .refine((val) => !isNaN(val), "Quantity is required")
+      .refine((val) => val >= 1, "Quantity must be at least 1"),
+
+    dropOffDate: z.string().superRefine((dateString, ctx) => {
+      if (!dateString) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Drop-off date is required",
+        });
+        return;
+      }
+
+      const selectedDate = parseLocalDate(dateString);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      if (selectedDate < today) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Drop-off date cannot be in the past",
+        });
+      }
+    }),
+
+    pickUpDate: z.string().min(1, "Pick-up date is required"),
+
+    fullName: z.string().min(1, "Full name is required"),
+
+    phoneNumber: z
+      .string()
+      .min(1, "Phone number is required")
+      .regex(
+        /^(\+?234|0)[789][01]\d{8}$/,
+        "Please enter a valid phone number (e.g. +234... or 080...)",
+      ),
+
+    email: z
+      .string()
+      .email("Please enter a valid email address")
+      .optional()
+      .or(z.literal("")),
+
+    specialInstructions: z.string().optional(),
+
+    paymentType: z.enum(["deposit", "full"]),
+  })
+  .refine(
+    (data) => {
+      if (!data.dropOffDate || !data.pickUpDate) return true;
+
+      const drop = parseLocalDate(data.dropOffDate);
+      const pickup = parseLocalDate(data.pickUpDate);
+
+      return pickup > drop;
+    },
+    {
+      message: "Pick-up date must be at least 1 day after drop-off date",
+      path: ["pickUpDate"],
+    },
+  );
+
+export type AdminBookingInputs = z.infer<typeof adminBookingSchema>;

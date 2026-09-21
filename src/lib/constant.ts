@@ -19,7 +19,6 @@ export const formatBookingDate = (date?: string) => {
   if (!date) return "";
 
   const dateOnly = date.split("T")[0];
-
   const [year, month, day] = dateOnly.split("-").map(Number);
 
   if (!year || !month || !day) return "";
@@ -31,23 +30,32 @@ export const formatBookingDate = (date?: string) => {
   });
 };
 
+// For timestamps where the actual time matters (payment, timeline).
+export const formatDateTime = (isoDate?: string) => {
+  if (!isoDate) return "";
+
+  return new Date(isoDate).toLocaleString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+};
+
 export const formatBookingStatus = (status?: string) => {
   switch (status?.toLowerCase()) {
     case "confirmed":
       return "Confirmed";
-
     case "in_storage":
       return "In Storage";
-
     case "completed":
       return "Completed";
-
     case "cancelled":
       return "Cancelled";
-
     case "pending":
       return "Pending";
-
     default:
       return status
         ? status
@@ -61,18 +69,14 @@ export const formatPaymentStatus = (status?: string) => {
   switch (status?.toLowerCase()) {
     case "partial_deposit_paid":
       return "Deposit paid";
-
     case "paid":
     case "fully_paid":
       return "Paid";
-
     case "pending":
     case "unpaid":
       return "Payment pending";
-
     case "refunded":
       return "Refunded";
-
     default:
       return status
         ? status
@@ -82,16 +86,32 @@ export const formatPaymentStatus = (status?: string) => {
   }
 };
 
-export const formatDuration = (durationInDays: number) => {
-  if (durationInDays >= 7) {
-    const weeks = Math.round(durationInDays / 7);
+// Cascades days -> weeks -> months, e.g. 8 days = "1 Week 1 Day".
+export const formatDuration = (durationInDays: number): string => {
+  if (!durationInDays || durationInDays <= 0) return "0 Days";
 
-    return `${weeks} ${weeks === 1 ? "Week" : "Weeks"}`;
+  if (durationInDays < 7) {
+    return `${durationInDays} ${durationInDays === 1 ? "Day" : "Days"}`;
   }
 
-  return `${durationInDays} ${durationInDays === 1 ? "Day" : "Days"}`;
+  const DAYS_IN_MONTH = 30;
+  const DAYS_IN_WEEK = 7;
+
+  const months = Math.floor(durationInDays / DAYS_IN_MONTH);
+  const afterMonths = durationInDays % DAYS_IN_MONTH;
+  const weeks = Math.floor(afterMonths / DAYS_IN_WEEK);
+  const days = afterMonths % DAYS_IN_WEEK;
+
+  const parts: string[] = [];
+  if (months > 0) parts.push(`${months} ${months === 1 ? "Month" : "Months"}`);
+  if (weeks > 0) parts.push(`${weeks} ${weeks === 1 ? "Week" : "Weeks"}`);
+  if (days > 0) parts.push(`${days} ${days === 1 ? "Day" : "Days"}`);
+
+  return parts.join(" ");
 };
 
+// Derives correct singular/plural locally — backend's unitType is unreliable
+// (e.g. sends "bags" even when quantity is 1).
 export const formatQuantity = (quantity: number, unitType?: string) => {
   const unit = unitType?.toLowerCase() || "";
 
@@ -145,21 +165,40 @@ export const bookingColumns = [
   { name: "STATUS", uid: "status" },
 ] as const;
 
+// Matches the raw values the backend sends, so lookups never silently miss.
 export type BookingStatus =
-  | "confirmed"
-  | "active"
-  | "completed"
-  | "pending"
-  | "cancelled";
+  "confirmed" | "in_storage" | "completed" | "pending" | "cancelled";
 
 export const bookingStatusColors: Record<BookingStatus, string> = {
   confirmed: "bg-brand-primary/25 text-brand-primary",
-
-  active: "bg-badge-active-bg text-badge-active-text",
-
+  in_storage: "bg-badge-instorage-bg text-badge-instorage-text",
   completed: "bg-badge-completed-bg text-badge-completed-text",
-
   pending: "bg-badge-pending-bg text-badge-pending-text",
-
   cancelled: "bg-badge-cancelled-bg text-badge-cancelled-text",
+};
+
+export const getBookingStatusStyles = (status?: string): string => {
+  const normalizedStatus = status?.toLowerCase();
+
+  if (normalizedStatus === "confirmed") {
+    return "bg-brand-primary/10 text-brand-primary";
+  }
+
+  if (normalizedStatus === "in_storage") {
+    return "bg-blue-100 text-blue-600";
+  }
+
+  if (normalizedStatus === "completed") {
+    return "bg-slate-200 text-slate-700";
+  }
+
+  if (normalizedStatus === "cancelled") {
+    return "bg-red-100 text-red-600";
+  }
+
+  if (normalizedStatus === "pending") {
+    return "bg-amber-100 text-amber-700";
+  }
+
+  return "bg-background-subtle text-text-subtle";
 };

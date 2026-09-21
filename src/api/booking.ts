@@ -27,6 +27,7 @@ export interface BookingData {
     address?: string;
     storageType?: string;
     operatingHours?: string;
+    proximityText?: string;
     images?: string[];
     isVerified?: boolean;
     slug?: string;
@@ -65,10 +66,19 @@ export interface BookingData {
   updatedAt?: string;
 }
 
+export interface PaymentSummary {
+  depositAmount?: number;
+  balanceAmount?: number;
+  totalAmount?: number;
+  durationInDays?: number;
+}
+
 export interface CreateBookingResponse {
-  success: boolean;
   message: string;
-  data?: BookingData;
+  data: {
+    booking: BookingData;
+    paymentSummary?: PaymentSummary;
+  };
 }
 
 export const createBooking = async (
@@ -83,6 +93,16 @@ export const getMyBookingsApi = (page = 1) => {
   return apiClient.get(`/booking/my-bookings?page=${page}`);
 };
 
+export interface SingleBookingResponse {
+  success: boolean;
+  message: string;
+  data: {
+    booking: BookingData;
+  };
+}
+
 export const getSingleBookingApi = async (bookingId: string) => {
-  return await apiClient.get(`/booking/single-booking/${bookingId}`);
+  return await apiClient.get<SingleBookingResponse>(
+    `/booking/single-booking/${bookingId}`,
+  );
 };
