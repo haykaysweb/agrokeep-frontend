@@ -19,6 +19,14 @@
   scrollbar-width: none;
 }
 
+html {
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+}
+
 html,
 body {
   font-family: var(--font-sans);
@@ -75,6 +83,8 @@ body {
   --color-badge-pending-text: #92400e;
   --color-badge-cancelled-bg: #fee2e2;
   --color-badge-cancelled-text: #991b1b;
+  --color-badge-instorage-bg: #dbeafe;
+  --color-badge-instorage-text: #1e40af;
 
   /* --- Tables & Action Cards --- */
   --color-table-header: #1e5e3a;
