@@ -9,6 +9,7 @@ export interface Hub {
   name: string;
   state: string;
   lga: string;
+  slug: string;
   address: string;
   storageType: string;
   totalCapacity: number;
@@ -17,6 +18,7 @@ export interface Hub {
   pricePerCratePerWeek50kg: number;
   unitType: string;
   images?: string;
+  crops?: string[];
 }
 
 export interface StateGroup {
