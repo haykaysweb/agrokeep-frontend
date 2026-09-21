@@ -1,27 +1,55 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import Pagination from "./Pagination";
 
 interface TableColumn {
   uid: string;
   name: string;
 }
 
+interface PaginationInfo {
+  total: number;
+  currentPage: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+}
+
+export interface TableRow {
+  _id?: string;
+  id?: string;
+  [key: string]: unknown;
+}
+
 interface TableBodyProps {
   tableColumns: readonly TableColumn[];
-  tableData: any[];
-  renderCell: (item: any, columnUid: string) => any;
+  tableData: TableRow[];
+  renderCell: (item: TableRow, columnUid: string) => React.ReactNode;
+  isLoading?: boolean;
+  pagination?: PaginationInfo;
+  onPageChange?: (page: number) => void;
+  onRowClick?: (item: TableRow) => void;
+  itemLabel?: string;
+  emptyMessage?: string;
+  skeletonRowCount?: number;
+  minHeight?: string;
 }
 
 export default function TableBody({
   tableColumns,
   tableData,
   renderCell,
+  isLoading = false,
+  pagination,
+  onPageChange,
+  onRowClick,
+  itemLabel = "items",
+  emptyMessage = "No data available to show",
+  skeletonRowCount = 8,
+  minHeight = "min-h-[420px]",
 }: TableBodyProps) {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
-  const navigate = useNavigate();
 
-  const getRowId = (item: any, index: number) => {
+  const getRowId = (item: TableRow, index: number) => {
     return item._id || item.id || String(index);
   };
 
@@ -47,25 +75,30 @@ export default function TableBody({
     );
   };
 
-  const handleRowClick = () => {
-    navigate("/admin/bookings/details");
-  };
+  const itemsPerPage = 10;
+  const startItem = pagination
+    ? (pagination.currentPage - 1) * itemsPerPage + 1
+    : null;
+  const endItem = pagination
+    ? Math.min(pagination.currentPage * itemsPerPage, pagination.total)
+    : null;
 
   return (
-    <div className="w-full overflow-hidden border border-stone-200/80 bg-surface-card shadow-xs">
-      {/* Scrollable container for small screens */}
-      <div className="w-full overflow-x-auto">
+    <div
+      className={`flex w-full flex-col overflow-hidden border border-stone-200/80 bg-surface-card shadow-xs ${minHeight}`}
+    >
+      <div className="w-full flex-1 overflow-x-auto">
         <table className="w-full min-w-[750px] border-collapse text-left">
           <thead>
             <tr className="border-b border-stone-200/80 bg-border-input text-[11px] font-semibold tracking-wider text-stone-500 uppercase">
-              {/* Checkbox Column */}
               <th className="w-12 px-4 py-4 text-center">
                 <input
                   type="checkbox"
                   checked={allSelected}
                   onChange={handleSelectAll}
                   aria-label="Select all rows"
-                  className="size-4 cursor-pointer rounded border-stone-300 bg-border-input accent-emerald-700"
+                  disabled={isLoading}
+                  className="size-4 cursor-pointer rounded border-stone-300 bg-border-input accent-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
                 />
               </th>
 
@@ -78,7 +111,20 @@ export default function TableBody({
           </thead>
 
           <tbody className="divide-y divide-stone-100 text-xs text-stone-700">
-            {tableData.length > 0 ? (
+            {isLoading ? (
+              Array.from({ length: skeletonRowCount }).map((_, rowIndex) => (
+                <tr key={`skeleton-${rowIndex}`}>
+                  <td className="px-4 py-4">
+                    <div className="mx-auto size-4 animate-pulse rounded bg-stone-200" />
+                  </td>
+                  {tableColumns.map((column) => (
+                    <td key={column.uid} className="px-4 py-4">
+                      <div className="h-3.5 w-full max-w-24 animate-pulse rounded bg-stone-200" />
+                    </td>
+                  ))}
+                </tr>
+              ))
+            ) : tableData.length > 0 ? (
               tableData.map((item, index) => {
                 const rowId = getRowId(item, index);
                 const isSelected = selectedRows.includes(rowId);
@@ -86,12 +132,11 @@ export default function TableBody({
                 return (
                   <tr
                     key={rowId}
-                    onClick={handleRowClick}
-                    className={`group cursor-pointer transition-colors hover:bg-stone-50/60 ${
-                      isSelected ? "bg-stone-50/60" : ""
-                    }`}
+                    onClick={onRowClick ? () => onRowClick(item) : undefined}
+                    className={`group transition-colors hover:bg-stone-50/60 ${
+                      onRowClick ? "cursor-pointer" : ""
+                    } ${isSelected ? "bg-stone-50/60" : ""}`}
                   >
-                    {/* Row Checkbox */}
                     <td
                       className="px-4 py-4 text-center"
                       onClick={(event) => event.stopPropagation()}
@@ -122,7 +167,7 @@ export default function TableBody({
                   colSpan={tableColumns.length + 1}
                   className="h-36 text-center text-sm font-medium text-stone-400"
                 >
-                  No data available to show
+                  {emptyMessage}
                 </td>
               </tr>
             )}
@@ -130,36 +175,21 @@ export default function TableBody({
         </table>
       </div>
 
-      {/* Pagination Footer - Fully Responsive */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-stone-200/80 bg-surface-card px-4 sm:px-6 py-4 text-sm text-[#4B5563]">
-        <div className="text-xs sm:text-sm">Showing 1-10 of 248 bookings</div>
+      {pagination && onPageChange && tableData.length > 0 && (
+        <div className="mt-auto flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-stone-200/80 bg-surface-card px-4 sm:px-6 py-4">
+          <div className="text-xs sm:text-sm text-[#4B5563]">
+            Showing {startItem}-{endItem} of {pagination.total} {itemLabel}
+          </div>
 
-        <div className="flex items-center gap-1 text-stone-400">
-          <button
-            type="button"
-            disabled
-            className="cursor-pointer px-2 py-1 hover:text-stone-700 disabled:cursor-not-allowed disabled:opacity-50"
-            aria-label="Previous page"
-          >
-            <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" strokeWidth={1.5} />
-          </button>
-
-          <button
-            type="button"
-            className="flex size-7 items-center justify-center rounded-full bg-emerald-800 font-medium text-white text-xs sm:text-sm"
-          >
-            1
-          </button>
-
-          <button
-            type="button"
-            className="cursor-pointer px-2 py-1 hover:text-stone-700"
-            aria-label="Next page"
-          >
-            <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6" strokeWidth={1.5} />
-          </button>
+          <Pagination
+            currentPage={pagination.currentPage}
+            totalPages={pagination.totalPages}
+            hasNextPage={pagination.hasNextPage}
+            hasPrevPage={pagination.hasPrevPage}
+            onPageChange={onPageChange}
+          />
         </div>
-      </div>
+      )}
     </div>
   );
 }

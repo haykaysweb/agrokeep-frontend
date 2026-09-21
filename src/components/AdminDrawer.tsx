@@ -41,7 +41,7 @@ export default function AdminDrawer() {
 
       {/* Drawer */}
       <aside
-        className={`fixed top-0 left-0 h-full w-60 bg-white text-black z-50 px-2 transition-transform duration-300 ease-in-out lg:hidden overflow-y-auto ${
+        className={`fixed top-0 left-0 h-full w-60 bg-white text-black z-60 px-2 transition-transform duration-300 ease-in-out lg:hidden overflow-y-auto ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >

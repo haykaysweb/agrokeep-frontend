@@ -1,128 +1,96 @@
 import { useCallback } from "react";
-import TableBody from "@/components/TableBody";
+import { useNavigate, useSearchParams } from "react-router";
+import TableBody, { type TableRow } from "@/components/AdminBookingsTableBody";
 import {
   bookingColumns,
   bookingStatusColors,
+  formatBookingStatus,
+  formatBookingDate,
+  formatCurrency,
+  formatDuration,
+  formatQuantity,
   type BookingStatus,
 } from "@/lib/constant";
+import type { AdminBooking, Pagination } from "@/api/admin";
 
-interface Booking {
-  id: string;
-  bookingId: string;
-  farmerName: string;
-  storageHub: string;
-  location: string;
-  crop: string;
-  quantity: string;
-  dropOff: string;
-  duration: string;
-  amount: number;
-  status: BookingStatus;
+interface AdminBookingsTableProps {
+  bookings: AdminBooking[];
+  pagination?: Pagination;
+  isLoading?: boolean;
+  onPageChange: (page: number) => void;
 }
 
-const dummyBookings: Booking[] = [
-  {
-    id: "1",
-    bookingId: "AGK-004582",
-    farmerName: "Adewale Anuoluwapo",
-    storageHub: "Ibadan Central Hermetic Hub",
-    location: "Ibadan, Oyo",
-    crop: "Maize",
-    quantity: "120 Bags",
-    dropOff: "24 Aug, 2026",
-    duration: "8 Weeks",
-    amount: 3024000,
-    status: "confirmed",
-  },
-  {
-    id: "2",
-    bookingId: "AGK-004583",
-    farmerName: "Kemi Ogunlana",
-    storageHub: "Osun Cool Chamber",
-    location: "Osogbo, Osun",
-    crop: "Tomatoes",
-    quantity: "100 Crates",
-    dropOff: "22 Aug, 2026",
-    duration: "6 Weeks",
-    amount: 561000,
-    status: "active",
-  },
-  {
-    id: "3",
-    bookingId: "AGK-004584",
-    farmerName: "Bola Farms",
-    storageHub: "Abeokuta Yam Brick Hub",
-    location: "Abeokuta, Ogun",
-    crop: "Cassava",
-    quantity: "200 Crates",
-    dropOff: "12 Jul, 2026",
-    duration: "4 Weeks",
-    amount: 432000,
-    status: "completed",
-  },
-  {
-    id: "4",
-    bookingId: "AGK-004585",
-    farmerName: "Tunde Farms",
-    storageHub: "Akure Dry Storage",
-    location: "Akure, Ondo",
-    crop: "Cassava",
-    quantity: "180 Bags",
-    dropOff: "28 Aug, 2026",
-    duration: "2 Weeks",
-    amount: 199000,
-    status: "pending",
-  },
-  {
-    id: "5",
-    bookingId: "AGK-004586",
-    farmerName: "Yemi Fuga",
-    storageHub: "Ado-Ekiti Hermetic Hub",
-    location: "Ado-Ekiti, Ekiti",
-    crop: "Cocoa",
-    quantity: "120 Bags",
-    dropOff: "15 Aug, 2026",
-    duration: "12 Weeks",
-    amount: 1461400,
-    status: "cancelled",
-  },
-  {
-    id: "6",
-    bookingId: "AGK-004587",
-    farmerName: "Chidinma Okoro",
-    storageHub: "Gateway Storage Hub",
-    location: "Sagamu, Ogun",
-    crop: "Onion",
-    quantity: "50 Bags",
-    dropOff: "18 Aug, 2026",
-    duration: "4 Weeks",
-    amount: 591400,
-    status: "confirmed",
-  },
-  {
-    id: "7",
-    bookingId: "AGK-004588",
-    farmerName: "Chidinma Okoro",
-    storageHub: "Gateway Storage Hub",
-    location: "Sagamu, Ogun",
-    crop: "Onion",
-    quantity: "50 Bags",
-    dropOff: "18 Aug, 2026",
-    duration: "4 Weeks",
-    amount: 591400,
-    status: "cancelled",
-  },
+const FILTER_KEYS = [
+  "query",
+  "status",
+  "state",
+  "storageHub",
+  "cropType",
+  "paymentStatus",
+  "dateRange",
 ];
 
-export default function AdminBookingsTable() {
-  const renderCell = useCallback((booking: Booking, columnKey: string) => {
-    const cellValue = booking[columnKey as keyof Booking];
+export default function AdminBookingsTable({
+  bookings,
+  pagination,
+  isLoading,
+  onPageChange,
+}: AdminBookingsTableProps) {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const hasActiveFilters = FILTER_KEYS.some((key) => searchParams.get(key));
+
+  const emptyMessage = hasActiveFilters
+    ? "No bookings match your search or filters"
+    : "No bookings available yet";
+
+  const renderCell = useCallback((row: TableRow, columnKey: string) => {
+    const booking = row as unknown as AdminBooking;
 
     switch (columnKey) {
+      case "bookingId":
+        return <p className="whitespace-nowrap text-sm">{booking.bookingId}</p>;
+
+      case "farmerName":
+        return <p className="max-w-40 truncate text-sm">{booking.fullName}</p>;
+
+      case "storageHub":
+        return <p className="max-w-40 truncate text-sm">{booking.hub?.name}</p>;
+
+      case "location":
+        return (
+          <p className="max-w-40 truncate text-sm">
+            {booking.hub?.lga}, {booking.hub?.state}
+          </p>
+        );
+
+      case "crop":
+        return <p className="text-sm">{booking.cropType}</p>;
+
+      case "quantity":
+        return (
+          <p className="text-sm">
+            {formatQuantity(booking.quantity, booking.unitType)}
+          </p>
+        );
+
+      case "dropOff":
+        return (
+          <p className="whitespace-nowrap text-sm">
+            {formatBookingDate(booking.dropOffDate)}
+          </p>
+        );
+
+      case "duration":
+        return (
+          <p className="text-sm">{formatDuration(booking.durationInDays)}</p>
+        );
+
       case "amount":
         return (
-          <p className="whitespace-nowrap">
-            ₦{booking.amount.toLocaleString()}
+          <p className="whitespace-nowrap text-sm">
+            {formatCurrency(booking.totalAmount)}
           </p>
         );
 
@@ -130,29 +98,29 @@ export default function AdminBookingsTable() {
         return (
           <span
             className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium capitalize ${
-              bookingStatusColors[booking.status]
+              bookingStatusColors[booking.bookingStatus as BookingStatus] ?? ""
             }`}
           >
-            {booking.status}
+            {formatBookingStatus(booking.bookingStatus)}
           </span>
         );
 
-      case "bookingId":
-        return <p className="whitespace-nowrap text-sm">{booking.bookingId}</p>;
-
       default:
-        return (
-          <p className="max-w-40 truncate text-sm">{String(cellValue)}</p>
-        );
+        return null;
     }
   }, []);
-  
 
   return (
     <TableBody
       tableColumns={bookingColumns}
-      tableData={dummyBookings}
+      tableData={bookings as unknown as TableRow[]}
       renderCell={renderCell}
+      isLoading={isLoading}
+      pagination={pagination}
+      onPageChange={onPageChange}
+      onRowClick={(row) => navigate(`/admin/bookings/details/${row._id}`)}
+      itemLabel="bookings"
+      emptyMessage={emptyMessage}
     />
   );
 }
