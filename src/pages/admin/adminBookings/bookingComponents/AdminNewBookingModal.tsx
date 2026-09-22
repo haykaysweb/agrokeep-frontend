@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { useForm, type Resolver } from "react-hook-form";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
@@ -13,7 +14,8 @@ import {
   type CreatedAdminBooking,
   type CreatedByAdmin,
 } from "@/api/admin";
-import { adminBookingSchema, type AdminBookingInputs } from "@/lib/SchemaTypes";
+import { adminBookingSchema } from "@/lib/SchemaTypes";
+type AdminBookingInputs = z.infer<typeof adminBookingSchema>;
 import { getInitialDates, calculateDurationDays } from "@/lib/bookingHelpers";
 import {
   formatCurrency,
