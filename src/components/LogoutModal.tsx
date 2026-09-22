@@ -6,7 +6,11 @@ type LogoutModalProps = {
   onConfirm: () => void;
 };
 
-export default function LogoutModal({ isOpen, onClose, onConfirm }: LogoutModalProps) {
+export default function LogoutModal({
+  isOpen,
+  onClose,
+  onConfirm,
+}: LogoutModalProps) {
   return (
     <AnimatePresence>
       {isOpen && (
