@@ -31,7 +31,7 @@ export default function LogoutModal({
             <div className="flex gap-4">
               <button
                 onClick={onClose}
-                className="flex-1 py-3 rounded-full border border-border-base hover:bg-gray-50 cursor-pointer"
+                className="flex-1 py-3 rounded-full border border-border-base text-text-main hover:bg-gray-50 cursor-pointer"
               >
                 Cancel
               </button>

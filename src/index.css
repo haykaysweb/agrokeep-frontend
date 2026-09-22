@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
 @import "tailwindcss";
 @plugin "daisyui";
 @import "leaflet/dist/leaflet.css";
@@ -30,6 +30,12 @@ html::-webkit-scrollbar {
 html,
 body {
   font-family: var(--font-sans);
+}
+
+input,
+textarea,
+select {
+  @apply text-base;
 }
 
 @theme {

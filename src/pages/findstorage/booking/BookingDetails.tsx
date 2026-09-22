@@ -39,6 +39,8 @@ export default function BookingDetails() {
     resolver: zodResolver(
       bookingDetailsSchema,
     ) as Resolver<BookingDetailsInputs>,
+    mode: "onBlur",
+    reValidateMode: "onChange",
     defaultValues: {
       dropDate: bookingState?.dropDate || todayStr,
       pickupDate: bookingState?.pickupDate || tomorrowStr,

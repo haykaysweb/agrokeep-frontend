@@ -55,6 +55,7 @@ export default function AdminNewBookingModal({
     formState: { errors },
   } = useForm<AdminBookingInputs>({
     resolver: zodResolver(adminBookingSchema) as Resolver<AdminBookingInputs>,
+    mode: "onChange",
     defaultValues: {
       state: "",
       lga: "",

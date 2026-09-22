@@ -13,7 +13,7 @@ export default function LoadingButton({
     <button
       type="submit"
       disabled={loading}
-      className={`w-full bg-[#1B4D3E] text-white py-4 rounded-3xl font-medium text-base transition-all flex items-center justify-center gap-2
+      className={`w-full bg-[#1B4D3E] text-white py-4 rounded-3xl font-medium text-base transition-all flex items-center justify-center gap-2 cursor-pointer
         ${
           loading
             ? "opacity-80 cursor-not-allowed"

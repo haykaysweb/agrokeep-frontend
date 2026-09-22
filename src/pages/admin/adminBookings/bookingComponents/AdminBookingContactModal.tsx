@@ -49,6 +49,8 @@ export default function AdminBookingContactModal({
     formState: { errors, isSubmitting },
   } = useForm<EmailBookingFormValues>({
     resolver: zodResolver(emailBookingSchema),
+    mode: "onBlur",
+    reValidateMode: "onChange",
     defaultValues: {
       subject: "Re: Storage Booking Update",
       message: "",

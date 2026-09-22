@@ -20,6 +20,8 @@ export default function SignUp() {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(validateSignupSchema),
+    mode: "onBlur",
+    reValidateMode: "onChange",
   });
 
   // TanStack Query Mutation utilizing your standalone register API
