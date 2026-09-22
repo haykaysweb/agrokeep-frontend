@@ -13,35 +13,26 @@ import {
 import Logo from "./Logo";
 import { NavLink } from "react-router";
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function AdminDrawer() {
   const [isOpen, setIsOpen] = useState(false);
   const { handleLogout } = useAuth();
 
-  return (
+  const drawerContent = (
     <>
-      {/* Hamburger button */}
-      <button
-        type="button"
-        onClick={() => setIsOpen(true)}
-        className="lg:hidden p-2 text-[#1E5E3A]"
-        aria-label="Open navigation menu"
-      >
-        <Menu size={28} />
-      </button>
-
       {/* Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/50 z-50 lg:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
 
       {/* Drawer */}
       <aside
-        className={`fixed top-0 left-0 h-full w-60 bg-white text-black z-60 px-2 transition-transform duration-300 ease-in-out lg:hidden overflow-y-auto ${
+        className={`fixed top-0 left-0 h-full w-60 bg-white text-black z-50 px-2 transition-transform duration-300 ease-in-out lg:hidden overflow-y-auto shadow-2xl ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -51,6 +42,7 @@ export default function AdminDrawer() {
             type="button"
             onClick={() => setIsOpen(false)}
             aria-label="Close navigation menu"
+            className="cursor-pointer"
           >
             <X size={24} />
           </button>
@@ -165,6 +157,23 @@ export default function AdminDrawer() {
           <LogOut /> <p className="text-red-600">Logout</p>
         </div>
       </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Hamburger button (stays inside AdminNav) */}
+      <button
+        type="button"
+        onClick={() => setIsOpen(true)}
+        className="lg:hidden p-2 text-[#1E5E3A] cursor-pointer"
+        aria-label="Open navigation menu"
+      >
+        <Menu size={28} />
+      </button>
+
+      {/* Render drawer directly into document.body */}
+      {createPortal(drawerContent, document.body)}
     </>
   );
 }

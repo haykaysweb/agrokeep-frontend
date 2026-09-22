@@ -67,7 +67,8 @@ export const getAdminBookingsApi = (searchParams: URLSearchParams) => {
   const storageHub = searchParams.get("storageHub") || "";
   const cropType = searchParams.get("cropType") || "";
   const paymentStatus = searchParams.get("paymentStatus") || "";
-  const dateRange = searchParams.get("dateRange") || "";
+  const startDate = searchParams.get("startDate") || "";
+  const endDate = searchParams.get("endDate") || "";
 
   const params = new URLSearchParams();
   params.append("page", String(page));
@@ -78,7 +79,8 @@ export const getAdminBookingsApi = (searchParams: URLSearchParams) => {
   if (storageHub) params.append("storageHub", storageHub);
   if (cropType) params.append("cropType", cropType);
   if (paymentStatus) params.append("paymentStatus", paymentStatus);
-  if (dateRange) params.append("dateRange", dateRange);
+  if (startDate) params.append("startDate", startDate);
+  if (endDate) params.append("endDate", endDate);
 
   return apiClient.get<AdminBookingsResponse>(
     `/admin/all-bookings?${params.toString()}`,
@@ -184,6 +186,11 @@ export interface AdminBookingDetailResponse {
   };
 }
 
+export const sendAdminBookingEmailApi = (
+  id: string,
+  payload: { subject: string; message: string },
+) => apiClient.post(`/admin/booking/${id}/email`, payload);
+
 export const getAdminBookingByIdApi = (id: string) => {
   return apiClient.get<AdminBookingDetailResponse>(`/admin/booking/${id}`);
 };
@@ -192,6 +199,7 @@ export const cancelAdminBookingApi = (id: string) => {
   return apiClient.patch(`/admin/booking/${id}/cancel`, {});
 };
 
+// create booking hubs location
 export interface HubLocation {
   state: string;
   lga: string;
@@ -320,5 +328,3 @@ export const createAdminBookingApi = (payload: CreateAdminBookingPayload) => {
     payload,
   );
 };
-
-// startDate and endDate, received as query in the backend in ISO string

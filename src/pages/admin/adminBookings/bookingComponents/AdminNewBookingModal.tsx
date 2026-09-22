@@ -244,12 +244,12 @@ export default function AdminNewBookingModal({
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center bg-black/50 backdrop-blur-xs p-2 overflow-y-auto ${
+      className={`fixed inset-0 z-50 flex items-center bg-black/50 backdrop-blur-xs md:p-2 overflow-y-auto ${
         isConfirmation ? "justify-center" : "justify-end"
       }`}
     >
       <div
-        className={`bg-surface-card rounded-xl w-full border border-card-border shadow-xl relative max-h-full overflow-y-auto ${
+        className={`bg-surface-card md:rounded-xl w-full border border-card-border shadow-xl relative max-h-full overflow-y-auto ${
           isConfirmation ? "max-w-lg p-4 sm:p-6" : "max-w-lg p-4"
         }`}
       >
@@ -261,11 +261,7 @@ export default function AdminNewBookingModal({
               className="absolute top-4 right-4 sm:top-5 sm:right-5 p-1 rounded-md text-text-muted hover:text-text-main hover:bg-background-subtle transition-colors cursor-pointer"
               aria-label="Close modal"
             >
-              <img
-                src="/Close.svg"
-                alt="Close"
-                className="w-4 h-4 sm:w-5 sm:h-5"
-              />
+              <img src="/Close.svg" alt="Close" className="w-7 h-7" />
             </button>
 
             <div className="space-y-1 pr-8">

@@ -2,7 +2,7 @@ import { Clock, XCircle } from "lucide-react";
 import { useNavigate, useParams } from "react-router";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import AdminBookingViewProfileModal from "./bookingComponents/AdminBookingViewProfileModal";
+import AdminBookingContactModal from "./bookingComponents/AdminBookingContactModal";
 import AdminBookingCancelModal from "./bookingComponents/AdminBookingCancelModal";
 import { getAdminBookingByIdApi, cancelAdminBookingApi } from "@/api/admin";
 import {
@@ -17,11 +17,12 @@ import { bookingStatusColors, type BookingStatus } from "@/lib/constant";
 import { showToast } from "@/utils/CustomToast";
 import { isAxiosError } from "axios";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import { sendAdminBookingEmailApi } from "@/api/admin";
 
 export default function AdminBookingDetails() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const [isViewProfileModalOpen, setIsViewProfileModalOpen] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
 
   const { data, isPending, isError, error } = useQuery({
@@ -46,6 +47,20 @@ export default function AdminBookingDetails() {
         ? error.response?.data?.message
         : undefined;
       showToast.error(msg || "Failed to cancel booking");
+    },
+  });
+
+  const sendEmailMutation = useMutation({
+    mutationFn: (payload: { subject: string; message: string }) =>
+      sendAdminBookingEmailApi(id as string, payload),
+    onSuccess: () => {
+      showToast.success("Email sent to farmer!");
+    },
+    onError: (error: unknown) => {
+      const msg = isAxiosError<{ message?: string }>(error)
+        ? error.response?.data?.message
+        : undefined;
+      showToast.error(msg || "Failed to send email");
     },
   });
 
@@ -180,7 +195,7 @@ export default function AdminBookingDetails() {
                     />
                     Storage Hub
                   </div>
-                  <p className="text-sm font-semibold text-text-main pb-3 break-words truncate">
+                  <p className="text-sm font-semibold text-text-main pb-3 wrap-break-words truncate">
                     {reservationSummary.hubName}
                   </p>
                   <hr className="text-border-light" />
@@ -195,7 +210,7 @@ export default function AdminBookingDetails() {
                     />
                     Location
                   </div>
-                  <p className="text-sm font-semibold text-text-main pb-3 break-words">
+                  <p className="text-sm font-semibold text-text-main pb-3 wrap-break-words">
                     {reservationSummary.location}
                   </p>
                   <hr className="text-border-light" />
@@ -210,7 +225,7 @@ export default function AdminBookingDetails() {
                     />
                     Crop and Quantity
                   </div>
-                  <p className="text-sm font-semibold text-text-main pb-3 break-words">
+                  <p className="text-sm font-semibold text-text-main pb-3 wrap-break-words">
                     {reservationSummary.crop} &bull;{" "}
                     {formatQuantity(
                       reservationSummary.quantity,
@@ -229,7 +244,7 @@ export default function AdminBookingDetails() {
                     />
                     Drop-off Date
                   </div>
-                  <p className="text-sm font-semibold text-text-main pb-3 break-words">
+                  <p className="text-sm font-semibold text-text-main pb-3 wrap-break-words">
                     {formatBookingDate(reservationSummary.dropOffDate)}
                   </p>
                   <hr className="text-border-light" />
@@ -244,7 +259,7 @@ export default function AdminBookingDetails() {
                     />
                     Storage Duration
                   </div>
-                  <p className="text-sm font-semibold text-text-main pb-3 break-words">
+                  <p className="text-sm font-semibold text-text-main pb-3 wrap-break-word">
                     {formatDuration(reservationSummary.durationInDays)}
                   </p>
                   <hr className="text-border-light" />
@@ -259,7 +274,7 @@ export default function AdminBookingDetails() {
                     />
                     Booking Amount
                   </div>
-                  <p className="text-sm font-semibold text-text-main pb-3 break-words">
+                  <p className="text-sm font-semibold text-text-main pb-3 wrap-break-word">
                     {formatCurrency(reservationSummary.totalAmount)}
                   </p>
                   <hr className="text-border-light" />
@@ -299,7 +314,7 @@ export default function AdminBookingDetails() {
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
-                    onClick={() => setIsViewProfileModalOpen(true)}
+                    // onClick={() =>  setIsContactModalOpen(true)}
                     disabled={!farmer.userId}
                     className="px-3.5 py-1.5 rounded-lg text-xs font-medium bg-brand-primary text-text-light hover:opacity-95 transition-opacity cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                   >
@@ -307,9 +322,7 @@ export default function AdminBookingDetails() {
                   </button>
                   <button
                     type="button"
-                    onClick={() =>
-                      window.open(`tel:${farmer.phoneNumber}`, "_blank")
-                    }
+                    onClick={() => setIsContactModalOpen(true)}
                     className="px-3.5 py-1.5 rounded-lg text-xs font-medium border border-border-input text-text-main hover:bg-backgroundTwo transition-colors cursor-pointer"
                   >
                     Contact Farmer
@@ -328,7 +341,7 @@ export default function AdminBookingDetails() {
               </div>
 
               <div className="space-y-6 relative pl-2">
-                <div className="absolute left-[20px] top-3 bottom-3 w-0.5 bg-border-light -z-0" />
+                <div className="absolute left-5 top-3 bottom-3 w-0.5 bg-border-light z-0" />
 
                 {timeline.map((item, index) => (
                   <div
@@ -462,9 +475,17 @@ export default function AdminBookingDetails() {
       )}
 
       {/* Modals */}
-      <AdminBookingViewProfileModal
-        isOpen={isViewProfileModalOpen}
-        onClose={() => setIsViewProfileModalOpen(false)}
+      <AdminBookingContactModal
+        isOpen={isContactModalOpen}
+        onClose={() => setIsContactModalOpen(false)}
+        farmerName={booking.farmer.fullName}
+        bookingRef={booking.bookingCustomId}
+        hubName={booking.reservationSummary.hubName}
+        phoneNumber={booking.farmer.phoneNumber}
+        email={booking.farmer.email}
+        onSendEmail={async (payload) => {
+          await sendEmailMutation.mutateAsync(payload);
+        }}
       />
       <AdminBookingCancelModal
         isOpen={isCancelModalOpen}
