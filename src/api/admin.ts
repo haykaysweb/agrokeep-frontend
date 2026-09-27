@@ -186,14 +186,14 @@ export interface AdminBookingDetailResponse {
   };
 }
 
+export const getAdminBookingByIdApi = (id: string) => {
+  return apiClient.get<AdminBookingDetailResponse>(`/admin/booking/${id}`);
+};
+
 export const sendAdminBookingEmailApi = (
   id: string,
   payload: { subject: string; message: string },
 ) => apiClient.post(`/admin/booking/${id}/email`, payload);
-
-export const getAdminBookingByIdApi = (id: string) => {
-  return apiClient.get<AdminBookingDetailResponse>(`/admin/booking/${id}`);
-};
 
 export const cancelAdminBookingApi = (id: string) => {
   return apiClient.patch(`/admin/booking/${id}/cancel`, {});

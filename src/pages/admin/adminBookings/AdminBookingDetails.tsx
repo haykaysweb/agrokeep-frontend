@@ -18,12 +18,14 @@ import { showToast } from "@/utils/CustomToast";
 import { isAxiosError } from "axios";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { sendAdminBookingEmailApi } from "@/api/admin";
+import AdminBookingViewProfileModal from "./bookingComponents/AdminBookingViewProfileModal";
 
 export default function AdminBookingDetails() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+  const [isViewProfileModalOpen, setIsViewProfileModalOpen] = useState(false);
 
   const { data, isPending, isError, error } = useQuery({
     queryKey: ["getAdminBookingById", id],
@@ -314,8 +316,7 @@ export default function AdminBookingDetails() {
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
-                    // onClick={() =>  setIsContactModalOpen(true)}
-                    disabled={!farmer.userId}
+                    onClick={() => setIsViewProfileModalOpen(true)}
                     className="px-3.5 py-1.5 rounded-lg text-xs font-medium bg-brand-primary text-text-light hover:opacity-95 transition-opacity cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                   >
                     View Profile
@@ -475,6 +476,15 @@ export default function AdminBookingDetails() {
       )}
 
       {/* Modals */}
+      <AdminBookingViewProfileModal
+        isOpen={isViewProfileModalOpen}
+        onClose={() => setIsViewProfileModalOpen(false)}
+        farmer={farmer}
+        bookingRef={booking.bookingCustomId}
+        hubName={reservationSummary.hubName}
+        bookingStatus={booking.bookingStatus}
+      />
+
       <AdminBookingContactModal
         isOpen={isContactModalOpen}
         onClose={() => setIsContactModalOpen(false)}
