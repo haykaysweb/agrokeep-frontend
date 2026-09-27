@@ -110,7 +110,7 @@ export default function AdminBookingViewProfileModal({
                 onClick={() =>
                   window.open(`tel:${farmer.phoneNumber}`, "_blank")
                 }
-                className="px-2.5 py-1 rounded-md text-xs font-medium bg-brand-primary text-text-light hover:opacity-90 transition-opacity cursor-pointer"
+                className="px-3.5 py-1 rounded-md text-xs font-medium bg-brand-primary text-text-light hover:opacity-90 transition-opacity cursor-pointer"
               >
                 Call
               </button>
