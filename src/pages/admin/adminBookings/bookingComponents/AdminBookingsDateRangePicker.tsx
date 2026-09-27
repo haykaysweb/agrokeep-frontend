@@ -208,7 +208,7 @@ export default function AdminBookingsDateRangePicker({
         ref={triggerRef}
         type="button"
         onClick={handleToggle}
-        className="flex w-full items-center gap-2 rounded-[25px] border border-border-input bg-surface-card px-3 py-3 text-left text-xs sm:text-sm text-text-subtle shadow-xs cursor-pointer"
+        className="flex w-full items-center gap-2 rounded-[25px] border border-border-input bg-surface-card px-3 py-3 text-left text-sm text-text-subtle shadow-xs cursor-pointer"
       >
         <Calendar className="h-4 w-4 shrink-0" />
         <span className="flex-1 truncate">{displayLabel}</span>
