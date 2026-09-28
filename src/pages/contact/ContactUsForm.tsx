@@ -19,8 +19,8 @@ export default function ContactUsForm() {
     formState: { errors },
   } = useForm<contactFormSchemaType>({
     resolver: zodResolver(validateContactFormSchema),
-    mode: "onTouched", // Best for UX: errors show when user leaves the field
-    reValidateMode: "onChange", // Instant feedback after the first error
+    mode: "onBlur",
+    reValidateMode: "onChange",
     defaultValues: {
       fullName: "",
       email: "",

@@ -4,6 +4,7 @@ import { CheckCircle2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { DELIVERY_INSTRUCTIONS, formatCurrency } from "@/lib/constant";
 import { getSingleBookingApi } from "@/api/booking";
+import { showToast } from "@/utils/CustomToast";
 
 export default function ViewBooking() {
   const navigate = useNavigate();
@@ -16,7 +17,11 @@ export default function ViewBooking() {
   } = useQuery({
     queryKey: ["singleBooking", bookingId],
     queryFn: async () => {
-      const res = await getSingleBookingApi(bookingId!);
+      if (!bookingId) {
+        showToast.error("No booking ID provided.");
+        throw new Error("Missing booking ID");
+      }
+      const res = await getSingleBookingApi(bookingId);
       return res.data;
     },
     enabled: !!bookingId,

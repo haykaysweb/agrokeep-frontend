@@ -20,6 +20,7 @@ import {
 } from "@/lib/bookingHelpers";
 import SimilarFacilities from "./SimilarFacilities";
 import { useScrollToTopOnChange } from "@/hooks/useScrollToTopOnChange";
+import { isAxiosError } from "axios";
 
 export default function StorageDetails() {
   const navigate = useNavigate();
@@ -163,7 +164,7 @@ export default function StorageDetails() {
   }
 
   if (isError) {
-    const status = (error as any)?.status || (error as any)?.response?.status;
+    const status = isAxiosError(error) ? error.response?.status : undefined;
 
     let errorMessage = "Failed to load Storage Hub details. Please try again.";
 

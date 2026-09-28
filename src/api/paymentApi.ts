@@ -134,9 +134,7 @@ export const verifyPaymentApi = async (
   const res = await apiClient.get<VerifyPaymentResponse>(
     `/payment/verify?reference=${encodeURIComponent(
       reference,
-    )}&hubId=${encodeURIComponent(
-      hubId,
-    )}&bookingId=${encodeURIComponent(
+    )}&hubId=${encodeURIComponent(hubId)}&bookingId=${encodeURIComponent(
       bookingId,
     )}&slug=${encodeURIComponent(slug)}`,
   );

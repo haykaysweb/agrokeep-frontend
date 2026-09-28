@@ -1,5 +1,55 @@
 // Shared utilities for date math and session management
 
+export interface BookingDraft {
+  // Hub info
+  hubId?: string;
+  _id?: string;
+  id?: string;
+  bookingId?: string;
+  slug?: string;
+  hubSlug?: string;
+  hubName?: string;
+  image?: string;
+  galleryImage?: string;
+  location?: string;
+  storageType?: string;
+  supportedCrops?: string[];
+  availableCapacity?: number;
+  totalCapacity?: number;
+  rating?: number;
+  reviewCount?: number;
+  operatingHours?: string;
+  // Booking info
+  selectedCrop?: string;
+  quantity?: number;
+  unitType?: string;
+  unitLabel?: string;
+  dropDate?: string;
+  pickupDate?: string;
+  durationDays?: number;
+  fullName?: string;
+  phoneNumber?: string;
+  email?: string;
+  specialInstructions?: string;
+  agreedToTerms?: boolean;
+  // Pricing
+  pricePerUnit?: number;
+  standardDailyPrice?: number;
+  bulkDailyPrice?: number;
+  weeklyFlatPrice?: number;
+  isBulkDiscountApplied?: boolean;
+  subtotal?: number;
+  storageFee?: number;
+  serviceFee?: number;
+  totalCost?: number;
+  estimatedTotal?: number;
+  deposit?: number;
+  remainingBalance?: number;
+  paymentMethod?: string;
+  // Allows any additional field this draft picks up along the way
+  [key: string]: unknown;
+}
+
 export const getInitialDates = () => {
   const today = new Date();
 
@@ -37,12 +87,12 @@ export const calculateDurationDays = (
 };
 
 export const bookingStorage = {
-  getDraft: (currentHubSlug?: string) => {
+  getDraft: (currentHubSlug?: string): BookingDraft | null => {
     if (typeof window === "undefined") return null;
     try {
       const saved = sessionStorage.getItem("agrokeep_booking_draft");
       if (!saved) return null;
-      const parsed = JSON.parse(saved);
+      const parsed = JSON.parse(saved) as BookingDraft;
       // Only return draft if it belongs to the active hub slug
       if (currentHubSlug && parsed.hubSlug !== currentHubSlug) return null;
       return parsed;
@@ -50,7 +100,7 @@ export const bookingStorage = {
       return null;
     }
   },
-  saveDraft: (data: Record<string, any>) => {
+  saveDraft: (data: BookingDraft) => {
     if (typeof window !== "undefined") {
       sessionStorage.setItem("agrokeep_booking_draft", JSON.stringify(data));
     }

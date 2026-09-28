@@ -27,6 +27,8 @@ export default function Login() {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(ValidateLoginSchema),
+    mode: "onBlur",
+    reValidateMode: "onChange",
   });
 
   const mutation = useMutation({

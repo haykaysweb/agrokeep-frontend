@@ -7,12 +7,18 @@ import StorageUtilizationCard from "./adminComponents/StorageUtilizationCard";
 import RecentBookingsCard from "./adminComponents/RecentBookingsCard";
 import ActionRequiredCard from "./adminComponents/ActionRequiredCard";
 
+type ProfileData = {
+  fullName?: string;
+  user?: ProfileData;
+  [key: string]: unknown;
+};
+
 export default function DashboardHeader() {
   const { user } = useAuth();
   const [selectedFilter, setSelectedFilter] = useState("30d");
 
   // Pull cached profile details if available to keep the name instantly synced
-  const { data: profileData } = useQuery<any>({
+  const { data: profileData } = useQuery<ProfileData | null>({
     queryKey: ["userProfile"],
     queryFn: async () => null,
     enabled: false,
@@ -20,7 +26,7 @@ export default function DashboardHeader() {
   });
 
   const currentUser = profileData?.user || profileData || user;
-  
+
   // Extract first name for a friendly greeting (e.g., "Good Afternoon, Oge")
   const fullName = currentUser?.fullName || "User";
   const firstName = fullName.split(" ")[0];
@@ -49,7 +55,8 @@ export default function DashboardHeader() {
         {/* Greeting Section */}
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-stone-900 flex items-center gap-2 whitespace-nowrap">
-            {greeting}, {firstName} <span className="inline-block animate-wave">👋</span>
+            {greeting}, {firstName}{" "}
+            <span className="inline-block animate-wave">👋</span>
           </h1>
           <p className="text-sm text-stone-500 mt-1">
             Here's what's happening across AgroKeep today.

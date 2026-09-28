@@ -1,14 +1,15 @@
 import apiClient from "./apiClient";
 
 export interface Hub {
-  pricePerCratePerDay: any;
-  pricePerBagPerDay: any;
-  priceWeeklyFlat: any;
-  priceBulk100Units: any;
+  pricePerCratePerDay: number;
+  pricePerBagPerDay: number;
+  priceWeeklyFlat: number;
+  priceBulk100Units: number;
   _id: string;
   name: string;
   state: string;
   lga: string;
+  slug: string;
   address: string;
   storageType: string;
   totalCapacity: number;
@@ -17,6 +18,7 @@ export interface Hub {
   pricePerCratePerWeek50kg: number;
   unitType: string;
   images?: string;
+  crops?: string[];
 }
 
 export interface StateGroup {

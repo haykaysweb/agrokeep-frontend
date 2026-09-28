@@ -9,11 +9,17 @@ import {
   formatCurrency,
   WHATS_NEXT_STEPS,
 } from "@/lib/constant";
-import { bookingStorage } from "@/lib/bookingHelpers";
-import { verifyPaymentApi, downloadReceiptApi } from "@/api/paymentApi";
+import { bookingStorage, type BookingDraft } from "@/lib/bookingHelpers";
+import {
+  verifyPaymentApi,
+  downloadReceiptApi,
+  type VerifyPaymentResponse,
+} from "@/api/paymentApi";
 import { showToast } from "@/utils/CustomToast";
 import { useScrollToTopOnChange } from "@/hooks/useScrollToTopOnChange";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+
+const EMPTY_DRAFT: BookingDraft = {};
 
 export default function Confirmation() {
   const navigate = useNavigate();
@@ -32,14 +38,14 @@ export default function Confirmation() {
   useScrollToTopOnChange(urlRef);
 
   // Booking draft fallback
-  const draftData = bookingStorage.getDraft() || {};
+  const draftData: BookingDraft = bookingStorage.getDraft() || EMPTY_DRAFT;
 
   // Cached verified booking fallback
   const cachedBookingJson = reference
     ? localStorage.getItem(`agrokeep_confirmed_${reference}`)
     : null;
 
-  let cachedBooking: any = null;
+  let cachedBooking: VerifyPaymentResponse | null = null;
 
   try {
     cachedBooking = cachedBookingJson ? JSON.parse(cachedBookingJson) : null;
@@ -48,34 +54,33 @@ export default function Confirmation() {
   }
 
   // Verify payment
-  const { data: verificationData, isLoading } = useQuery({
-    queryKey: ["verifyPayment", reference],
+  const { data: verificationData, isLoading } =
+    useQuery<VerifyPaymentResponse | null>({
+      queryKey: ["verifyPayment", reference],
 
-    queryFn: async () => {
-      if (!reference) {
-        return cachedBooking || draftData;
-      }
-
-      try {
-        const response = await verifyPaymentApi(reference);
-        // Save the COMPLETE verification response
-        if (response) {
-          localStorage.setItem(
-            `agrokeep_confirmed_${reference}`,
-            JSON.stringify(response),
-          );
-          localStorage.setItem("agrokeep_last_ref", reference);
+      queryFn: async (): Promise<VerifyPaymentResponse | null> => {
+        if (!reference) {
+          return cachedBooking;
         }
 
-        return response;
-      } catch {
-        return cachedBooking || draftData;
-      }
-    },
+        try {
+          const response = await verifyPaymentApi(reference);
+          if (response) {
+            localStorage.setItem(
+              `agrokeep_confirmed_${reference}`,
+              JSON.stringify(response),
+            );
+            localStorage.setItem("agrokeep_last_ref", reference);
+          }
+          return response;
+        } catch {
+          return cachedBooking;
+        }
+      },
 
-    enabled: !!reference,
-    staleTime: Infinity,
-  });
+      enabled: !!reference,
+      staleTime: Infinity,
+    });
 
   // Clear booking draft after successful verification
   useEffect(() => {
@@ -84,57 +89,48 @@ export default function Confirmation() {
     }
   }, [verificationData]);
 
-  // VERIFIED BOOKING
-
-  const resolvedBooking =
-    verificationData?.data?.booking ||
-    cachedBooking?.data?.booking ||
-    draftData;
+  const verifiedBooking = verificationData?.data?.booking;
+  const verifiedHub = verificationData?.data?.hub ?? verifiedBooking?.hub;
+  const verifiedPayment = verificationData?.data?.payment;
 
   // BOOKING ID
-  const bookingId = resolvedBooking?.bookingId || reference || "AK-PENDING";
+  const bookingId = verifiedBooking?.bookingId || reference || "AK-PENDING";
+
   // HUB
-
-  const hub = resolvedBooking?.hub;
-
-  const hubName = hub?.name || "Storage Hub";
+  const hubName = verifiedHub?.name || draftData.hubName || "Storage Hub";
 
   const location =
-    hub?.address ||
-    [hub?.lga, hub?.state].filter(Boolean).join(", ") ||
+    verifiedHub?.address ||
+    [verifiedHub?.lga, verifiedHub?.state].filter(Boolean).join(", ") ||
+    draftData.location ||
     "Location unavailable";
 
   // CROP
   const cropType =
-    resolvedBooking?.cropType || draftData?.cropType || "Produce";
+    verifiedBooking?.cropType || draftData.selectedCrop || "Produce";
 
   // QUANTITY
-  const quantity = resolvedBooking?.quantity ?? draftData?.quantity ?? 0;
+  const quantity = verifiedBooking?.quantity ?? draftData.quantity ?? 0;
 
   // UNIT
   const rawUnit = String(
-    resolvedBooking?.unitType || draftData?.unitType || "bags",
+    verifiedBooking?.unitType || draftData.unitType || "bags",
   ).toLowerCase();
 
   const unitType = rawUnit.includes("crate") ? "crate" : "bag";
 
   // PAYMENT METHOD
-
   const paymentMethod =
-    verificationData?.data?.payment?.paymentMethod ||
-    draftData?.paymentMethod ||
-    "Paystack";
+    verifiedPayment?.paymentMethod || draftData.paymentMethod || "Paystack";
 
   // DROP-OFF DATE
-
-  const startDateRaw = resolvedBooking?.dropOffDate || draftData?.dropOffDate;
+  const startDateRaw = verifiedBooking?.dropOffDate || draftData.dropDate;
 
   const startDate = startDateRaw ? formatBookingDate(startDateRaw) : "";
 
   // DURATION
-
   const durationDays =
-    resolvedBooking?.durationInDays ?? draftData?.durationInDays ?? 1;
+    verifiedBooking?.durationInDays ?? draftData.durationDays ?? 1;
 
   const durationText =
     durationDays >= 7
@@ -145,8 +141,9 @@ export default function Confirmation() {
 
   // AMOUNT PAID
   const amountPaid =
-    resolvedBooking?.depositAmount ??
-    verificationData?.data?.payment?.amount ??
+    verifiedPayment?.amount ??
+    verifiedBooking?.depositAmount ??
+    draftData.deposit ??
     0;
 
   // RECEIPT
@@ -176,8 +173,10 @@ export default function Confirmation() {
     }
   };
 
+  const hasDraftFallback = Object.keys(draftData).length > 0;
+
   // Loading State
-  if (isLoading && !verificationData && !cachedBooking && !draftData) {
+  if (isLoading && !verificationData && !cachedBooking && !hasDraftFallback) {
     return (
       <section className="max-w-7xl min-h-[calc-(100vh-80px)] mx-auto px-4 md:px-12 py-20 text-center">
         <LoadingSpinner />
@@ -194,7 +193,7 @@ export default function Confirmation() {
   }
 
   // Missing Reference State
-  if (!reference && !cachedBooking && !draftData) {
+  if (!reference && !cachedBooking && !hasDraftFallback) {
     return (
       <section className="max-w-7xl mx-auto px-4 md:px-12 py-20 text-center">
         <h2 className="text-xl font-semibold text-text-main">
@@ -235,10 +234,8 @@ export default function Confirmation() {
 
           <p className="text-xs text-text-subtle max-w-md mx-auto leading-relaxed">
             Your storage reservation has been successfully completed.{" "}
-            <span className="font-semibold text-text-main">
-              {hubName || "Storage Hub"}
-            </span>{" "}
-            is expecting your delivery.
+            <span className="font-semibold text-text-main">{hubName}</span> is
+            expecting your delivery.
           </p>
 
           <div>
@@ -280,7 +277,7 @@ export default function Confirmation() {
             <div className="sm:border-l sm:border-white/20 sm:pl-6 sm:pr-4">
               <p className="text-white/70 text-[10px] mb-0.5">Payment Method</p>
               <p className="font-semibold text-text-light text-xs sm:text-sm">
-                {paymentMethod || "Paystack"}
+                {paymentMethod}
               </p>
             </div>
 

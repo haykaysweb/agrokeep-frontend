@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useSearchParams } from "react-router";
-import { resetPasswordSchema } from "@/lib/SchemaTypes";
+import {
+  resetPasswordSchema,
+  type resetPasswordSchemaType,
+} from "@/lib/SchemaTypes";
 import { useMutation } from "@tanstack/react-query";
 import { resetPasswordApi } from "@/api/auth";
 import axios from "axios";
@@ -14,10 +17,8 @@ export default function ResetPassword() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  // Extract email string passed forward from the OTP verification stage parameters
   const email = searchParams.get("email") || "";
 
-  // Prevent accessing this route directly without a valid context session email
   useEffect(() => {
     if (!email) {
       showToast.error(
@@ -31,15 +32,15 @@ export default function ResetPassword() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
-    resolver: zodResolver(resetPasswordSchema),
+  } = useForm<resetPasswordSchemaType>({
+    resolver: zodResolver(
+      resetPasswordSchema,
+    ) as Resolver<resetPasswordSchemaType>,
   });
 
-  // TanStack Query Mutation linking your dynamic form fields to the resetPassword endpoint
   const mutation = useMutation({
     mutationFn: resetPasswordApi,
     onSuccess: (res) => {
-      // "Password reset successfully. You can now log in"
       showToast.success(res.data.message || "Password reset successfully!");
       navigate("/auth/login");
     },
@@ -57,24 +58,22 @@ export default function ResetPassword() {
     },
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: resetPasswordSchemaType) => {
     mutation.mutate({
       email,
-      newPassword: data.password, // Maps React Hook Form field to backend schema parameters
+      newPassword: data.password,
       confirmPassword: data.confirmPassword,
     });
   };
 
   return (
     <div className="w-full max-w-md mx-auto space-y-6 animate-fadeIn">
-      {/* Back to Login link */}
       <div>
         <button
           type="button"
           onClick={() => navigate("/auth/login")}
           className="flex items-center gap-2 text-stone-800 hover:text-stone-600 font-medium text-base transition-colors group"
         >
-          {/* Arrow Left SVG */}
           <svg
             className="h-5 w-5 transform transition-transform group-hover:-translate-x-1"
             fill="none"
@@ -92,16 +91,13 @@ export default function ResetPassword() {
         </button>
       </div>
 
-      {/* Header Title */}
       <div className="pt-2">
         <h2 className="text-[40px] font-bold text-stone-900 tracking-tight leading-tight">
           Enter New Password
         </h2>
       </div>
 
-      {/* Form Section */}
       <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
-        {/* New Password Field */}
         <div className="relative">
           <label className="block text-sm font-medium text-stone-800 mb-2">
             New Password<span className="text-red-500 ml-0.5">*</span>
@@ -123,7 +119,6 @@ export default function ResetPassword() {
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 focus:outline-none"
             >
-              {/* Custom Eyelash Visibility Icon */}
               <svg
                 className="h-5 w-5"
                 viewBox="0 0 24 24"
@@ -149,7 +144,6 @@ export default function ResetPassword() {
           )}
         </div>
 
-        {/* Confirm New Password Field */}
         <div className="relative">
           <label className="block text-sm font-medium text-stone-800 mb-2">
             Confirm New Password<span className="text-red-500 ml-0.5">*</span>
@@ -171,7 +165,6 @@ export default function ResetPassword() {
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               className="absolute right-5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 focus:outline-none"
             >
-              {/* Custom Eyelash Visibility Icon */}
               <svg
                 className="h-5 w-5"
                 viewBox="0 0 24 24"
@@ -197,7 +190,6 @@ export default function ResetPassword() {
           )}
         </div>
 
-        {/* Reset Password Button with Flat Amber Shadow Edge */}
         <div className="pt-4">
           <button
             type="submit"

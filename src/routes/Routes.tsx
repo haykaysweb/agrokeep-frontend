@@ -230,7 +230,7 @@ const Routes = () => {
               },
             },
             {
-              path: "bookings/details",
+              path: "bookings/details/:id",
               lazy: async () => {
                 const { default: Component } =
                   await import("../pages/admin/adminBookings/AdminBookingDetails");

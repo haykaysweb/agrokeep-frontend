@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, BookCheck, Menu, User, X } from "lucide-react";
+import {
+  ArrowUpRight,
+  BookCheck,
+  LayoutDashboard,
+  Menu,
+  User,
+  X,
+} from "lucide-react";
 import { Link, useNavigate, NavLink } from "react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import UserAvatar from "./UserAvatar";
@@ -28,6 +35,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
+  const isAdmin = user?.role === "admin";
   /*
    * Mobile logout
    */
@@ -241,6 +249,19 @@ export default function Navbar() {
                       <BookCheck className="h-5 w-5" />
                       <span>My Bookings</span>
                     </Link>
+
+                    {/* admin */}
+                    {isAdmin && (
+                      <Link
+                        to="/admin"
+                        onClick={() => setIsOpen(false)}
+                        role="menuitem"
+                        className="flex items-center gap-3 text-text-main hover:bg-stone-50 transition-colors"
+                      >
+                        <LayoutDashboard className="h-4 w-4" />
+                        <span>Admin Dashboard</span>
+                      </Link>
+                    )}
 
                     <li>
                       <hr className="border-stone-100" />

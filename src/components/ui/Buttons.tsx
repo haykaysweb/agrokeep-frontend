@@ -14,7 +14,7 @@ export function PrimaryButton({
   href?: string;
   type?: "button" | "submit" | "reset";
   openInNewTab?: boolean;
-  [key: string]: any;
+  [key: string]: unknown;
 }) {
   const content = (
     <>
@@ -75,7 +75,7 @@ export function SecondaryButton({
   href?: string;
   type?: "button" | "submit" | "reset";
   openInNewTab?: boolean;
-  [key: string]: any;
+  [key: string]: unknown;
 }) {
   const content = (
     <>

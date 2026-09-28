@@ -1,20 +1,40 @@
 import apiClient from "./apiClient";
 
-export interface UserProfile {
-  _id?: string;
-  fullName?: string;
-  email?: string;
-  phone?: string;
-  avatar?: string;
-  stats?: {
-    totalBookings?: number;
-    hubsUsed?: number;
-    totalStoredQuantity?: number;
-  };
-  [key: string]: any;
+export interface UserStats {
+  hubsUsed?: number;
+  totalBookings?: number;
+  totalStoredQuantity?: number;
 }
 
-export async function getUserProfile(): Promise<UserProfile> {
+export interface UserProfileData {
+  _id?: string;
+  avatarPublicId?: string;
+  avatarUrl?: string;
+  createdAt?: string;
+  email?: string;
+  emailVerified?: boolean;
+  fullName?: string;
+  notificationPreferences?: {
+    bookingUpdates?: boolean;
+    emailNotifications?: boolean;
+    paymentNotifications?: boolean;
+    reminderAlerts?: boolean;
+    smsNotifications?: boolean;
+  };
+  passwordLastChanged?: string;
+  phone?: string;
+  role?: string;
+  updatedAt?: string;
+}
+
+export interface ProfileApiResponse {
+  user: UserProfileData;
+  stats: UserStats;
+}
+
+export type UserProfile = UserProfileData;
+
+export async function getUserProfile(): Promise<ProfileApiResponse> {
   const response = await apiClient.get("/user/profile");
   return response.data.data || response.data;
 }

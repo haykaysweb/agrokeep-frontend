@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { isRouteErrorResponse, useRouteError } from "react-router";
 import { motion } from "framer-motion";
 
@@ -9,14 +10,25 @@ interface AxiosErrorLike {
   };
 }
 
+// Centralized so swapping in real monitoring later (Sentry, etc.) only
+// means changing this one function.
+function reportError(error: unknown) {
+  // TODO: replace with real monitoring, e.g.:
+  // Sentry.captureException(error);
+  console.error("Unhandled application error:", error);
+}
+
 export default function ErrorBoundary() {
   const error = useRouteError();
+
+  const is404 = isRouteErrorResponse(error) && error.status === 404;
+
   let details = "An unexpected error occurred.";
 
   if (isRouteErrorResponse(error)) {
     details =
       error.status === 404
-        ? "The requested page could not be found."
+        ? "The page you're looking for doesn't exist or may have moved."
         : error.statusText || details;
   } else if (error instanceof Error) {
     // Cast to access custom response properties safely in TS
@@ -24,39 +36,72 @@ export default function ErrorBoundary() {
     details = apiError.response?.data?.message || error.message;
   }
 
-  const redirect = () => {
+  // Only report real crashes, not ordinary 404s — a mistyped URL isn't a
+  // bug worth alerting on.
+  useEffect(() => {
+    if (!is404) {
+      reportError(error);
+    }
+  }, [error, is404]);
+
+  const goHome = () => {
     window.location.href = "/";
   };
 
-  const errorStatus = isRouteErrorResponse(error) ? error.status : null;
+  const tryAgain = () => {
+    window.location.reload();
+  };
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center">
-      {errorStatus === 404 ? <></> : <></>}
-
+    <div className="min-h-screen w-full flex flex-col items-center justify-center px-4 text-center">
       <h1 className="text-3xl font-bold tracking-tight">
-        Something went wrong
+        {is404 ? "Page not found" : "Something went wrong"}
       </h1>
 
-      <p className="text-text-subtle max-w-md text-center font-medium">
+      <p className="text-text-subtle max-w-md text-center font-medium mt-2">
         {details}
       </p>
 
-      <motion.button
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-        className="relative mt-5 inline-block shrink-0 cursor-pointer"
-        onClick={redirect}
-        type="button"
-      >
-        <span className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-full bg-brand-secondary" />
+      {/* Dev-only diagnostic details — never shown to real users */}
+      {import.meta.env.DEV && error instanceof Error && error.stack && (
+        <pre className="mt-4 max-w-2xl overflow-x-auto rounded-lg bg-stone-900 p-4 text-left text-xs text-stone-200">
+          {error.stack}
+        </pre>
+      )}
 
-        <span className="relative z-10 flex h-12 items-center justify-center rounded-full bg-brand-primary px-10 text-text-light">
-          <span className="whitespace-nowrap text-base font-semibold">
-            Go back home
+      <div className="flex items-center gap-3 mt-6">
+        {!is404 && (
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="relative inline-block shrink-0 cursor-pointer"
+            onClick={tryAgain}
+            type="button"
+          >
+            <span className="relative z-10 flex h-12 items-center justify-center rounded-full border border-border-input px-8 text-text-main">
+              <span className="whitespace-nowrap text-base font-semibold">
+                Try again
+              </span>
+            </span>
+          </motion.button>
+        )}
+
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="relative inline-block shrink-0 cursor-pointer"
+          onClick={goHome}
+          type="button"
+        >
+          <span className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-full bg-brand-secondary" />
+
+          <span className="relative z-10 flex h-12 items-center justify-center rounded-full bg-brand-primary px-10 text-text-light">
+            <span className="whitespace-nowrap text-base font-semibold">
+              Go back home
+            </span>
           </span>
-        </span>
-      </motion.button>
+        </motion.button>
+      </div>
     </div>
   );
 }

@@ -1,21 +1,22 @@
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import HubsGrid from "./HubGrid";
 import StorageFilter from "./StorageFilter";
 import SupportBanner from "./SupportBanner";
-import { getStorageHubsGroupedByState } from "@/api/storage";
+import { getStorageHubsGroupedByState, type Hub } from "@/api/storage";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useSearchParams } from "react-router";
 
 export default function HubsPage() {
   const navigate = useNavigate();
-  // Local state to store filtered results when the search button is triggered
   const [searchParams] = useSearchParams();
   const locationStateParam = searchParams.get("locationState");
   const cropTypeParam = searchParams.get("cropType");
 
-  const [filteredResults, setFilteredResults] = useState<any[] | null>(null);
+  // Results from the explicit "Search" button in StorageFilter
+  const [manualFilterResults, setManualFilterResults] = useState<Hub[] | null>(
+    null,
+  );
 
-  // Use React Query to fetch the storage hubs on page load
   const {
     data: stateGroups = [],
     isLoading,
@@ -25,27 +26,38 @@ export default function HubsPage() {
     queryFn: getStorageHubsGroupedByState,
   });
 
-  useEffect(() => {
-    if ((locationStateParam || cropTypeParam) && stateGroups.length > 0) {
-      const allHubs = stateGroups.flatMap((group: any) => group.hubs || []);
-
-      const results = allHubs.filter((hub: any) => {
-        const matchesState = locationStateParam
-          ? hub.state?.toLowerCase().includes(locationStateParam.toLowerCase())
-          : true;
-
-        const matchesCrop = cropTypeParam
-          ? hub.crops?.some((c: string) =>
-              c.toLowerCase().includes(cropTypeParam.toLowerCase()),
-            )
-          : true;
-
-        return matchesState && matchesCrop;
-      });
-
-      setFilteredResults(results);
+  // Results derived purely from the URL — a render-time computation, not
+  // something that belongs in an effect.
+  const urlFilteredResults = useMemo(() => {
+    if (!(locationStateParam || cropTypeParam) || stateGroups.length === 0) {
+      return null;
     }
-  }, [searchParams, stateGroups]);
+
+    const allHubs = stateGroups.flatMap((group) => group.hubs ?? []);
+
+    return allHubs.filter((hub) => {
+      const matchesState = locationStateParam
+        ? hub.state?.toLowerCase().includes(locationStateParam.toLowerCase())
+        : true;
+
+      const matchesCrop = cropTypeParam
+        ? hub.crops?.some((crop) =>
+            crop.toLowerCase().includes(cropTypeParam.toLowerCase()),
+          )
+        : true;
+
+      return matchesState && matchesCrop;
+    });
+  }, [locationStateParam, cropTypeParam, stateGroups]);
+
+  const displayedResults = manualFilterResults ?? urlFilteredResults;
+
+  const handleClearSearch = () => {
+    setManualFilterResults(null);
+    if (locationStateParam || cropTypeParam) {
+      navigate("/storage");
+    }
+  };
 
   return (
     <div className="relative">
@@ -66,8 +78,9 @@ export default function HubsPage() {
         </div>
 
         {/* Filter Component with callback to update search view */}
-
-        <StorageFilter onFilterResults={(data) => setFilteredResults(data)} />
+        <StorageFilter
+          onFilterResults={(data) => setManualFilterResults(data)}
+        />
       </section>
 
       {/* Content */}
@@ -84,25 +97,25 @@ export default function HubsPage() {
           </div>
         ) : error ? (
           <div className="py-20 text-center text-red-500 font-medium">
-            Error: {(error as Error).message || "Failed to fetch storage hubs."}
+            Error: {error.message || "Failed to fetch storage hubs."}
           </div>
-        ) : filteredResults !== null ? (
+        ) : displayedResults !== null ? (
           <div className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold text-stone-900">
-                Search Results ({filteredResults.length})
+                Search Results ({displayedResults.length})
               </h2>
               <button
-                onClick={() => setFilteredResults(null)}
+                onClick={handleClearSearch}
                 className="text-xs font-semibold text-[#1B4D3E] hover:underline"
               >
                 Clear Search
               </button>
             </div>
 
-            {filteredResults.length > 0 ? (
+            {displayedResults.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredResults.map((hub) => (
+                {displayedResults.map((hub) => (
                   <div
                     key={hub._id}
                     className="bg-white rounded-3xl shadow-sm border border-stone-200 flex flex-col justify-between space-y-4 overflow-hidden h-full"
@@ -135,7 +148,7 @@ export default function HubsPage() {
                         <div
                           className="relative shrink-0"
                           onClick={() =>
-                            navigate(`/storage/details/${hub.slug}`)
+                            hub.slug && navigate(`/storage/details/${hub.slug}`)
                           }
                         >
                           {/* Amber offset */}

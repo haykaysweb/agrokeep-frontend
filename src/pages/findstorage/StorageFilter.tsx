@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { MapPin, Leaf, Warehouse, Search } from "lucide-react";
 import { CustomDropdown } from "./CustomDropdown";
-import { filterStorageHubs } from "@/api/storage";
+import { filterStorageHubs, type Hub } from "@/api/storage";
 import { useMutation } from "@tanstack/react-query";
 
 interface StorageFilterProps {
-  onFilterResults?: (results: any[]) => void;
+  onFilterResults?: (results: Hub[]) => void;
 }
 
 export default function StorageFilter({ onFilterResults }: StorageFilterProps) {
@@ -13,7 +14,6 @@ export default function StorageFilter({ onFilterResults }: StorageFilterProps) {
   const [cropType, setCropType] = useState("");
   const [storageType, setStorageType] = useState("");
 
-  // Mutation to handle filtering on the same page
   const filterMutation = useMutation({
     mutationFn: () =>
       filterStorageHubs({
@@ -23,9 +23,7 @@ export default function StorageFilter({ onFilterResults }: StorageFilterProps) {
       }),
 
     onSuccess: (data) => {
-      if (onFilterResults) {
-        onFilterResults(data);
-      }
+      onFilterResults?.(data);
     },
 
     onError: (error) => {
@@ -38,139 +36,88 @@ export default function StorageFilter({ onFilterResults }: StorageFilterProps) {
   };
 
   return (
-    <div
-      className="
-        absolute
-        z-30
-        left-1/2
-        -translate-x-1/2
-        -bottom-16
-        w-full
-        max-w-7xl
-        px-4
-        sm:px-6
-        md:px-12
-      "
-    >
-      {/* Filter Box */}
-      <div
-        className="
-          hidden
-          md:flex
-          w-full
-          flex-row
-          items-center
-          gap-4
-          overflow-x-auto
-          snap-x
-          snap-mandatory
-          scroll-smooth
-          no-scrollbar
-          md:overflow-visible
+    <div className="absolute max-w-7xl mx-auto bottom-[-4rem] left-1/2 z-30 w-full -translate-x-1/2 px-4 sm:px-6 md:px-12">
+      <div className="w-full rounded-3xl border border-stone-100 bg-white p-4 shadow-xl">
+        <div className="flex w-full items-end gap-4 overflow-x-auto scroll-smooth pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:overflow-visible md:pb-0">
+          {/* Location */}
+          <div className="w-[240px] min-w-[240px]  shrink-0 sm:w-[260px] sm:min-w-[260px] md:min-w-0 md:flex-1">
+            <CustomDropdown
+              label="Location"
+              icon={MapPin}
+              options={[
+                "Select state",
+                "Oyo",
+                "Osun",
+                "Ekiti",
+                "Ondo",
+                "Ogun",
+                "Lagos",
+                "Kano",
+              ]}
+              onSelect={(val) => setLocation(val === "Select state" ? "" : val)}
+            />
+          </div>
 
-          bg-white
-          p-4
-          rounded-3xl
-          shadow-xl
-          border
-          border-stone-100
-        "
-      >
-        {/* Location */}
-        <div className="w-[260px] shrink-0 text-sm snap-start md:w-auto md:flex-1 md:shrink">
-          <CustomDropdown
-            label="Location"
-            icon={MapPin}
-            options={[
-              "Select state",
-              "Oyo",
-              "Osun",
-              "Ekiti",
-              "Ondo",
-              "Ogun",
-              "Lagos",
-              "Kano",
-            ]}
-            onSelect={(val) => setLocation(val === "Select state" ? "" : val)}
-          />
-        </div>
+          {/* Crop Type */}
+          <div className="w-[240px] min-w-[240px] shrink-0 sm:w-[260px] sm:min-w-[260px] md:min-w-0 md:flex-1">
+            <CustomDropdown
+              label="Crop type"
+              icon={Leaf}
+              options={[
+                "Select crop type",
+                "Yam",
+                "Cassava",
+                "Tomatoes",
+                "Maize",
+              ]}
+              onSelect={(val) =>
+                setCropType(val === "Select crop type" ? "" : val)
+              }
+            />
+          </div>
 
-        {/* Crop type */}
-        <div className="w-[260px] text-sm shrink-0 snap-start md:w-auto md:flex-1 md:shrink">
-          <CustomDropdown
-            label="Crop type"
-            icon={Leaf}
-            options={[
-              "Select crop type",
-              "Yam",
-              "Cassava",
-              "Tomatoes",
-              "Maize",
-            ]}
-            onSelect={(val) =>
-              setCropType(val === "Select crop type" ? "" : val)
-            }
-          />
-        </div>
+          {/* Storage Type */}
+          <div className="w-[240px] min-w-[240px] shrink-0 sm:w-[260px] sm:min-w-[260px] md:min-w-0 md:flex-1">
+            <CustomDropdown
+              label="Storage type"
+              icon={Warehouse}
+              options={[
+                "Select storage type",
+                "Cold Room",
+                "Cold storage",
+                "Silo",
+                "Warehouse",
+              ]}
+              onSelect={(val) =>
+                setStorageType(val === "Select storage type" ? "" : val)
+              }
+            />
+          </div>
 
-        {/* Storage type */}
-        <div className="w-[260px] text-sm shrink-0 snap-start md:w-auto md:flex-1 md:shrink">
-          <CustomDropdown
-            label="Storage type"
-            icon={Warehouse}
-            options={[
-              "Select storage type",
-              "Cold Room",
-              "Cold storage",
-              "Silo",
-              "Warehouse",
-            ]}
-            onSelect={(val) =>
-              setStorageType(val === "Select storage type" ? "" : val)
-            }
-          />
-        </div>
+          {/* Search */}
+          <div className="flex min-w-[150px] shrink-0 items-end pb-0.5">
+            <motion.button
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.96 }}
+              type="button"
+              onClick={handleSearch}
+              disabled={filterMutation.isPending}
+              className="relative inline-block cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <span className="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-full bg-brand-secondary" />
 
-        {/* Search Button with Amber Outline Pattern */}
-        <div
-          className="relative text-sm mt-0 shrink-0 snap-start md:mt-7 md:mr-2 hover:-translate-y-0.5"
-          
-        >
-          <div className="absolute left-1 top-1 hidden h-full w-full rounded-full bg-amber-500 md:block" />
-
-          <button
-            onClick={handleSearch}
-            disabled={filterMutation.isPending}
-            className="
-              relative
-              flex
-              w-full
-              items-center
-              justify-center
-              gap-2
-              whitespace-nowrap
-              rounded-full
-              bg-brand-primary
-              px-8
-              py-3.5
-              font-medium
-              text-white
-              shadow-md
-              transition-transform
-              md:w-auto
-              md:shadow-none
-              cursor-pointer
-              disabled:opacity-50
-            "
-          >
-            <Search className="h-4 w-4" />
-
-            {filterMutation.isPending ? "Searching..." : "Search"}
-          </button>
+              <span className="relative z-10 flex h-12 items-center gap-3 rounded-full bg-brand-primary px-5 text-text-light sm:px-7">
+                <span>
+                  <Search />
+                </span>
+                <span className="whitespace-nowrap text-sm font-medium sm:text-base">
+                  {filterMutation.isPending ? "Searching..." : "Search"}
+                </span>
+              </span>
+            </motion.button>
+          </div>
         </div>
       </div>
     </div>
   );
 }
-
-

@@ -3,12 +3,14 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Routes from "./routes/Routes";
 import AuthProvider from "./context/AuthContext";
+import { TopLoader } from "./components/ui/TopLoader";
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      <TopLoader />
       <AuthProvider>
         <Routes />
       </AuthProvider>

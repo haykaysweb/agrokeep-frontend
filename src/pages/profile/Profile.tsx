@@ -11,12 +11,14 @@ import {
   Camera,
 } from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
 import {
   changePassword,
   deleteAvatar,
   getUserProfile,
   updateProfile,
   uploadAvatar,
+  type UserProfile,
 } from "@/api/profile";
 import { showToast } from "@/utils/CustomToast";
 import { useAuth } from "@/hooks/useAuth";
@@ -26,11 +28,24 @@ import { useNavigate } from "react-router";
 import { navigateWithDelay } from "@/utils/navigation";
 import LogoutModal from "@/components/LogoutModal";
 
+interface ProfileQueryData {
+  user?: UserProfile;
+  [key: string]: unknown;
+}
+
+function getErrorMessage(err: unknown, fallback: string): string {
+  return (
+    (isAxiosError<{ message?: string }>(err) && err.response?.data?.message) ||
+    fallback
+  );
+}
+
 export default function Profile() {
   const { user: authUser, setUser } = useAuth();
   const queryClient = useQueryClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const hasInitializedProfile = useRef(false);
 
   const {
     data: responseData,
@@ -42,8 +57,13 @@ export default function Profile() {
   });
 
   // Extract nested user and stats based on the API response structure
-  const user = responseData?.user || responseData;
-  const stats = responseData?.stats || user?.stats;
+  const user = responseData?.user;
+  const stats = responseData?.stats;
+
+  const userLocation =
+    user && "location" in user && typeof user.location === "string"
+      ? user.location
+      : undefined;
 
   // Toggle states for notification preferences
   const [bookingUpdates, setBookingUpdates] = useState(true);
@@ -91,9 +111,8 @@ export default function Profile() {
         queryKey: ["currentUser"],
       });
     },
-    onError: (err: any) => {
-      const message =
-        err?.response?.data?.message || "Failed to update profile.";
+    onError: (err: unknown) => {
+      const message = getErrorMessage(err, "Failed to update profile.");
       showToast.error(message);
       setProfileError(message);
     },
@@ -112,23 +131,26 @@ export default function Profile() {
 
       if (updatedUser?.avatarUrl) {
         // Update React Query profile cache
-        queryClient.setQueryData(["userProfile"], (oldData: any) => {
-          if (!oldData) return oldData;
+        queryClient.setQueryData(
+          ["userProfile"],
+          (oldData: ProfileQueryData | undefined) => {
+            if (!oldData) return oldData;
 
-          if (oldData.user) {
+            if (oldData.user) {
+              return {
+                ...oldData,
+                user: {
+                  ...oldData.user,
+                  avatarUrl: updatedUser.avatarUrl,
+                },
+              };
+            }
             return {
               ...oldData,
-              user: {
-                ...oldData.user,
-                avatarUrl: updatedUser.avatarUrl,
-              },
+              avatarUrl: updatedUser.avatarUrl,
             };
-          }
-          return {
-            ...oldData,
-            avatarUrl: updatedUser.avatarUrl,
-          };
-        });
+          },
+        );
 
         // Update authenticated user immediately
         if (authUser) {
@@ -143,10 +165,8 @@ export default function Profile() {
       });
     },
 
-    onError: (err: any) => {
-      const message =
-        err?.response?.data?.message || "Failed to upload avatar.";
-      showToast.error(message);
+    onError: (err: unknown) => {
+      showToast.error(getErrorMessage(err, "Failed to upload avatar."));
       setProfileError("");
     },
   });
@@ -158,23 +178,26 @@ export default function Profile() {
       setIsAvatarModalOpen(false);
       setProfileError("");
       // Clear avatarUrl from React Query profile cache immediately
-      queryClient.setQueryData(["userProfile"], (oldData: any) => {
-        if (!oldData) return oldData;
+      queryClient.setQueryData(
+        ["userProfile"],
+        (oldData: ProfileQueryData | undefined) => {
+          if (!oldData) return oldData;
 
-        if (oldData.user) {
+          if (oldData.user) {
+            return {
+              ...oldData,
+              user: {
+                ...oldData.user,
+                avatarUrl: null,
+              },
+            };
+          }
           return {
             ...oldData,
-            user: {
-              ...oldData.user,
-              avatarUrl: null,
-            },
+            avatarUrl: null,
           };
-        }
-        return {
-          ...oldData,
-          avatarUrl: null,
-        };
-      });
+        },
+      );
 
       // Clear avatar from authenticated user immediately
       if (authUser) {
@@ -190,10 +213,8 @@ export default function Profile() {
       });
     },
 
-    onError: (err: any) => {
-      showToast.error(
-        err?.response?.data?.message || "Failed to remove avatar.",
-      );
+    onError: (err: unknown) => {
+      showToast.error(getErrorMessage(err, "Failed to remove avatar."));
     },
   });
 
@@ -215,37 +236,48 @@ export default function Profile() {
         setPasswordSuccess("");
       }, 2000);
     },
-    onError: (err: any) => {
+    onError: (err: unknown) => {
       setPasswordError(
-        err?.response?.data?.message ||
+        getErrorMessage(
+          err,
           "Failed to update password. Please check your inputs.",
+        ),
       );
       setPasswordSuccess("");
     },
   });
 
-  // Sync state when profile data successfully loads
+  // Populate the editable fields once the profile loads. This is a
+  // legitimate one-time sync from an external (server) data source into
+  // local editable state, not a derivable value — a useMemo would fight
+  // with the user's own subsequent edits — so an effect is the right tool
+  // here. Guarded to run only once per profile load.
   useEffect(() => {
-    if (user) {
+    if (!user || hasInitializedProfile.current) return;
+
+    hasInitializedProfile.current = true;
+
+    const hydrationId = window.setTimeout(() => {
       if (user.fullName) setFullName(user.fullName);
       if (user.phone) setPhone(user.phone);
+
       if (user.notificationPreferences) {
-        if (user.notificationPreferences.bookingUpdates !== undefined)
-          setBookingUpdates(user.notificationPreferences.bookingUpdates);
-        if (user.notificationPreferences.paymentNotifications !== undefined)
-          setPaymentNotifications(
-            user.notificationPreferences.paymentNotifications,
-          );
-        if (user.notificationPreferences.reminderAlerts !== undefined)
-          setReminderAlerts(user.notificationPreferences.reminderAlerts);
-        if (user.notificationPreferences.smsNotifications !== undefined)
-          setSmsNotifications(user.notificationPreferences.smsNotifications);
-        if (user.notificationPreferences.emailNotifications !== undefined)
-          setEmailNotifications(
-            user.notificationPreferences.emailNotifications,
-          );
+        const prefs = user.notificationPreferences;
+
+        if (prefs.bookingUpdates !== undefined)
+          setBookingUpdates(prefs.bookingUpdates);
+        if (prefs.paymentNotifications !== undefined)
+          setPaymentNotifications(prefs.paymentNotifications);
+        if (prefs.reminderAlerts !== undefined)
+          setReminderAlerts(prefs.reminderAlerts);
+        if (prefs.smsNotifications !== undefined)
+          setSmsNotifications(prefs.smsNotifications);
+        if (prefs.emailNotifications !== undefined)
+          setEmailNotifications(prefs.emailNotifications);
       }
-    }
+    }, 0);
+
+    return () => window.clearTimeout(hydrationId);
   }, [user]);
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -269,18 +301,6 @@ export default function Profile() {
     e.preventDefault();
     updateProfileMutation.mutate({ fullName, phone });
   };
-
-  // const handleSavePreferences = () => {
-  //   updateProfileMutation.mutate({
-  //     notificationPreferences: {
-  //       bookingUpdates,
-  //       paymentNotifications,
-  //       reminderAlerts,
-  //       smsNotifications,
-  //       emailNotifications,
-  //     },
-  //   });
-  // };
 
   const handleSaveAll = () => {
     updateProfileMutation.mutate({
@@ -429,9 +449,7 @@ export default function Profile() {
 
               <p className="text-xs text-stone-400 flex items-center justify-center gap-1 mt-1">
                 <MapPin className="h-3 w-3 text-brand-primbg-brand-primary shrink-0" />
-                <span className="break-words">
-                  {user?.location || "Nigeria"}
-                </span>
+                <span className="break-words">{userLocation || "Nigeria"}</span>
               </p>
             </div>
 

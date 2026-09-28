@@ -27,7 +27,7 @@ export default function AdminNav() {
 
   return (
     <header
-      className={`fixed top-0 left-0 lg:left-60 right-0 z-30 transition-all duration-300 ${
+      className={`fixed top-0 left-0 lg:left-60 right-0 z-50 transition-all duration-300 ${
         isScrolled
           ? "bg-white/80 backdrop-blur-md border-b border-stone-200/60 shadow-xs"
           : "bg-white border-b border-stone-100 shadow-none"
