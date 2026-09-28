@@ -242,7 +242,15 @@ const Routes = () => {
               path: "storage-hubs",
               lazy: async () => {
                 const { default: Component } =
-                  await import("../pages/admin/AdminStorageHub");
+                  await import("../pages/admin/adminStorageHub/AdminStorageHub");
+                return { Component };
+              },
+            },
+            {
+              path: "storage-hubs/details",
+              lazy: async () => {
+                const { default: Component } =
+                  await import("../pages/admin/adminStorageHub/AdminStorageDetails");
                 return { Component };
               },
             },

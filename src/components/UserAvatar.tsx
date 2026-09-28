@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, LogOut, ChevronDown, Book } from "lucide-react";
+import { User, LogOut, ChevronDown, Book, Lock } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "@/hooks/useAuth";
 import { logoutUserApi } from "@/api/auth";
@@ -168,7 +168,19 @@ export default function UserAvatar({ name }: UserAvatarProps) {
                 <Book className="h-4 w-4" />
                 <span>My Bookings</span>
               </Link>
-
+                {user?.role === "admin" && (
+              <Link
+                to="/admin"
+                onClick={() => setIsOpen(false)}
+                role="menuitem"
+                className="flex items-center gap-3 px-4 py-3 text-text-main hover:bg-stone-50 transition-colors"
+              >
+                
+                <Lock className="h-4 w-4" />
+                <span>Admin</span>
+               
+              </Link>
+   )}
               <hr className="border-stone-100 my-1" />
 
               {/* Logout */}
