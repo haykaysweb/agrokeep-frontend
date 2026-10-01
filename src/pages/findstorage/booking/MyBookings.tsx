@@ -150,7 +150,11 @@ export default function MyBookings() {
 
                       {booking.hub?.isVerified && (
                         <span className="inline-flex items-center gap-1 rounded-full bg-brand-primary/10 px-2 py-0.5 text-[10px] font-medium text-brand-primary">
-                          <img src="/verifiedIcon.svg" className="h-3 w-3" />
+                          <img
+                            src="/verifiedIcon.svg"
+                            alt=""
+                            className="h-3 w-3"
+                          />
                           Verified
                         </span>
                       )}

@@ -1,5 +1,5 @@
 import { Star } from "lucide-react";
-import type { StorageHub } from "@/lib/types";
+import type { StorageHub } from "@/api/storageDetails";
 import { formatCurrency } from "@/lib/constant";
 
 interface SimilarFacilitiesProps {

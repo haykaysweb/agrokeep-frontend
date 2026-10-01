@@ -3,19 +3,9 @@ import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 
-import apiClient from "@/api/apiClient";
-import type { StorageHub } from "@/lib/types";
+import { getVerifiedHubs } from "@/api/verifiedHubsApi";
+import type { StorageHub } from "@/api/storageDetails";
 import { formatCurrency } from "@/lib/constant";
-
-interface VerifiedHubsResponse {
-  message: string;
-  data: StorageHub[];
-}
-
-const getVerifiedHubs = async (): Promise<VerifiedHubsResponse> => {
-  const response = await apiClient.get("/hub/verified-hubs");
-  return response.data;
-};
 
 const getFacilityPrice = (hub: StorageHub) => {
   const unit = hub.unitType?.toLowerCase() || "";
@@ -131,7 +121,7 @@ export default function VerifyHubs() {
           to="/storage"
           className="hidden sm:flex text-brand-primary font-semibold items-center space-x-2 hover:opacity-80 transition"
         >
-          <span>Sell all hubs</span>
+          <span>See all hubs</span>
           <img src="/Arrow Right.svg" alt="" />
         </Link>
       </div>
@@ -287,7 +277,7 @@ export default function VerifyHubs() {
           to="/storage"
           className="text-brand-primary font-semibold flex items-center space-x-2"
         >
-          <span>Sell all hubs</span>
+          <span>See all hubs</span>
           <img src="/Arrow Right.svg" alt="" />
         </Link>
       </div>

@@ -10,6 +10,33 @@ interface PaginationProps {
 
 type PaginationItem = number | "...";
 
+const range = (start: number, end: number): number[] =>
+  Array.from({ length: end - start + 1 }, (_, index) => start + index);
+
+// Never returns more than 6 items (numbers + "...")
+function getPageNumbers(
+  currentPage: number,
+  totalPages: number,
+): PaginationItem[] {
+  // 6 pages or fewer: show them all
+  if (totalPages <= 6) {
+    return range(1, totalPages);
+  }
+
+  // Near the start: 1 2 3 4 ... last
+  if (currentPage <= 3) {
+    return [1, 2, 3, 4, "...", totalPages];
+  }
+
+  // Near the end: 1 ... last-3 last-2 last-1 last
+  if (currentPage >= totalPages - 3) {
+    return [1, "...", ...range(totalPages - 3, totalPages)];
+  }
+
+  // Middle: 1 ... current next ... last
+  return [1, "...", currentPage, currentPage + 1, "...", totalPages];
+}
+
 export default function Pagination({
   currentPage,
   totalPages,
@@ -17,46 +44,7 @@ export default function Pagination({
   hasPrevPage,
   onPageChange,
 }: PaginationProps) {
-  const getPageNumbers = (): PaginationItem[] => {
-    // If there are 7 pages or fewer, show everything
-    if (totalPages <= 7) {
-      return Array.from({ length: totalPages }, (_, index) => index + 1);
-    }
-
-    // Beginning
-    if (currentPage <= 4) {
-      return [1, 2, 3, 4, 5, "...", totalPages - 1, totalPages];
-    }
-
-    // End
-    if (currentPage >= totalPages - 3) {
-      return [
-        1,
-        2,
-        "...",
-        totalPages - 4,
-        totalPages - 3,
-        totalPages - 2,
-        totalPages - 1,
-        totalPages,
-      ];
-    }
-
-    // Middle
-    return [
-      1,
-      2,
-      "...",
-      currentPage - 1,
-      currentPage,
-      currentPage + 1,
-      "...",
-      totalPages - 1,
-      totalPages,
-    ];
-  };
-
-  const pageNumbers = getPageNumbers();
+  const pageNumbers = getPageNumbers(currentPage, totalPages);
 
   return (
     <div className="flex items-center justify-center gap-4 pt-4 pb-2">

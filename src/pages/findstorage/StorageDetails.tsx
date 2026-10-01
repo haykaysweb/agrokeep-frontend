@@ -2,10 +2,13 @@ import { useNavigate, useParams } from "react-router";
 import LazyLoadImageRC from "@/components/ui/LazyLoadImage";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
-import { getHubDetails } from "@/api/storageDetails";
+import {} from "@/api/storageDetails";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import ErrorDisplay from "@/components/ui/ErrorDisplay";
-import type { StorageHubApiResponse } from "@/lib/types";
+import {
+  getHubDetails,
+  type StorageHubApiResponse,
+} from "@/api/storageDetails";
 import { formatCurrency } from "@/lib/constant";
 import StorageReviews from "./StorageReviews";
 import { useForm, type Resolver } from "react-hook-form";
