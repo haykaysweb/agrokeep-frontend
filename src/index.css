@@ -39,7 +39,7 @@ select {
 }
 
 @theme {
-  --font-sans: "Lexend", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
 
   /* --- Base & Surfaces (Backgrounds & Containers) --- */
   --color-background: #fdfbf7; /* Main canvas/page background (from "Background" swatch) */

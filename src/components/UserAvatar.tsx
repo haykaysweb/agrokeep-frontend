@@ -186,7 +186,7 @@ export default function UserAvatar({ name }: UserAvatarProps) {
                   className="flex items-center gap-3 px-4 py-3 text-text-main hover:bg-stone-50 transition-colors"
                 >
                   <LayoutDashboard className="h-4 w-4" />
-                  <span>Admin Dashboard</span>
+                  <span>Admin</span>
                 </Link>
               )}
 

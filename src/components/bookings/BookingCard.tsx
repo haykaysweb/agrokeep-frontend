@@ -8,7 +8,7 @@ import {
   Scale,
   Warehouse,
 } from "lucide-react";
-import type { MyBooking } from "@/lib/types";
+import type { MyBooking } from "@/api/booking";
 import {
   formatBookingDate,
   formatBookingStatus,

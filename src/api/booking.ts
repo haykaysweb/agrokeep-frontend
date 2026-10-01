@@ -89,8 +89,84 @@ export const createBooking = async (
   return response.data;
 };
 
+// My Bookings Interfaces
+export interface MyBookingHub {
+  _id?: string;
+  name?: string;
+  address?: string;
+  images?: string[];
+  isVerified?: boolean;
+  operatingHours?: string;
+  rating?: number;
+  reviewCount?: number;
+  proximityText?: string;
+  slug?: string;
+  state?: string;
+  lga?: string;
+  storageType?: string;
+}
+
+export interface MyBooking {
+  _id: string;
+  bookingId: string;
+
+  hub: MyBookingHub;
+
+  cropType: string;
+  quantity: number;
+  unitType: string;
+
+  dropOffDate: string;
+  pickUpDate: string;
+  durationInDays: number;
+
+  bookingStatus: string;
+  paymentStatus: string;
+
+  createdAt: string;
+  updatedAt?: string;
+
+  fullName?: string;
+  phoneNumber?: string;
+  email?: string;
+
+  dailyPricePerUnit?: number;
+
+  storageFee?: number;
+  serviceFee?: number;
+  totalAmount?: number;
+  depositAmount?: number;
+  balanceAmount?: number;
+}
+
+export interface BookingMetrics {
+  upcoming: number;
+  active: number;
+  completed: number;
+}
+
+export interface BookingPagination {
+  currentPage: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+  total: number;
+  totalPages: number;
+}
+
+export interface MyBookingsData {
+  bookings: MyBooking[];
+  metrics: BookingMetrics;
+  pagination: BookingPagination;
+}
+
+export interface MyBookingsResponse {
+  success: boolean;
+  message: string;
+  data: MyBookingsData;
+}
+
 export const getMyBookingsApi = (page = 1) => {
-  return apiClient.get(`/booking/my-bookings?page=${page}`);
+  return apiClient.get<MyBookingsResponse>(`/booking/my-bookings?page=${page}`);
 };
 
 export interface SingleBookingResponse {

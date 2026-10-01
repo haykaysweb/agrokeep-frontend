@@ -1,6 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { getMyBookingsApi } from "@/api/booking";
-import type { MyBookingsResponse } from "@/lib/types";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { getMyBookingsApi, type MyBookingsResponse } from "@/api/booking";
 
 export const useMyBookings = (page: number) => {
   return useQuery<MyBookingsResponse>({
@@ -10,5 +9,6 @@ export const useMyBookings = (page: number) => {
 
       return response.data;
     },
+    placeholderData: keepPreviousData,
   });
 };

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router";
 import { isAxiosError } from "axios";
 import BookingFilters from "./BookingFilters";
@@ -15,6 +15,7 @@ export default function AdminBooking() {
   const { isPending, isError, error, data } = useQuery({
     queryKey: ["getAdminBookings", searchParams.toString()],
     queryFn: () => getAdminBookingsApi(searchParams),
+    placeholderData: keepPreviousData,
   });
 
   const { bookings, pagination } = data?.data?.data || {};
