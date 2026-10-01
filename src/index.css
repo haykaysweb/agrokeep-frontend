@@ -1,35 +1,34 @@
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap");
 @import "tailwindcss";
 @plugin "daisyui";
 @import "leaflet/dist/leaflet.css";
 
+/* Global resets & typography smoothing */
 * {
   scroll-behavior: smooth;
   box-sizing: border-box;
   touch-action: manipulation;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-html {
-  scrollbar-width: none;
-}
-
-html::-webkit-scrollbar {
-  display: none;
 }
 
 html,
 body {
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scrollbar-width: none; /* Hides scrollbar globally in Firefox */
+}
+
+/* Hides scrollbar globally in WebKit (Chrome, Safari, Edge) */
+html::-webkit-scrollbar,
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Utility / fallback for no-scrollbar */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 input,
@@ -42,35 +41,35 @@ select {
   --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
 
   /* --- Base & Surfaces (Backgrounds & Containers) --- */
-  --color-background: #fdfbf7; /* Main canvas/page background (from "Background" swatch) */
-  --color-backgroundTwo: #f9f6f0; /* Background color for the Contact Us and About Us */
-  --color-surface-card: #ffffff; /* White containers, cards, or input fields */
-  --color-surface-alt: #9da49e; /* Subtle container tint (from the gray-green Auth Screen background) */
+  --color-background: #fdfbf7;
+  --color-backgroundTwo: #f9f6f0;
+  --color-surface-card: #ffffff;
+  --color-surface-alt: #9da49e;
   --color-background-subtle: #e4e8df;
 
   /* --- Primary & Accent Colors (Branding & Actions) --- */
-  --color-brand-primary: #0a4022; /* Main deep green for heavy CTAs, headers, buttons (Primary/P300) */
-  --color-brand-secondary: #e68e0e; /* Accent orange for secondary highlights/buttons (Secondary/P300) */
-  --color-brand-secondary-hover: #cc7d0c; /* Slightly darker orange for interactive hover feedback */
+  --color-brand-primary: #0a4022;
+  --color-brand-secondary: #e68e0e;
+  --color-brand-secondary-hover: #cc7d0c;
 
   /* --- Text & Typography --- */
-  --color-text-main: #1a1a1a; /* Darkest text for high-contrast headings (Grey/G600 & G700) */
-  --color-text-subtle: #4a5555; /* Medium dark text for standard body paragraphs */
-  --color-text-muted: #7f8c8d; /* Faded gray for helper text, placeholders, or secondary labels (Grey/G300 & G450) */
-  --color-text-disabled: #bdc3c7; /* Extremely light gray for disabled states (Grey/G100 & G200) */
-  --color-text-light: #ffffff; /* White text (for over dark buttons/headers) */
+  --color-text-main: #1a1a1a;
+  --color-text-subtle: #4a5555;
+  --color-text-muted: #7f8c8d;
+  --color-text-disabled: #bdc3c7;
+  --color-text-light: #ffffff;
 
   /* --- Semantic / Status Indicators --- */
-  --color-semantic-error: #c0392b; /* Error/Alert destructive actions (Semantic/Error) */
-  --color-semantic-info: #2980b9; /* Informational highlights (Semantic/Info tone) */
+  --color-semantic-error: #c0392b;
+  --color-semantic-info: #2980b9;
 
   /* --- Borders, Dividers, & Neutrals --- */
-  --color-border-light: #ecf0f1; /* Very light gray for soft borders/dividers (Grey/G20) */
-  --color-border-base: #bdc3c7; /* Standard border color for inputs and cards (Grey/G50) */
-  --color-border-input: #d7d7d7; /* Standard border color for inputs and cards (Grey/G200) */
+  --color-border-light: #ecf0f1;
+  --color-border-base: #bdc3c7;
+  --color-border-input: #d7d7d7;
 
   /* --- Overlays --- */
-  --color-overlay-dark: #222222; /* Dark overlay for text readability */
+  --color-overlay-dark: #222222;
 
   /* --- Chart & Analytics Colors --- */
   --color-chart-blue: #3b82f6;
@@ -97,7 +96,7 @@ select {
   --color-card-border: #f3f4f6;
 }
 
-/*custom auth animation */
+/* Custom Animations */
 @keyframes slideUp {
   0% {
     transform: translateY(20px);
@@ -124,7 +123,6 @@ select {
   }
 }
 
-/* Create the Class Names (Use these exactly like Tailwind classes) */
 .animate-slideUp {
   animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
