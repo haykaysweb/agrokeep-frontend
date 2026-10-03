@@ -247,7 +247,7 @@ const Routes = () => {
               },
             },
             {
-              path: "storage-hubs/details",
+              path: "storage-hubs/details/:id",
               lazy: async () => {
                 const { default: Component } =
                   await import("../pages/admin/adminStorageHub/AdminStorageDetails");

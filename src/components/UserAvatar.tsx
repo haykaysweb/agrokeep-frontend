@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, LogOut, ChevronDown, Book, LayoutDashboard } from "lucide-react";
+import { User, LogOut, ChevronDown, Book, Lock } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "@/hooks/useAuth";
 import { logoutUserApi } from "@/api/auth";
@@ -11,13 +11,6 @@ import LogoutModal from "./LogoutModal";
 
 interface UserAvatarProps {
   name?: string; // Optional now, since we can fallback to cached user data
-}
-
-interface ProfileData {
-  fullName?: string;
-  avatarUrl?: string;
-  role?: string;
-  user?: ProfileData;
 }
 
 export default function UserAvatar({ name }: UserAvatarProps) {
@@ -32,7 +25,8 @@ export default function UserAvatar({ name }: UserAvatarProps) {
   const queryClient = useQueryClient();
 
   // Pull the latest profile data straight from the cache to stay fully synced
-  const { data: profileData } = useQuery<ProfileData | null>({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: profileData } = useQuery<any>({
     queryKey: ["userProfile"],
     queryFn: async () => null,
     enabled: false,
@@ -43,7 +37,6 @@ export default function UserAvatar({ name }: UserAvatarProps) {
   const currentUser = profileData?.user || profileData || user;
   const displayName = name || currentUser?.fullName || "User";
   const avatarUrl = currentUser?.avatarUrl;
-  const isAdmin = currentUser?.role === "admin";
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -176,33 +169,17 @@ export default function UserAvatar({ name }: UserAvatarProps) {
                 <Book className="h-4 w-4" />
                 <span>My Bookings</span>
               </Link>
-
-              {/* admin */}
-              {isAdmin && (
+              {user?.role === "admin" && (
                 <Link
                   to="/admin"
                   onClick={() => setIsOpen(false)}
                   role="menuitem"
                   className="flex items-center gap-3 px-4 py-3 text-text-main hover:bg-stone-50 transition-colors"
                 >
-                  <LayoutDashboard className="h-4 w-4" />
-                  <span>Admin Dashboard</span>
+                  <Lock className="h-4 w-4" />
+                  <span>Admin</span>
                 </Link>
               )}
-
-                {user?.role === "admin" && (
-              <Link
-                to="/admin"
-                onClick={() => setIsOpen(false)}
-                role="menuitem"
-                className="flex items-center gap-3 px-4 py-3 text-text-main hover:bg-stone-50 transition-colors"
-              >
-                
-                <Lock className="h-4 w-4" />
-                <span>Admin</span>
-               
-              </Link>
-   )}
               <hr className="border-stone-100 my-1" />
 
               {/* Logout */}
